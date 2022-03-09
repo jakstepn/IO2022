@@ -1,0 +1,2 @@
+/FrontEnd/FrontEndWebApp/ClientApp/README.md filter=lfs diff=lfs merge=lfs -text
+/FrontEnd/FrontEndWebApp/ClientApp/package-lock.json filter=lfs diff=lfs merge=lfs -text
