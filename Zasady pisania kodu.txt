@@ -8,4 +8,4 @@ Formatowanie kodu:
 	nazwy zmiennych: angielskie
 	język komentarzy: impas
 Azure
-	Prośby o reviure: nie ustalono
+	Prośby o reviure: 2 osoby poza twórcą do maina, 1 osoba poza twórcą do deva
