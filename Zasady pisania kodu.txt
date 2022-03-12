@@ -6,6 +6,6 @@ Formatowanie kodu:
 	Wszystkie zmienne: opisowe nazwy
 	Wszystkie funkcje: krótkie
 	nazwy zmiennych: angielskie
-	język komentarzy: impas
+	język komentarzy: angielki
 Azure
 	Prośby o reviure: nie ustalono
