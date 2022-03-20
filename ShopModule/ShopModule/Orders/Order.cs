@@ -1,14 +1,14 @@
 ﻿using System;
+using ShopModule.Location;
 
-namespace Orders
+namespace ShopModule.Orders
 {
 	public class Order
 	{
 		public OrderStatus OrderStatus { get; set; }
 		public DateTime CreationDate { get; set; }
 		public DateTime DeliveryDate { get; set; }
-		// TODO
-		//public DateTime ClientAddress { get; set; }
+		public Address ClientAddress { get; set; }
 		public string AdditionalInfo { get; set; }
 
 		public Order()

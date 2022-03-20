@@ -1,4 +1,6 @@
 ﻿using System;
+using ShopModule.Orders;
+using ShopModule.Products;
 
 namespace ShopModule.Employees
 {
