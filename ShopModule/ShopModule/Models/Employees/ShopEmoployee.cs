@@ -18,7 +18,7 @@ namespace ShopModule.Employees
 		}
 
 		public void ChangeOrderStatus(Order order, OrderStatus status) { }
-		public OrderStatus GetOrderStatus(Order order) { }
+		public OrderStatus GetOrderStatus(Order order) { return OrderStatus.Collecting; }
 		public void RejectOrder(Order order) { }
 		public void SetProductAsUnavailable(Product product) { }
 		public void NotifyCourierThatPackageIsReady(Courier courier) { }

@@ -1,5 +1,6 @@
 ﻿using System;
 using ShopModule.Location;
+using ShopModule.Products;
 
 namespace ShopModule
 {
