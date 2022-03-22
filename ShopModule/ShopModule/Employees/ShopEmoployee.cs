@@ -11,9 +11,7 @@ namespace ShopModule.Employees
 		public string Email { get; set; }
 		public string PhoneNumber { get; set; }
 		public DateTime EmployedSince { get; set; }
-
-		// TODO
-		// current state enum
+		public CurrentState CurrentState { get; set; }
 
 		public ShopEmployee()
 		{
