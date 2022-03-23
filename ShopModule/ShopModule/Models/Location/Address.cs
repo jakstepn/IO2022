@@ -2,10 +2,12 @@
 
 namespace ShopModule.Location
 {
-	public class Address
+	public struct Address
 	{
-		public Address()
-		{
-		}
+		public string City { get; set; }
+		public string Region { get; set; }
+		public string Street { get; set; }
+		public string StreetNumber { get; set; }
+		
 	}
 }

@@ -2,11 +2,13 @@
 using ShopModule.Orders;
 using ShopModule.Products;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShopModule.Employees
 {
 	public class ShopManager : ShopEmployee
 	{
+
 		public ShopManager() : base()
 		{
 		}
