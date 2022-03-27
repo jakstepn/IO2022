@@ -2,7 +2,7 @@
 
 namespace ShopModule.Migrations
 {
-    public partial class CreateShopModuleDb_2 : Migration
+    public partial class ShopModuleDbContextModelSnapshot2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

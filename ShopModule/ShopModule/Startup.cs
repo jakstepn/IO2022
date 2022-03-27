@@ -33,7 +33,7 @@ namespace ShopModule
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<ShopModuleDbContext>();
+            //services.AddDbContext<ShopModuleDbContext>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

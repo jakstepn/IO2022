@@ -10,8 +10,8 @@ using ShopModule.Data;
 namespace ShopModule.Migrations
 {
     [DbContext(typeof(ShopModuleDbContext))]
-    [Migration("20220323034656_CreateShopModuleDb")]
-    partial class CreateShopModuleDb
+    [Migration("20220327182357_ShopModuleDbContextModelSnapshot2")]
+    partial class ShopModuleDbContextModelSnapshot2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,7 +133,7 @@ namespace ShopModule.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("GrossPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
@@ -148,7 +148,7 @@ namespace ShopModule.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("Id");
 
@@ -170,7 +170,7 @@ namespace ShopModule.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");

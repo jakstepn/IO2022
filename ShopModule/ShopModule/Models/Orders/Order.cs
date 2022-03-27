@@ -10,7 +10,7 @@ namespace ShopModule.Orders
 	public class Order
 	{
 		[Key]
-		public int Id { get; set; }	
+		public int Id { get; set; }
 		public OrderStatus OrderStatus { get; set; }
 		public DateTime CreationDate { get; set; }
 		public DateTime DeliveryDate { get; set; }
@@ -31,9 +31,10 @@ namespace ShopModule.Orders
 		public virtual ShopEmployee ShopEmployee { get; set; }
 		[ForeignKey("ShopId")]
 		public virtual Shop Shop { get; set; }
-		public virtual ICollection<OrderItem> OrderItem { get; set; }
 		[ForeignKey("CourierId")]
 		public virtual Courier Courier { get; set; }
+		public virtual ICollection<OrderItem> OrderItem { get; set; }
+		
 
 		
 	}
