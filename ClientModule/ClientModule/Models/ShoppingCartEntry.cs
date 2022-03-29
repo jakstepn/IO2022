@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 namespace ClientModule.Database_Models
 {
     [DisplayColumn("ShoppingCartEntry")]
-    [Index(nameof(DbShoppingCartEntry.ShoppingCartId))]
-    [Index(nameof(DbShoppingCartEntry.DbProductId))]
-    public class DbShoppingCartEntry
+    [Index(nameof(ShoppingCartEntry.ShoppingCartId))]
+    [Index(nameof(ShoppingCartEntry.DbProductId))]
+    public class ShoppingCartEntry
     {
         [Key]
         public int Id { get; set; }
@@ -15,7 +15,7 @@ namespace ClientModule.Database_Models
         [Required]
         public int DbProductId { get; set; }
 
-        public virtual DbShoppingCart ShoppingCart { get; set; }
-        public virtual DbProduct Product { get; set; }
+        public virtual ShoppingCart ShoppingCart { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

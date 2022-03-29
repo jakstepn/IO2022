@@ -18,8 +18,4 @@
     <ProjectReference Include="..\ClientModule_ApiClasses\ClientModule_ApiClasses.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

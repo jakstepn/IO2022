@@ -1,17 +1,20 @@
-﻿using System;
+﻿using DeliveryModule;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using DeliveryModule;
 
-namespace DeliveryModule.Models
+namespace DeliveryModule.Database_Models
 {
     public class Courier
     {
-        public enum CourierState {sittingOnAss, working }
+        [Key]
+        public int Id { get; set; }
         public Order CurrentOrder { get; set; }
-        public string PhoneNumber { get; set; }
-        public CourierState CurrentState { get; set; }
-        void SendMessage(Message message) { }
+        public string PhoneNumber { get; set; }        
+        public CourierStatusClass CurrentState { get; set; }
     }
     
 }
