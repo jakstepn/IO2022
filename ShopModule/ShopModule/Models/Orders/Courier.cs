@@ -40,7 +40,6 @@ namespace ShopModule.Orders
 
 		public CourierCurrentState CheckCourierAvailability() => CurrentState;
 
-
 		// DataBase relations
 		public virtual ICollection<Order> Orders { get; set; }
 	}

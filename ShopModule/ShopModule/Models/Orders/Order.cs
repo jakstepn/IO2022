@@ -60,6 +60,5 @@ namespace ShopModule.Orders
 		[ForeignKey("CourierId")]
 		public virtual Courier Courier { get; set; }
 
-		
 	}
 }

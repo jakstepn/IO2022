@@ -39,8 +39,6 @@ namespace ShopModule
 
 		public bool IsProductAvailable(Product product) => product.Available;
 
-
-
 		// Database relations
 		public virtual ICollection<ShopEmployee> ShopEmoployees { get; set; }
 		public virtual ICollection<Order> Orders { get; set; }
