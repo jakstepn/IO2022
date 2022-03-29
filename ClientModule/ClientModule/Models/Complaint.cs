@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
-namespace ClientModule.Models
+namespace ClientModule.Database_Models
 {
+    [DisplayColumn("Complaint")]
+    [Index(nameof(Database_Models.Complaint.ComplaintFK))]
     public class Complaint
     {
+        public int Id { get; set; }
         public string Text { get; set; }
-        public Order.Status CurrentState { get; set; }
+        public virtual Complaint ComplaintFK { get; set; }
     }
 }

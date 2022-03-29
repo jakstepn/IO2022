@@ -1,18 +1,21 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
-namespace ClientModule.Models
+namespace ClientModule.Database_Models
 {
-    public class Client
+    //Not going to change the name 
+    [DisplayColumn("Client")]
+    [Index(nameof(Client.Addresses))]
+    public class Client : IdentityUser
     {
+        //Id, email, phone number is already in that class - inherited from IdentityUser
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public List<Address> Addresses { get; set; }
 
+        public virtual ICollection<Address> Addresses { get; set; }
 
         public void MakeOrder(Order order) 
         {
