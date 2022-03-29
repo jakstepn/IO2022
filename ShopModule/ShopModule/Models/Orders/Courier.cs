@@ -15,8 +15,7 @@ namespace ShopModule.Orders
 
 		private CourierCurrentState CurrentState { get; set; }
 		
-
-		public Courier()
+		private Courier()
 		{
 			Id = -1;
 			Email = string.Empty;
@@ -24,6 +23,11 @@ namespace ShopModule.Orders
 			LastName = string.Empty;
 			PhoneNumber = string.Empty;
 		}
+
+		public static Courier Empty()
+        {
+			return new Courier();
+        }
 
 		public Courier(int id, string email, string first_name, string last_name, string phone_number)
         {

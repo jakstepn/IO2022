@@ -20,7 +20,7 @@ namespace ShopModule.Orders
 		public int ShopId { get; set; }
 		public int CourierId { get; set; }
 
-		public Order()
+		private Order()
 		{
 			Id = -1;
 			OrderStatus = OrderStatus.Delivered;
@@ -32,6 +32,11 @@ namespace ShopModule.Orders
 			ShopId = -1;
 			CourierId = -1;
 		}
+
+		public static Order Empty()
+        {
+			return new Order();
+        }
 
 		public Order(int id, Address client_address, DateTime delivery_date, DateTime creation_date,
 			string additional_info = "", OrderStatus order_status = OrderStatus.WaitingForCollection)
