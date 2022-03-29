@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DeliveryModule.Models
+namespace DeliveryModule.Database_Models
 {
     public class Order
     {
+        [Key]
+        public int Id { get; set; }
         public DateTime RequestedTime { get; set; }
         public string MyProperty { get; set; }
         public decimal Price { get; set; }
         public bool IsPaid { get; set; }
         public Client Client { get; set; }
-        void SetOrderStatus(string Status) { }
-        void PatOrder(Payment payment) { }
     }
-    
 }

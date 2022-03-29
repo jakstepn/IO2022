@@ -3,7 +3,7 @@
 namespace ClientModule.Database_Models
 {
     [DisplayColumn("ComplaintState")]
-    public class DbComplaintState
+    public class ComplaintState
     {
         //We declare an enum to use in code.
         //It will be a primary key so there will not be multiple of them.
