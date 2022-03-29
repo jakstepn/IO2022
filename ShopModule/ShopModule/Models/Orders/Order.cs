@@ -11,10 +11,10 @@ namespace ShopModule.Orders
 	{
 		[Key]
 		public int Id { get; set; }	
-		public OrderStatus OrderStatus { get; set; }
+		public OrderStatus OrderStatus { get; private set; }
 		public DateTime CreationDate { get; set; }
 		public DateTime DeliveryDate { get; set; }
-		//public Address ClientAddress { get; set; }
+		public Address ClientAddress { get; set; }
 		public string AdditionalInfo { get; set; }
 		public int ShopEmployeeId { get; set; }
 		public int ShopId { get; set; }
@@ -22,9 +22,29 @@ namespace ShopModule.Orders
 
 		public Order()
 		{
+			Id = -1;
+			OrderStatus = OrderStatus.Delivered;
+			CreationDate = DateTime.Now;
+			DeliveryDate = DateTime.Now;
+			ClientAddress = new Address();
+			AdditionalInfo = string.Empty;
+			ShopEmployeeId = -1;
+			ShopId = -1;
+			CourierId = -1;
 		}
 
-		public void ChangeStatus(OrderStatus status) { }
+		public Order(int id, Address client_address, DateTime delivery_date, DateTime creation_date,
+			string additional_info = "", OrderStatus order_status = OrderStatus.WaitingForCollection)
+        {
+			Id = id;
+			ClientAddress = client_address;
+			DeliveryDate = delivery_date;
+			CreationDate = creation_date;
+			AdditionalInfo = additional_info;
+			OrderStatus = order_status;
+        }
+
+		public void ChangeStatus(OrderStatus status) => OrderStatus = status;
 
 		// DataBase relations
 		[ForeignKey("ShopEmployeeId")]
