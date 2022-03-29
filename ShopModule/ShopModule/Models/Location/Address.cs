@@ -13,12 +13,12 @@ namespace ShopModule.Location
 
 		public Address()
         {
-			City = "";
-			Region = "";
-			Street = "";
+			City = string.Empty;
+			Region = string.Empty;
+			Street = string.Empty;
 			StreetNumber = -1;
-			ZipCode = "";
-			Country	= "";
+			ZipCode = string.Empty;
+			Country	= string.Empty;
         }
 
 		public Address(string country, string region, string city,
