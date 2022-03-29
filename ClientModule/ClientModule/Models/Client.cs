@@ -14,7 +14,13 @@ namespace ClientModule.Models
         public List<Address> Addresses { get; set; }
 
 
-        public void MakeOrder(Order order) { }
-        public void MakeComplaint(Complaint complaint) { }
+        public void MakeOrder(Order order) 
+        {
+            throw new NotImplementedException();
+        }
+        public void MakeComplaint(Complaint complaint) 
+        {
+            throw new NotImplementedException();
+        }
     }
 }

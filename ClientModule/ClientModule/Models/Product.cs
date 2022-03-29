@@ -13,7 +13,13 @@ namespace ClientModule.Models
         public int Quantity { get; set; }
 
 
-        public int Sell(int quantity) { return 0; }
-        public Address AvailableAt(Address location) { return null; }
+        public int Sell(int quantity) 
+        {
+            throw new NotImplementedException();
+        }
+        public Address AvailableAt(Address location) 
+        {
+            throw new NotImplementedException();
+        }
     }
 }

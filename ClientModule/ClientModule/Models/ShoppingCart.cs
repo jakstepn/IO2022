@@ -10,7 +10,13 @@ namespace ClientModule.Models
         public List<Product> Products { get; set; }
 
 
-        public void AddProduct(Product product) { }
-        public void DeleteProduct(Product product) { }
+        public void AddProduct(Product product) 
+        {
+            throw new NotImplementedException();
+        }
+        public void DeleteProduct(Product product) 
+        {
+            throw new NotImplementedException();
+        }
     }
 }

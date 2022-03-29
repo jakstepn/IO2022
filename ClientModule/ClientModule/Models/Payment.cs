@@ -10,6 +10,9 @@ namespace ClientModule.Models
         public bool InAdvance { get; set; }
 
 
-        public bool Complete() { return false;  }
+        public bool Complete() 
+        {
+            throw new NotImplementedException();
+        }
     }
 }

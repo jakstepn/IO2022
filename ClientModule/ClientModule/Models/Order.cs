@@ -19,13 +19,34 @@ namespace ClientModule.Models
         public int CourierID { get; set; }
 
     
-        public bool AddProduct(Product item) { return false; }
-        public bool AddFromCart(ShoppingCart cart) { return false; }
-        public bool ApplyCoupon() { return false; }
-        public Courier FindCourier() { return new(); }
-        public DateTime EstimateDeliveryDate() { return new(); }
-        public void NotifyClient() { }
-        public Address TrackOrder(DateTime date) { return new(); }
+        public bool AddProduct(Product item) 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public bool AddFromCart(ShoppingCart cart) 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public bool ApplyCoupon() 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public Courier FindCourier() 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public DateTime EstimateDeliveryDate() 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public void NotifyClient() 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public Address TrackOrder(DateTime date) 
+        { 
+            throw new NotImplementedException();
+        }
 
     }
 }
