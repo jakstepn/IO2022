@@ -16,18 +16,13 @@ namespace ShopModule
 		public string Email { get; set; }
 		public Address Address { get; set; }
 
-		private Shop()
+		public Shop()
 		{
 			Id = -1;
 			PhoneNumber = string.Empty;
 			Email = string.Empty;
 			Address = new Address();
 		}
-
-		public static Shop Empty()
-        {
-			return new Shop();
-        }
 
 		public Shop(int id, string phone_number, string email, Address address)
         {
