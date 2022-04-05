@@ -7,7 +7,9 @@ namespace ShopModule.Orders
 	public class OrderItem
 	{
 		public int Id { get; set; }
+		[Column(TypeName = "decimal(18,4)")]
 		public decimal GrossPrice { get; set; }
+		[Column(TypeName = "decimal(18,4)")]
 		public decimal Tax { get; set; }
 		public string ProductName { get; set; }
 		public int Quantity { get; set; }
