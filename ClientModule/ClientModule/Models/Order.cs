@@ -35,25 +35,8 @@ namespace ClientModule.Database_Models
         public Courier FindCourier()
         {
             throw new NotImplementedException();
-        }
-
-    
-        public bool AddProduct(Product item) 
-        { 
-            throw new NotImplementedException(); 
-        }
-        public bool AddFromCart(ShoppingCart cart) 
-        { 
-            throw new NotImplementedException(); 
-        }
-        public bool ApplyCoupon() 
-        { 
-            throw new NotImplementedException(); 
-        }
-        public Courier FindCourier() 
-        { 
-            throw new NotImplementedException(); 
-        }
+        }    
+        
         public DateTime EstimateDeliveryDate() 
         { 
             throw new NotImplementedException(); 

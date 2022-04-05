@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DeliveryModule.Database_Models
+namespace DeliveryModule.Models
 {
     [DisplayColumn("CourierStatus")]
     public class CourierStatusClass
@@ -11,11 +11,12 @@ namespace DeliveryModule.Database_Models
         //See OnModelCreating inside ApplicationDbContext to see how it works exactly.
         public enum CourierStatusEnum
         {
-            HasOrder = 0,
-            Waiting = 1
+            Available =0,
+            Busy=1,
+            AwayFromWork=2
         }
         [Key]
-        public CourierStatusEnum OrderStatus { get; set; }
+        public CourierStatusEnum CourierStatus { get; set; }
 
     }
 }

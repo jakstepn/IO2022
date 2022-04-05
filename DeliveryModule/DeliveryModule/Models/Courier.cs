@@ -5,8 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using DeliveryModule;
+using Microsoft.AspNetCore.Identity;
 
-namespace DeliveryModule.Database_Models
+namespace DeliveryModule.Models
 {
     public class Courier
     {
@@ -15,6 +16,10 @@ namespace DeliveryModule.Database_Models
         public Order CurrentOrder { get; set; }
         public string PhoneNumber { get; set; }        
         public CourierStatusClass CurrentState { get; set; }
+        public void SendMessage(string Message)
+        {
+
+        }
     }
     
 }
