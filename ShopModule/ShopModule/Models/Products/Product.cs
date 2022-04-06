@@ -9,7 +9,9 @@ namespace ShopModule.Products
 	public class Product
 	{
 		[Key]
-		public int Id { get; set; }	
+		public int Id { get; set; }
+
+		[Column(TypeName = "decimal(18,4)")]
 		public decimal Price { get; set; }
 		public int TaxRate { get; set; }
 		public string ProductName { get; set; }
