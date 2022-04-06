@@ -14,7 +14,7 @@ namespace ShopModule.Orders
 		public OrderStatus OrderStatus { get; private set; }
 		public DateTime CreationDate { get; set; }
 		public DateTime DeliveryDate { get; set; }
-		public Address ClientAddress { get; set; }
+		//public Address ClientAddress { get; set; }
 		public string AdditionalInfo { get; set; }
 		public int ShopEmployeeId { get; set; }
 		public int ShopId { get; set; }
@@ -26,7 +26,7 @@ namespace ShopModule.Orders
 			OrderStatus = OrderStatus.Delivered;
 			CreationDate = DateTime.Now;
 			DeliveryDate = DateTime.Now;
-			ClientAddress = new Address();
+			//ClientAddress = new Address();
 			AdditionalInfo = string.Empty;
 			ShopEmployeeId = -1;
 			ShopId = -1;
@@ -37,7 +37,7 @@ namespace ShopModule.Orders
 			string additional_info = "", OrderStatus order_status = OrderStatus.WaitingForCollection)
         {
 			Id = id;
-			ClientAddress = client_address;
+			//ClientAddress = client_address;
 			DeliveryDate = delivery_date;
 			CreationDate = creation_date;
 			AdditionalInfo = additional_info;
