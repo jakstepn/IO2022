@@ -22,7 +22,7 @@ namespace Models
             orderId = order.Id;
             creationDate = order.CreationDate;
             deliveryDate = order.DeliveryDate;
-            clientAddress = order.ClientAddress;
+            //clientAddress = order.ClientAddress;
             additionalInfo = order.AdditionalInfo;
             orderStatus = order.OrderStatus;
             this.confirmedPayment = confirmedPayment;

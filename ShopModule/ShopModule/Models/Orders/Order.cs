@@ -51,9 +51,8 @@ namespace ShopModule.Orders
 		public virtual ShopEmployee ShopEmployee { get; set; }
 		[ForeignKey("ShopId")]
 		public virtual Shop Shop { get; set; }
-		public virtual ICollection<OrderItem> OrderItem { get; set; }
 		[ForeignKey("CourierId")]
 		public virtual Courier Courier { get; set; }
-
+		public virtual ICollection<OrderItem> OrderItem { get; set; }
 	}
 }
