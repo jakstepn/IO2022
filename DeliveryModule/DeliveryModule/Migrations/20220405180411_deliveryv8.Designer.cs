@@ -4,14 +4,16 @@ using DeliveryModule.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeliveryModule.Migrations
 {
     [DbContext(typeof(DeliveryModuleDbContext))]
-    partial class DeliveryModuleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220405180411_deliveryv8")]
+    partial class deliveryv8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,20 +55,6 @@ namespace DeliveryModule.Migrations
                     b.HasIndex("CurrentOrderId");
 
                     b.ToTable("Couriers");
-                });
-
-            modelBuilder.Entity("DeliveryModule.Models.Message", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("DeliveryModule.Models.Order", b =>

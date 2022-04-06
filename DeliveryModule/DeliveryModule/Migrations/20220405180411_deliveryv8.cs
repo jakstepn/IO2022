@@ -2,7 +2,7 @@
 
 namespace DeliveryModule.Migrations
 {
-    public partial class GroceriesDeliveryDBv1 : Migration
+    public partial class deliveryv8 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

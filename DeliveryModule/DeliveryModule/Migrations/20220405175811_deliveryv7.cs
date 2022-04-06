@@ -3,29 +3,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DeliveryModule.Migrations
 {
-    public partial class GroceriesDeliveryDBv4 : Migration
+    public partial class deliveryv7 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_CourierStatusClass",
-                table: "CourierStatusClass");
-
-            migrationBuilder.RenameTable(
-                name: "CourierStatusClass",
-                newName: "CouriersStatusClasses");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_CouriersStatusClasses",
-                table: "CouriersStatusClasses",
-                column: "CourierStatus");
-
             migrationBuilder.CreateTable(
                 name: "Clients",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -37,13 +23,12 @@ namespace DeliveryModule.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RequestedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MyProperty = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsPaid = table.Column<bool>(type: "bit", nullable: false),
-                    Clientid = table.Column<int>(type: "int", nullable: true)
+                    Clientid = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    OrderStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,21 +45,14 @@ namespace DeliveryModule.Migrations
                 name: "Couriers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentOrderId = table.Column<int>(type: "int", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CurrentOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CurrentStateCourierStatus = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CurrentState = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Couriers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Couriers_CouriersStatusClasses_CurrentStateCourierStatus",
-                        column: x => x.CurrentStateCourierStatus,
-                        principalTable: "CouriersStatusClasses",
-                        principalColumn: "CourierStatus",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Couriers_Orders_CurrentOrderId",
                         column: x => x.CurrentOrderId,
@@ -87,11 +65,6 @@ namespace DeliveryModule.Migrations
                 name: "IX_Couriers_CurrentOrderId",
                 table: "Couriers",
                 column: "CurrentOrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Couriers_CurrentStateCourierStatus",
-                table: "Couriers",
-                column: "CurrentStateCourierStatus");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_Clientid",
@@ -109,19 +82,6 @@ namespace DeliveryModule.Migrations
 
             migrationBuilder.DropTable(
                 name: "Clients");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_CouriersStatusClasses",
-                table: "CouriersStatusClasses");
-
-            migrationBuilder.RenameTable(
-                name: "CouriersStatusClasses",
-                newName: "CourierStatusClass");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_CourierStatusClass",
-                table: "CourierStatusClass",
-                column: "CourierStatus");
         }
     }
 }

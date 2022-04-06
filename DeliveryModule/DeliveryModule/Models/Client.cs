@@ -9,7 +9,7 @@ namespace DeliveryModule.Models
     public class Client
     {
         [Key]
-        public int id { get; set; }
+        public Guid id { get; set; }
         public string PhoneNumber { get; set; }
         public void SendMessage(string Message)
         {

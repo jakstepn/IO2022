@@ -11,31 +11,35 @@ namespace DeliveryModule.Models
     {
         
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime RequestedTime { get; set; }
-        public string MyProperty { get; set; }
         public decimal Price { get; set; }
         public bool IsPaid { get; set; }
         public Client Client { get; set; }
-        public  OrderStatusClass OrderStatus { get; set; }
-
-        public Order():base()
+        public OrderStatusEnum OrderStatus { get; set; }
+        public enum OrderStatusEnum
         {
-            OrderStatus = new OrderStatusClass();
+            Pending = 0,
+            InPreparation = 1,
+            ReadyToPickUp = 2,
+            Delivered = 3,
+            Rejected = 4
         }
 
-        public void SetOrderStatus(OrderStatusClass.OrderStatusEnum orderStatus) 
+        
+
+        public void SetOrderStatus(Order.OrderStatusEnum orderStatus) 
         {
             switch (orderStatus)
             {
-                case OrderStatusClass.OrderStatusEnum.InPreparation:
-                    OrderStatus.OrderStatus = orderStatus;
+                case Order.OrderStatusEnum.InPreparation:
+                    OrderStatus = orderStatus;
                     break;
-                case OrderStatusClass.OrderStatusEnum.ReadyToPickUp:
-                    OrderStatus.OrderStatus = orderStatus;
+                case Order.OrderStatusEnum.ReadyToPickUp:
+                    OrderStatus = orderStatus;
                     break;
-                case OrderStatusClass.OrderStatusEnum.Rejected:
-                    OrderStatus.OrderStatus = orderStatus;
+                case Order.OrderStatusEnum.Rejected:
+                    OrderStatus = orderStatus;
                     break;
                 default:
                     break;
