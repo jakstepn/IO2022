@@ -1,16 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
-namespace ClientModule.Models
+namespace ClientModule.Database_Models
 {
+    [DisplayColumn("ShoppingCart")]
     public class ShoppingCart
     {
-        public List<Product> Products { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public virtual ICollection<ShoppingCartEntry> Entries { get; set; }
 
 
-        public void AddProduct(Product product) { }
-        public void DeleteProduct(Product product) { }
+        public void AddProduct(Product product) 
+        {
+            throw new NotImplementedException();
+        }
+        public void DeleteProduct(Product product) 
+        {
+            throw new NotImplementedException();
+        }
     }
 }

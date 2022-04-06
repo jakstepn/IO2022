@@ -1,31 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace ClientModule.Models
+namespace ClientModule.Database_Models
 {
-    
+    [DisplayColumn("Order")]
+    [Index(nameof(Order.Date))]
+    [Index(nameof(Order.Status))]
     public class Order
     {
-        public enum Status { WaitingForPayment, OnTheWay, Delivered }
-
+        [Key]
+        public int Id { get; set; } 
         public decimal Price { get; set; }
-        public Payment PaymentOpt { get; set; }
+        public virtual Payment Payment { get; set; }
         public double Discount { get; set; }
         public Address DeliveryAddress { get; set; }
         public DateTime Date { get; set; }
-        public Status CurrentState { get; set; }
-        public int CourierID { get; set; }
+        
+        public OrderStatusClass Status { get; set; }
+
+        public bool AddProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
+        public bool AddFromCart(ShoppingCart shoppingCart)
+        {
+            throw new NotImplementedException();
+        }
+        public bool ApplyCoupon()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Courier FindCourier()
+        {
+            throw new NotImplementedException();
+        }
 
     
-        public bool AddProduct(Product item) { return false; }
-        public bool AddFromCart(ShoppingCart cart) { return false; }
-        public bool ApplyCoupon() { return false; }
-        public Courier FindCourier() { return new(); }
-        public DateTime EstimateDeliveryDate() { return new(); }
-        public void NotifyClient() { }
-        public Address TrackOrder(DateTime date) { return new(); }
+        public bool AddProduct(Product item) 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public bool AddFromCart(ShoppingCart cart) 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public bool ApplyCoupon() 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public Courier FindCourier() 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public DateTime EstimateDeliveryDate() 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public void NotifyClient() 
+        { 
+            throw new NotImplementedException(); 
+        }
+        public Address TrackOrder(DateTime date) 
+        { 
+            throw new NotImplementedException();
+        }
 
     }
 }

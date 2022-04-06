@@ -53,6 +53,6 @@ namespace ShopModule.Orders
 		public virtual Shop Shop { get; set; }
 		[ForeignKey("CourierId")]
 		public virtual Courier Courier { get; set; }
-		public virtual ICollection<OrderItem> OrderItem { get; set; }
+
 	}
 }

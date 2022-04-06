@@ -12,6 +12,6 @@ namespace DeliveryModule.Database_Models
         {
 
         }
-        public DbSet<DbClient> ClientTable { get; set; }
+        public DbSet<Client> ClientTable { get; set; }
     }
 }

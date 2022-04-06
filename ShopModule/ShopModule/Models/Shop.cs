@@ -37,7 +37,6 @@ namespace ShopModule
 		// Database relations
 		public virtual ICollection<ShopEmployee> ShopEmoployees { get; set; }
 		public virtual ICollection<Order> Orders { get; set; }
-
 		public virtual ICollection<Product> Products { get; set; }
 	}
 }
