@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopModule_ApiClasses\ShopModule_ApiClasses.csproj" />
-    <ProjectReference Include="..\ShopModule_UnitTests\ShopModule_UnitTests.csproj" />
   </ItemGroup>
 
 </Project>

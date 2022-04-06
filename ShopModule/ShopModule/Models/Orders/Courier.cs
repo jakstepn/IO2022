@@ -22,6 +22,7 @@ namespace ShopModule.Orders
 			FirstName = string.Empty;
 			LastName = string.Empty;
 			PhoneNumber = string.Empty;
+			CurrentState = CourierCurrentState.Away_from_work;
 		}
 
 		public Courier(int id, string email, string first_name, string last_name, string phone_number)
@@ -31,7 +32,8 @@ namespace ShopModule.Orders
 			FirstName = first_name;
 			LastName = last_name;
 			PhoneNumber = phone_number;
-        }
+			CurrentState = CourierCurrentState.Away_from_work;
+		}
 
 		public CourierCurrentState CheckCourierAvailability() => CurrentState;
 
