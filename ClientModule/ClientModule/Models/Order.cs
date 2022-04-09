@@ -35,8 +35,8 @@ namespace ClientModule.Database_Models
         public Courier FindCourier()
         {
             throw new NotImplementedException();
-        }    
-        
+        }
+
         public DateTime EstimateDeliveryDate() 
         { 
             throw new NotImplementedException(); 

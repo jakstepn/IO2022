@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using ClientModule.Database_Models;
 namespace ClientModule
 {
     public class Startup
@@ -26,7 +27,7 @@ namespace ClientModule
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<ApplicationDbContext>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
