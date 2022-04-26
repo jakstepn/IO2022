@@ -25,25 +25,45 @@ namespace DeliveryModule.Models
             Delivered = 3,
             Rejected = 4
         }
+        public Order()
+        {
 
-        
+        }
+        public Order(DeliveryModule_ApiClasses.Order ShopOrder)
+        {
+            this.Id = ShopOrder.orderId;
+            RequestedTime = ShopOrder.deliveryDate;
+            Price = ShopOrder.orderItems.Sum(x => x.grossPrice);
+            IsPaid = false;
+            switch (ShopOrder.orderStatus)
+            {
+                case DeliveryModule_ApiClasses.orderStatus.OneOfPending:
+                    SetOrderStatus(Order.OrderStatusEnum.Pending);
+                    break;
+
+                case DeliveryModule_ApiClasses.orderStatus.InPreparation:
+                    SetOrderStatus(Order.OrderStatusEnum.InPreparation);
+                    break;
+
+                case DeliveryModule_ApiClasses.orderStatus.ReadyForDelivery:
+                    SetOrderStatus(Order.OrderStatusEnum.ReadyToPickUp);
+                    break;
+
+                case DeliveryModule_ApiClasses.orderStatus.RejectedByShop:
+                case DeliveryModule_ApiClasses.orderStatus.RejectedByCustomer:
+                    SetOrderStatus(Order.OrderStatusEnum.Rejected);
+                    break;
+
+                case DeliveryModule_ApiClasses.orderStatus.PickedUpByCourier:
+                case DeliveryModule_ApiClasses.orderStatus.Delivered:
+                    SetOrderStatus(Order.OrderStatusEnum.Delivered);
+                    break;
+            }
+        }
 
         public void SetOrderStatus(Order.OrderStatusEnum orderStatus) 
         {
-            switch (orderStatus)
-            {
-                case Order.OrderStatusEnum.InPreparation:
-                    OrderStatus = orderStatus;
-                    break;
-                case Order.OrderStatusEnum.ReadyToPickUp:
-                    OrderStatus = orderStatus;
-                    break;
-                case Order.OrderStatusEnum.Rejected:
-                    OrderStatus = orderStatus;
-                    break;
-                default:
-                    break;
-            }           
+            this.OrderStatus = orderStatus;
         }
         public void PayOrder(Payment payment) { throw new NotImplementedException(); }
     }
