@@ -3,33 +3,32 @@ using Microsoft.AspNetCore.Mvc;
 
 
 using ClientModule.Database_Models;
+using ClientModule.Services;
 namespace ClientModule.Controllers
 {
     [Route("orders")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        ApplicationDbContext _context;
+        IOrderService _ordersService;
 
-        public OrdersController(ApplicationDbContext context)
+        public OrdersController(IOrderService service)
         {
-            _context = context;
+            _ordersService = service;
         }
 
         [HttpGet]
         [Route("")]
         public ActionResult GetAllCurrentOrders()
         {
-            ActionResult result = new JsonResult("Success");
-            return result;
+            return _ordersService.GetAllCurrentOrders(); ;
         }
 
         [HttpGet]
         [Route("history")]
         public ActionResult GetOrdersHistory()
         {
-            ActionResult result = new JsonResult("Success");
-            return result;
+            return _ordersService.GetOrdersHistory();
         }
 
         [HttpGet]
@@ -42,7 +41,7 @@ namespace ClientModule.Controllers
 
         [HttpPut]
         [Route("{orderId}/reject")]
-        public ActionResult RejectOrded([FromRoute] string orderId)
+        public ActionResult RejectOrder([FromRoute] string orderId)
         {
             ActionResult result = new JsonResult("Success");
             return result;

@@ -16,16 +16,16 @@ namespace ClientModule.Database_Models
         {
 
         }
-        public DbSet<Client> Clients;
-        public DbSet<Address> Addresses;
-        public DbSet<Complaint> Complaints;
-        public DbSet<ComplaintState> ComplaintStates;
-        public DbSet<Order> Orders;
-        public DbSet<OrderStatusClass> OrderStatuses;
-        public DbSet<Payment> Payments;
-        public DbSet<PaymentMethodClass> PaymentMethods;
-        public DbSet<Product> Products;
-        public DbSet<ShoppingCart> ShoppingCarts;
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Complaint> Complaints { get; set; }
+        public DbSet<ComplaintState> ComplaintStates { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderStatusClass> OrderStatuses { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentMethodClass> PaymentMethods { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

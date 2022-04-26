@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using ClientModule.Services;
 using ClientModule.Database_Models;
 namespace ClientModule
 {
@@ -33,6 +34,8 @@ namespace ClientModule
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClientModule", Version = "v1" });
             });
+
+            services.AddScoped<IOrderService, OrderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
