@@ -20,10 +20,9 @@ namespace ShopModule.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult CreateComplaintEndpoint([FromBody] Order order)
+        public IActionResult CreateComplaintEndpoint([FromBody] Complaint complaint)
         {
-            var res = _complaintService.AddComplaint(null);
-            //string res = null;
+            var res = _complaintService.AddComplaint(complaint);
             if (res != null)
             {
                 return ResponseMessage.Success(res, 201);
