@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Models.Messages;
 using ShopModule.Data;
+using ShopModule.Employees;
 using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Services;
@@ -65,12 +66,36 @@ namespace ShopModule.Controllers
             if (order != null)
             {
                 order.ChangeStatus(status);
+                if(status == OrderStatus.WaitingForCollection)
+                {
+                    ShopEmployee shopEmployee = new ShopEmployee();
+                    shopEmployee.NotifyDeliveryThatPackageIsReady(order);
+                    order.ChangeStatus(OrderStatus.WaitingForCourier);
+                }
+                if(status == OrderStatus.ParcelCollected)
+                {
+                    NotifyClientPackageCollected();
+                }
+                if(status == OrderStatus.Delivered)
+                {
+                    NotifyClientPackageDelivered();
+                }
                 return ResponseMessage.Success(order, 200);
             }
             else
             {
                 return ResponseMessage.Error("Order doesn't exist!", 404);
             }
+        }
+
+        private void NotifyClientPackageCollected()
+        {
+
+        }
+
+        private void NotifyClientPackageDelivered()
+        {
+
         }
     }
 }
