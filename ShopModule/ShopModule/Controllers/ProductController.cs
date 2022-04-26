@@ -1,95 +1,82 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopModule.Data;
+using ShopModule.Models;
 using ShopModule.Products;
+using ShopModule.Services;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace ShopModule.Controllers
 {
-    [ApiController]
     [Route("products")]
+    [ApiController]
     public class ProductController : Controller
     {
-        private readonly ShopModuleDbContext _context;
+        private readonly IProductService _service;
 
-        public ProductController(ShopModuleDbContext context)
+        public ProductController(IProductService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        [HttpGet("/products")]
-        public IActionResult GetAllProducts([FromQuery] int page, [FromRoute] int pageSize)
+        [HttpGet]
+        public IActionResult GetAllProductsEndpoint([FromQuery] int page, [FromRoute] int pageSize)
         {
-            // TODO
-            // Return paginated product list
-
-            return new JsonResult("Success!");
+            var result = _service.GetPaginatedProductList(page, pageSize);
+            return ResponseMessage.Success(result, 200);
         }
-        [HttpGet("/products")]
-        public IActionResult AddProductsToShop([FromBody] int name, [FromBody] int category,
-            [FromBody] decimal price, [FromBody] int quantity)
+        [HttpPost]
+        public IActionResult AddProductsToShopEndpoint([FromBody] Product product)
         {
-            // TODO
-            // Add product to the database
-
-            // TODO
-            // Implement Product constructor
-            Product prod = new Product();
-
-            bool addedProduct = false;
-            if (addedProduct)
+            var result = _service.AddProduct(product);
+            if (result != null)
             {
-                var res = new JsonResult("Successfully added product!");
-                res.StatusCode = 200;
-                return res;
+                return ResponseMessage.Success("Successfully added product.", 200);
             }
             else
             {
-                var res = new JsonResult("Failed to add product!");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Failed to add product", 404);
             }
         }
-        [HttpDelete("/products/{productId}")]
-        public IActionResult DeleteProduct([FromRoute] string productId)
+        [HttpDelete("{productId}")]
+        public IActionResult DeleteProductEndpoint([FromRoute] string productId)
         {
-            var prod = _context.Product.Find(productId);
+            var prod = _service.RemoveProduct(productId);
             if (prod != null)
             {
-                _context.Product.Remove(prod);
-                _context.SaveChanges();
-                var res = new JsonResult(prod);
-                res.StatusCode = 200;
-                return res;
+                return ResponseMessage.Success(prod, 200);
             }
             else
             {
-                var res = new JsonResult("Product not found.");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Product not found", 404);
             }
         }
-        [HttpGet("/products/{productId}")]
-        public IActionResult GetProductInfo([FromRoute] string productId)
+        [HttpGet("{productId}")]
+        public IActionResult GetProductInfoEndpoint([FromRoute] string productId)
         {
-            var prod = _context.Product.Find(productId);
+            var prod = _service.FindProduct(productId);
             if (prod != null)
             {
-                var res = new JsonResult(prod);
-                res.StatusCode = 200;
-                return res;
+                return ResponseMessage.Success(prod, 200);
             }
             else
             {
-                var res = new JsonResult("Product not found.");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Product not found.", 404);
             }
         }
-        [HttpGet("/products/{category}")]
-        public IActionResult GetProductsFromCategory([FromRoute] string category, [FromQuery] int page, [FromRoute] int pageSize)
+        [HttpGet("{category}")]
+        public IActionResult GetProductsFromCategoryEndpoint([FromRoute] string category,
+            [FromQuery] int page, [FromRoute] int pageSize)
         {
-            // TODO
-            // Return paginated product list from a category
-
-            return new JsonResult("Success!");
+            var result = _service.GetPaginatedProductListFromCategory(page, pageSize, category);
+            if (result != null)
+            {
+                return ResponseMessage.Success(result, 200);
+            }
+            else
+            {
+                return ResponseMessage.Error("Category not found.", 404);
+            }
         }
     }
 }

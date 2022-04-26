@@ -1,98 +1,77 @@
 using Complaints;
 using Microsoft.AspNetCore.Mvc;
 using ShopModule.Data;
+using ShopModule.Messages;
+using ShopModule.Models;
+using ShopModule.Orders;
+using ShopModule.Services;
 using System.Collections.Generic;
 namespace ShopModule.Controllers
 {
-    [ApiController]
     [Route("complaints")]
+    [ApiController]
     public class ComplaintController : Controller
     {
-        private readonly ShopModuleDbContext _context;
+        private readonly IComplaintService _complaintService;
 
-        public ComplaintController(ShopModuleDbContext context)
+        public ComplaintController(IComplaintService complaintService)
         {
-            _context = context;
+            _complaintService = complaintService;
         }
 
-        [HttpGet("/complaints/create")]
-        public IActionResult CreateComplaint([FromBody] Complaint complaint)
+        [HttpPost("create")]
+        public IActionResult CreateComplaintEndpoint([FromBody] Order order)
         {
-            // TODO
-            // Add a complaint to the database
-
-            bool addedComplaint = false;
-            if (addedComplaint)
+            var res = _complaintService.AddComplaint(null);
+            //string res = null;
+            if (res != null)
             {
-                var res = new JsonResult(complaint);
-                res.StatusCode = 201;
-                return res;
+                return ResponseMessage.Success(res, 201);
             }
             else
             {
-                var res = new JsonResult("Failed to make a complaint");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Failed to make a complaint", 404);
             }
         }
-        [HttpGet("/complaints/pending/{shopId}")]
-        public IActionResult GetPendingComplaints([FromRoute] int shopId)
-        {
-            var shop = _context.Shop.Find(shopId);
-            if (shop != null)
-            {
-                // TODO
-                // create an array of complaints
 
-                var arr = new List<string>();
-                var res = new JsonResult(arr);
-                res.StatusCode = 200;
-                return res;
+        [HttpGet("pending/{shopId}")]
+        public IActionResult GetPendingComplaintsEndpoint()
+        {
+            var pending = _complaintService.PendingComplaints();
+            if (pending.Count > 0)
+            {
+                return ResponseMessage.Success(pending, 200);
             }
             else
             {
-                var res = new JsonResult("Failed to get pending complaints");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Failed to get pending complaints", 404);
             }
         }
-        [HttpPut("/complaints/{complaintID}/accept")]
-        public IActionResult AccepComplaint([FromRoute] string complaintId)
+        [HttpPut("{complaintID}/accept")]
+        public IActionResult AcceptComplaintEndpoint([FromRoute] string complaintId)
         {
-            // TODO
-            // Accept Complaint
-
-            var res = new JsonResult("");
-            if (complaintId != string.Empty)
+            var accepted = _complaintService.AcceptComplaint(complaintId);
+            if (accepted != null)
             {
-                res.Value = "Accepted complaint!";
-                res.StatusCode = 200;
+                return ResponseMessage.Success("Accepted complaint.", 200);
             }
             else
             {
-                res.Value = "Complaint not found!";
-                res.StatusCode = 404;
+                return ResponseMessage.Error("Complaint not found.", 404);
             }
-            return res;
         }
-        [HttpPut("/complaints/{complaintId}/reject")]
-        public IActionResult RejectComplaint([FromRoute] string complaintId)
+        [HttpPut("{complaintId}/reject")]
+        public IActionResult RejectComplaintEndpoint([FromRoute] string complaintId)
         {
-            // TODO
-            // Reject Complaint
-
-            var res = new JsonResult("");
-            if (complaintId != string.Empty)
+            var rejected = _complaintService.RejectComplaint(complaintId);
+            if (rejected != null)
             {
-                res.Value = "Rejected complaint!";
-                res.StatusCode = 200;
+                return ResponseMessage.Success("Rejected complaint!", 200);
             }
             else
             {
-                res.Value = "Complaint not found!";
-                res.StatusCode = 404;
+                return ResponseMessage.Error("Complaint not found.", 404);
             }
-            return res;
-        }
+        }   
     }
 }

@@ -1,14 +1,14 @@
+using ShopModule.Complaints;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Complaints
 {
     public class Complaint
     {
-        public Complaint()
-        {
-        }
-        public int Id { get; set; }
+        [Key]
+        public string Id { get; set; }
         public string Text { get; set; }
-        public virtual Complaint ComplaintFK { get; set; }
+        public CurrentState CurrentStatus { get; set; }
     }
 }

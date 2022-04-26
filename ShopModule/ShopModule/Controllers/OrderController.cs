@@ -1,105 +1,75 @@
 using Microsoft.AspNetCore.Mvc;
+using Models.Messages;
 using ShopModule.Data;
+using ShopModule.Models;
 using ShopModule.Orders;
+using ShopModule.Services;
+using System.Collections.Generic;
+
 namespace ShopModule.Controllers
 {
-    [ApiController]
     [Route("orders")]
-    public class OverController : Controller
+    [ApiController]
+    public class OrderController : Controller
     {
-        private readonly ShopModuleDbContext _context;
+        private readonly IOrderService _orderService;
 
-        public OverController(ShopModuleDbContext context)
+        public OrderController(IOrderService orderService)
         {
-            _context = context;
+            _orderService = orderService;
         }
-        [HttpPost("/orders/place")]
-        public IActionResult PlaceOrder([FromBody] OrderItem item)
+
+        [HttpPost("place")]
+        public IActionResult PlaceOrder([FromBody] OrderMessage message)
         {
-            bool orderCreated = false;
-
-            // Adding an OrderItem to the database
-            _context.OrderItem.Add(item);
-            if(_context.SaveChanges() == 1)
+            if (_orderService.AddOrderItems(message.orderItems) != null)
             {
-                orderCreated = true;
-            }
-
-            if (orderCreated)
-            {
-                var res = new JsonResult(item);
-                res.StatusCode = 201;
-                return res;
+                return ResponseMessage.Success(message, 201);
             }
             else
             {
-                var res = new JsonResult("Failed to create an order");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Failed to create order", 404);
             }
         }
 
-        [HttpGet("/orders/pending/{shopId}")]
-        public IActionResult GetPendingOrdersAssignedToShop([FromRoute] int shopID)
+        [HttpGet("pending/{shopId}")]
+        public IActionResult GetPendingOrdersAssignedToShop([FromRoute] string shopID)
         {
-            Shop shop = _context.Shop.Find(shopID);
-            Order pending = null;
-
-            if (shop != null)
+            var pending = _orderService.FindPendingOrders();
+            if (pending.Count > 0)
             {
-                foreach (var order in shop.Orders)
-                {
-                    if(order.OrderStatus == Orders.OrderStatus.WaitingForCollection)
-                    {
-                        pending = order;
-                        break;
-                    }
-                }
-                var res = pending != null ? new JsonResult(pending) :
-                    new JsonResult("No pending order found!");
-                res.StatusCode = 200;
-                return res;
+                return ResponseMessage.Success(pending, 200);
             }
             else
             {
-                var res = new JsonResult("Failed to find a shop!");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Failed to get pending orders", 404);
             }
         }
-        [HttpGet("/orders/{orderId}")]
-        public IActionResult GetChosenOrder([FromRoute] int orderId)
+        [HttpGet("{orderId}")]
+        public IActionResult GetChosenOrder([FromRoute] string orderId)
         {
-            Order order = _context.Order.Find(orderId);
+            Order order = _orderService.FindOrder(orderId);
             if (order != null)
             {
-                var res = new JsonResult(order);
-                res.StatusCode = 200;
-                return res;
+                return ResponseMessage.Success(order, 200);
             }
             else
             {
-                var res = new JsonResult("Failed to get this order!");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Failed to get this order.", 404);
             }
         }
-        [HttpPost("/orders/{orderId}")]
-        public IActionResult SetChosenOrder([FromRoute] int orderId)
+        [HttpPost("{orderId}")]
+        public IActionResult SetChosenOrder([FromRoute] string orderId, [FromBody] OrderStatus status)
         {
-            bool set = false;
-            Order order = _context.Order.Find(orderId);
-            if (set)
+            Order order = _orderService.FindOrder(orderId);
+            if (order != null)
             {
-                var res = new JsonResult("Successfully set order status!");
-                res.StatusCode = 200;
-                return res;
+                order.ChangeStatus(status);
+                return ResponseMessage.Success(order, 200);
             }
             else
             {
-                var res = new JsonResult("Order doesn't exist!");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Order doesn't exist!", 404);
             }
         }
     }

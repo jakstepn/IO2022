@@ -10,6 +10,7 @@ namespace ShopModule.Orders
 		OnTheWay,
 		RejectedByShop,
 		RejectedByCustomer,
-		Delivered
+		Delivered,
+		Pending
 	}
 }
