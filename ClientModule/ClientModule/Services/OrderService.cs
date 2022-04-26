@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ClientModule.Database_Models;
+using System.Linq;
+
+using ClientModule_ApiClasses.OrdersModule;
 
 namespace ClientModule.Services
 {
@@ -7,10 +10,12 @@ namespace ClientModule.Services
     {
         public ActionResult GetAllCurrentOrders();
         public ActionResult GetOrdersHistory();
-        public ActionResult RejectOrder();
-        public ActionResult UpdatePaymentStatus();
+        public ActionResult GetChosenOrder(string orderId);
+        public ActionResult RejectOrder(string orderId);
+        public ActionResult UpdatePaymentStatus(string orderId);
 
     }
+
     public class OrderService: IOrderService
     {
         ApplicationDbContext _context;
@@ -21,22 +26,32 @@ namespace ClientModule.Services
 
         public ActionResult GetAllCurrentOrders()
         {
-            throw new System.NotImplementedException();
+            GetAllCurrentOrdersResponse response = new();
+            return new JsonResult(response);
         }
 
         public ActionResult GetOrdersHistory()
         {
-            throw new System.NotImplementedException();
+            GetOrdersHistoryResponse response = new();
+            return new JsonResult(response);
         }
 
-        public ActionResult RejectOrder()
+        public ActionResult GetChosenOrder(string orderId)
         {
-            throw new System.NotImplementedException();
+            GetChosenOrderReponse response = new();
+            return new JsonResult(response);
         }
 
-        public ActionResult UpdatePaymentStatus()
+        public ActionResult RejectOrder(string orderId)
         {
-            throw new System.NotImplementedException();
+            RejectOrderResponse response = new();
+            return new JsonResult(response);
+        }
+
+        public ActionResult UpdatePaymentStatus(string orderId)
+        {
+            UpdatePaymentStatusResponse response = new();
+            return new JsonResult(response);
         }
     }
 }

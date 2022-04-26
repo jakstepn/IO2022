@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 using ClientModule.Database_Models;
-using ClientModule.Services;
+using ClientModule.Services;`
 namespace ClientModule.Controllers
 {
     [Route("orders")]
@@ -35,24 +35,21 @@ namespace ClientModule.Controllers
         [Route("{orderId}")]
         public ActionResult GetChosenOrder([FromRoute] string orderId)
         {
-            ActionResult result = new JsonResult("Success");
-            return result;
+            return _ordersService.GetChosenOrder(orderId);
         }
 
         [HttpPut]
         [Route("{orderId}/reject")]
         public ActionResult RejectOrder([FromRoute] string orderId)
         {
-            ActionResult result = new JsonResult("Success");
-            return result;
+            return _ordersService.RejectOrder(orderId);
         }
 
         [HttpPut]
         [Route("{orderId}/payment")]
         public ActionResult UpdatePaymentStatus([FromRoute] string orderId)
         {
-            ActionResult result = new JsonResult("Success");
-            return result;
+            return _ordersService.UpdatePaymentStatus(orderId);
         }
     }
 }
