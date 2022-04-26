@@ -7,7 +7,7 @@ namespace ShopModule.Messages
     {
         public string complaintId { get; set; }
         public string orderId { get; set; }
-        public CurrentState status { get; set; }
+        public CurrentComplaintState status { get; set; }
         public string text { get; set; }
 
         public ComplaintMessage()

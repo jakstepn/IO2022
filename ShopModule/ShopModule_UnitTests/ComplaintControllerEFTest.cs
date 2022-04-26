@@ -27,7 +27,7 @@ namespace ShopModule_UnitTests
 
             var service = new ComplaintService(mockContext.Object);
 
-            var testComplaint = new Complaint { CurrentStatus = CurrentState.Pending,
+            var testComplaint = new Complaint { CurrentStatus = CurrentComplaintState.Pending,
                                                 Id = "1", Text="testcomplaint" };
 
             service.AddComplaint(testComplaint);
@@ -47,21 +47,21 @@ namespace ShopModule_UnitTests
 
             var testComplaint1 = new Complaint
             {
-                CurrentStatus = CurrentState.Accepted,
+                CurrentStatus = CurrentComplaintState.Accepted,
                 Id = "1",
                 Text = "testcomplaint"
             };
 
             var testComplaint2 = new Complaint
             {
-                CurrentStatus = CurrentState.Pending,
+                CurrentStatus = CurrentComplaintState.Pending,
                 Id = "2",
                 Text = "testcomplaint"
             };
 
             var testComplaint3 = new Complaint
             {
-                CurrentStatus = CurrentState.Rejected,
+                CurrentStatus = CurrentComplaintState.Rejected,
                 Id = "3",
                 Text = "testcomplaint"
             };
@@ -87,14 +87,14 @@ namespace ShopModule_UnitTests
 
             var testComplaint = new Complaint
             {
-                CurrentStatus = CurrentState.Pending,
+                CurrentStatus = CurrentComplaintState.Pending,
                 Id = "1",
                 Text = "testcomplaint"
             };
 
             service.AddComplaint(testComplaint);
             var complaint = service.AcceptComplaint(testComplaint.Id);
-            Assert.Equal(CurrentState.Accepted, complaint.CurrentStatus);
+            Assert.Equal(CurrentComplaintState.Accepted, complaint.CurrentStatus);
         }
 
         [Fact]
@@ -109,14 +109,14 @@ namespace ShopModule_UnitTests
 
             var testComplaint = new Complaint
             {
-                CurrentStatus = CurrentState.Pending,
+                CurrentStatus = CurrentComplaintState.Pending,
                 Id = "1",
                 Text = "testcomplaint"
             };
 
             service.AddComplaint(testComplaint);
             var complaint = service.RejectComplaint(testComplaint.Id);
-            Assert.Equal(CurrentState.Rejected, complaint.CurrentStatus);
+            Assert.Equal(CurrentComplaintState.Rejected, complaint.CurrentStatus);
         }
     }
 }

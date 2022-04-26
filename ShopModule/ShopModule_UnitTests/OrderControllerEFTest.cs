@@ -46,11 +46,11 @@ namespace ShopModule_UnitTests
             var service = new OrderService(mockContext.Object);
 
             var testItem1 = new OrderItem { GrossPrice = 10, OrderFK = "1",
-                ProductId = "1", ProductName = "test", Quantity = 0, Tax = 0 };
+                ProductFK = "1", ProductName = "test", Quantity = 0, Tax = 0 };
             var testItem2 = new OrderItem { GrossPrice = 50, OrderFK = "1",
-                ProductId = "2", ProductName = "test1", Quantity = 1, Tax = 0 };
+                ProductFK = "2", ProductName = "test1", Quantity = 1, Tax = 0 };
             var testItem3 = new OrderItem { GrossPrice = 60, OrderFK = "2",
-                ProductId = "3", ProductName = "test2", Quantity = 2, Tax = 1 };
+                ProductFK = "3", ProductName = "test2", Quantity = 2, Tax = 1 };
 
             service.AddOrderItems(new OrderItem[] { testItem1, testItem2, testItem3 });
             mockOrderItemSet.Verify(m => m.Add(It.IsAny<OrderItem>()), Times.Exactly(3));

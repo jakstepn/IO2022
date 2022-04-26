@@ -24,7 +24,7 @@ namespace ShopModule_UnitTests
                     Country = "nocountry",
                     Region = "noregion",
                     Street = "nostreet",
-                    StreetNumber = 0,
+                    StreetNumber = "0",
                     ZipCode = "nozipcode"
                 },
                 Email = "noemail",
@@ -38,7 +38,7 @@ namespace ShopModule_UnitTests
                 Available = true,
                 Price = 10,
                 ProductName = "testname",
-                ShopFK = 0,
+                ShopFK = "0",
                 TaxRate = 1
             };
             sm.AddProduct(s, p);
@@ -58,7 +58,7 @@ namespace ShopModule_UnitTests
                     Country = "nocountry",
                     Region = "noregion",
                     Street = "nostreet",
-                    StreetNumber = 0,
+                    StreetNumber = "0",
                     ZipCode = "nozipcode"
                 },
                 Email = "noemail",
@@ -72,7 +72,7 @@ namespace ShopModule_UnitTests
                 Available = true,
                 Price = 10,
                 ProductName = "testname",
-                ShopFK = 0,
+                ShopFK = "0",
                 TaxRate = 1
             };
             sm.AddProduct(s, p);

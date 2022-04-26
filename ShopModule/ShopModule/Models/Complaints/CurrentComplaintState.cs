@@ -1,6 +1,6 @@
 ﻿namespace ShopModule.Complaints
 {
-    public enum CurrentState
+    public enum CurrentComplaintState
     {
         Rejected, Accepted, Pending
     }

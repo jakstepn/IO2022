@@ -40,7 +40,7 @@ namespace ShopModule.Services
             List<Complaint> res = new List<Complaint>();
             foreach (var complaint in _context.Complaints)
             {
-                if (complaint.CurrentStatus == Complaints.CurrentState.Pending)
+                if (complaint.CurrentStatus == Complaints.CurrentComplaintState.Pending)
                 {
                     res.Add(complaint);
                 }
@@ -55,7 +55,7 @@ namespace ShopModule.Services
         /// <returns>Returns found Complaint object or null if such doesn't exist</returns>
         public Complaint AcceptComplaint(string complaintId)
         {
-            return ChangeState(complaintId, Complaints.CurrentState.Accepted);
+            return ChangeState(complaintId, Complaints.CurrentComplaintState.Accepted);
         }
 
         /// <summary>
@@ -65,10 +65,10 @@ namespace ShopModule.Services
         /// <returns>Returns found Complaint object or null if such doesn't exist</returns>
         public Complaint RejectComplaint(string complaintId)
         {
-            return ChangeState(complaintId, Complaints.CurrentState.Rejected);
+            return ChangeState(complaintId, Complaints.CurrentComplaintState.Rejected);
         }
 
-        private Complaint ChangeState(string complaintId, Complaints.CurrentState state)
+        private Complaint ChangeState(string complaintId, Complaints.CurrentComplaintState state)
         {
             var res = _context.Complaints.Find(complaintId);
             if (res != null)

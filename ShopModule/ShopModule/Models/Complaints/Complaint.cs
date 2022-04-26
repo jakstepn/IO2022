@@ -9,6 +9,6 @@ namespace Complaints
         [Key]
         public string Id { get; set; }
         public string Text { get; set; }
-        public CurrentState CurrentStatus { get; set; }
+        public CurrentComplaintState CurrentStatus { get; set; }
     }
 }
