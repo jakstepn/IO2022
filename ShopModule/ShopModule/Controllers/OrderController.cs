@@ -25,11 +25,16 @@ namespace ShopModule.Controllers
         {
             int len = message.orderItems.Length;
             OrderItem[] items = new OrderItem[len];
+            bool allItemsExist = true;
             for (int i = 0; i < len; i++)
             {
                 items[i] = new OrderItem(message.orderItems[i]);
+                if(!(allItemsExist = items[i].Product.Available))
+                {
+                    break;
+                }
             }
-            if (_orderService.AddOrderItems(items) != null)
+            if (allItemsExist && _orderService.AddOrderItems(items) != null)
             {
                 return ResponseMessage.Success(message, 201);
             }
