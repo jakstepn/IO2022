@@ -4,13 +4,11 @@ using ShopModule.Models;
 using ShopModule.Products;
 using ShopModule.Services;
 using ShopModule_ApiClasses.Messages;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ShopModule.Controllers
 {
-    [Route("products")]
     [ApiController]
+    [Route("products")]
     public class ProductController : Controller
     {
         private readonly IProductService _service;

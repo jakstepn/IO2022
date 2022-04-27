@@ -1,5 +1,6 @@
 ﻿using ShopModule.Data;
 using ShopModule.Orders;
+using ShopModule.Products;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,7 +13,9 @@ namespace ShopModule.Services
         OrderItem AddOrderItem(OrderItem item);
         Order AddOrder(Order order);
         List<Order> FindPendingOrders();
-        public Order RemoveOrder(string orderId);
+        Order RemoveOrder(string orderId);
+        int GetProductQuantity(string productId);
+        Product GetProduct(string productId);
     }
     public class OrderService : IOrderService
     {
@@ -46,7 +49,7 @@ namespace ShopModule.Services
             bool saved = _context.SaveChanges() == items.Length;
             return saved ? items : null;
         }
-        
+
         /// <summary>
         /// Add order item to the database
         /// </summary>
@@ -76,7 +79,7 @@ namespace ShopModule.Services
         /// </summary>
         /// <returns>Returns an array of Orders</returns>
         public List<Order> FindPendingOrders()
-        { 
+        {
             return _context.Orders.Where(x => x.OrderStatus == OrderStatus.Pending).ToList();
         }
 
@@ -88,11 +91,37 @@ namespace ShopModule.Services
         public Order RemoveOrder(string orderId)
         {
             var res = _context.Orders.Find(orderId);
-            if(res != null)
+            if (res != null)
             {
                 _context.Orders.Remove(res);
             }
             return res;
+        }
+
+        /// <summary>
+        /// Get quantity of a product.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns>Returns >=0 if product exists, else -1</returns>
+        public int GetProductQuantity(string productId)
+        {
+            int quantity = -1;
+            var product = _context.Products.Find(productId);
+            if (product != null)
+            {
+                quantity = product.Quantity;
+            }
+            return quantity;
+        }
+
+        /// <summary>
+        /// Get product from a database
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns>Rerurns product if exists, else null</returns>
+        public Product GetProduct(string productId)
+        {
+            return _context.Products.Find(productId);
         }
     }
 }
