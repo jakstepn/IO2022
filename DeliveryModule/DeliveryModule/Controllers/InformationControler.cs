@@ -12,13 +12,10 @@ namespace DeliveryModule.Controllers
         public InformationControler(DeliveryModuleDbContext context)
         {
             _context = context;
-
         }
         [HttpGet("status/{courierId}")]
         public IActionResult CourierStatus([FromRoute] Guid courierId)
         {
-            
-
             var res = new JsonResult("");
             var courier = _context.Couriers.Find(courierId);
             if (courier == null)

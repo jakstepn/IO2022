@@ -3,16 +3,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DeliveryModule.Models
 {
-    public class Shop
+    public static class Shop
     {
-        [Key]
-        public Guid Id { get; set; }
-        public Order? QueryShopForOrder(Shop shop) { throw new NotImplementedException(); }
-        public void DeclareAvailability(Courier courier) 
+        public static Order? QueryShopForOrder() 
         {
-            
+            return new Order();
         }
-        public void TransferOrderToAnotherCourier(Order order) { throw new NotImplementedException(); } 
+        public static void DeclareAvailability(Courier courier) 
+        {
+            courier.CurrentState = Courier.CourierStatusEnum.Available;
+        }
+        public static void TransferOrderToAnotherCourier(Courier owner, Courier destination) 
+        {
+            destination.CurrentOrder = owner.CurrentOrder;
+            owner.CurrentOrder = null;
+            DeclareAvailability(owner);
+            destination.CurrentState = Courier.CourierStatusEnum.Busy;
+        } 
 
     }
 }
