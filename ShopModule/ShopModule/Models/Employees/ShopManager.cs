@@ -13,9 +13,9 @@ namespace ShopModule.Employees
 		{
 		}
 
-		public void AddProduct(Shop shop, Product product) { }
-		public void DeleteProduct(Shop shop, Product product) { }
-		public void AddShop(Shop shop, Product product) { }
+		public void AddProduct(Shop shop, Product product) { shop.Products.Add(product); }
+		public void DeleteProduct(Shop shop, Product product) { shop.Products.Remove(product); }
+		public void AddShop(Shop shop, Product product) { shop.Products.Add(product); }
 		public void DeleteShop(Shop shop) { }
 		public List<Order> GetOrdersHistory(Shop shop) { return null; }
 	}
