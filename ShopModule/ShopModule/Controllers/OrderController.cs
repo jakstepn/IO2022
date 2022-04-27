@@ -29,17 +29,25 @@ namespace ShopModule.Controllers
             for (int i = 0; i < len; i++)
             {
                 items[i] = new OrderItem(message.orderItems[i]);
-                if(!(allItemsExist = items[i].Product.Available))
+                if (!(allItemsExist = items[i].Product.Available))
                 {
                     break;
                 }
             }
-            if (allItemsExist && _orderService.AddOrderItems(items) != null)
+            Order changeStatus()
+            {
+                var order = new Order(message);
+                order.OrderStatus = OrderStatus.Pending;
+                return order;
+            }
+            if (allItemsExist && _orderService.AddOrder(changeStatus()) != null &&
+                _orderService.AddOrderItems(items) != null)
             {
                 return ResponseMessage.Success(message, 201);
             }
             else
             {
+                _orderService.RemoveOrder(message.orderId);
                 return ResponseMessage.Error("Failed to create order", 404);
             }
         }
@@ -83,17 +91,17 @@ namespace ShopModule.Controllers
             if (order != null)
             {
                 order.ChangeStatus(status);
-                if(status == OrderStatus.WaitingForCollection)
+                if (status == OrderStatus.WaitingForCollection)
                 {
                     ShopEmployee shopEmployee = new ShopEmployee();
                     shopEmployee.NotifyDeliveryThatPackageIsReady(order);
                     order.ChangeStatus(OrderStatus.WaitingForCourier);
                 }
-                if(status == OrderStatus.ParcelCollected)
+                if (status == OrderStatus.ParcelCollected)
                 {
                     NotifyClientPackageCollected();
                 }
-                if(status == OrderStatus.Delivered)
+                if (status == OrderStatus.Delivered)
                 {
                     NotifyClientPackageDelivered();
                 }

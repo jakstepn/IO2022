@@ -82,6 +82,12 @@ namespace ShopModule.Services
                 return null;
             }
         }
+
+        /// <summary>
+        /// Get a complaint from a database
+        /// </summary>
+        /// <param name="complaintId"></param>
+        /// <returns>Returns complaint on success and null on failure</returns>
         public Complaint GetComplaint(string complaintId)
         {
             return _context.Complaints.Find(complaintId);

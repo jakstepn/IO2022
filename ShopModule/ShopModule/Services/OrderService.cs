@@ -12,6 +12,7 @@ namespace ShopModule.Services
         OrderItem AddOrderItem(OrderItem item);
         Order AddOrder(Order order);
         List<Order> FindPendingOrders();
+        public Order RemoveOrder(string orderId);
     }
     public class OrderService : IOrderService
     {
@@ -77,6 +78,21 @@ namespace ShopModule.Services
         public List<Order> FindPendingOrders()
         { 
             return _context.Orders.Where(x => x.OrderStatus == OrderStatus.Pending).ToList();
+        }
+
+        /// <summary>
+        /// Remove an order from the database
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns>Reurn removed order on succes, null if such doesn't exist</returns>
+        public Order RemoveOrder(string orderId)
+        {
+            var res = _context.Orders.Find(orderId);
+            if(res != null)
+            {
+                _context.Orders.Remove(res);
+            }
+            return res;
         }
     }
 }
