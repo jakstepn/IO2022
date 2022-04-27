@@ -30,7 +30,7 @@ namespace ShopModule.Controllers
             {
                 items[i] = new OrderItem(message.orderItems[i]);
                 if (!(allItemsExist = items[i].Product.Available) &&
-                    !(allItemsExist = items[i].Product.Quantity-items[i].Quantity < 0))
+                    !(allItemsExist = items[i].Product.Quantity-items[i].Quantity >= 0))
                 {
                     break;
                 }
