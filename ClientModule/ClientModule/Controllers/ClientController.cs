@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ClientModule.Database_Models;
+using ClientModule.Data;
+
 using System.Linq;
 namespace ClientModule.Controllers
 {

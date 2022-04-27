@@ -11,9 +11,15 @@ namespace ClientModule.Database_Models
         //See OnModelCreating inside ApplicationDbContext to see how it works exactly.
         public enum OrderStatusEnum
         {
-            WaitingForPayment = 0,
-            OnTheWay = 1,
-            Delivered = 2
+            Pending = 0,
+            InPreparation,
+            ReadyForDelivery,
+            PickedUpByCourier,
+            RejectedByShop,
+            RejectedByCustomer,
+            Delivered,
+            WaitingForPayment,
+            OnTheWay
         }
         [Key]
         public OrderStatusEnum OrderStatus { get; set; }

@@ -8,5 +8,6 @@ namespace ClientModule_ApiClasses.OrdersModule
 {
     public class UpdatePaymentStatusResponse
     {
+        public bool success { get; set; }
     }
 }

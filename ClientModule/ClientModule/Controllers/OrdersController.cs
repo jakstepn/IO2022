@@ -21,35 +21,36 @@ namespace ClientModule.Controllers
         [Route("")]
         public ActionResult GetAllCurrentOrders()
         {
-            return _ordersService.GetAllCurrentOrders(); ;
+            var orders = _ordersService.GetAllCurrentOrders();
+            return new JsonResult(orders);
         }
 
         [HttpGet]
         [Route("history")]
         public ActionResult GetOrdersHistory()
         {
-            return _ordersService.GetOrdersHistory();
+            return new JsonResult(_ordersService.GetOrdersHistory());
         }
 
         [HttpGet]
         [Route("{orderId}")]
         public ActionResult GetChosenOrder([FromRoute] string orderId)
         {
-            return _ordersService.GetChosenOrder(orderId);
+            return new JsonResult(_ordersService.GetChosenOrder(orderId));
         }
 
         [HttpPut]
         [Route("{orderId}/reject")]
         public ActionResult RejectOrder([FromRoute] string orderId)
         {
-            return _ordersService.RejectOrder(orderId);
+            return new JsonResult(_ordersService.RejectOrder(orderId));
         }
 
         [HttpPut]
         [Route("{orderId}/payment")]
         public ActionResult UpdatePaymentStatus([FromRoute] string orderId)
         {
-            return _ordersService.UpdatePaymentStatus(orderId);
+            return new JsonResult(_ordersService.UpdatePaymentStatus(orderId));
         }
     }
 }

@@ -8,5 +8,6 @@ namespace ClientModule_ApiClasses.OrdersModule
 {
     public class RejectOrderResponse
     {
+        public ResponseOrderStatus orderStatus { get; set; }
     }
 }
