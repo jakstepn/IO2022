@@ -19,6 +19,20 @@ namespace ShopModule.Controllers
             _complaintService = complaintService;
         }
 
+        [HttpGet("{complaintId}")]
+        public IActionResult GetChosenComplaint([FromBody] string complaintId)
+        {
+            var res = _complaintService.GetComplaint(complaintId);
+            if (res != null)
+            {
+                return ResponseMessage.Success(res, 200);
+            }
+            else
+            {
+                return ResponseMessage.Error("Failed to make a complaint", 404);
+            }
+        }
+
         [HttpPost("create")]
         public IActionResult CreateComplaintEndpoint([FromBody] ComplaintMessage complaint)
         {
@@ -46,7 +60,7 @@ namespace ShopModule.Controllers
                 return ResponseMessage.Error("Failed to get pending complaints", 404);
             }
         }
-        [HttpPut("{complaintID}/accept")]
+        [HttpPut("{complaintId}/accept")]
         public IActionResult AcceptComplaintEndpoint([FromRoute] string complaintId)
         {
             var accepted = _complaintService.AcceptComplaint(complaintId);
@@ -78,17 +92,17 @@ namespace ShopModule.Controllers
 
         private void NotifyClientReject()
         {
-
+            // Send an email to the client
         }
 
         private void NotifyClientAccept()
         {
-
+            // Send an email to the client
         }
 
         private void Refund()
         {
-
+            // Send a notification to the payment service
         }
     }
 }

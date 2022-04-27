@@ -10,6 +10,7 @@ namespace ShopModule.Services
         Complaint AcceptComplaint(string complaintId);
         Complaint RejectComplaint(string complaintId);
         List<Complaint> PendingComplaints();
+        Complaint GetComplaint(string complaintId);
 
     }
     public class ComplaintService : IComplaintService
@@ -80,6 +81,10 @@ namespace ShopModule.Services
             {
                 return null;
             }
+        }
+        public Complaint GetComplaint(string complaintId)
+        {
+            return _context.Complaints.Find(complaintId);
         }
     }
 }

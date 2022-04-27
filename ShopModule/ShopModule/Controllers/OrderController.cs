@@ -65,7 +65,13 @@ namespace ShopModule.Controllers
                 return ResponseMessage.Error("Failed to get this order.", 404);
             }
         }
-        [HttpPost("{orderId}")]
+        /// <summary>
+        /// Set status for a chosen order
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        [HttpPut("{orderId}")]
         public IActionResult SetChosenOrder([FromRoute] string orderId, [FromBody] OrderStatus status)
         {
             Order order = _orderService.FindOrder(orderId);
