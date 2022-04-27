@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopModule.Data;
+using ShopModule.Models;
 using ShopModule.Products;
+using ShopModule.Services;
+using ShopModule_ApiClasses.Messages;
+
 namespace ShopModule.Controllers
 {
     [ApiController]
