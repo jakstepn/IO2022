@@ -1,4 +1,5 @@
 ﻿using ShopModule.Orders;
+using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +33,13 @@ namespace ShopModule.Location
 			StreetNumber = street_number;
 			ZipCode = zip_code;
 			Country	= country;
+        }
+
+		public Address(AddressMessage message)
+        {
+			City = message.city;
+			Street = message.street;
+			ZipCode = message.zipCode;
         }
 	}
 }

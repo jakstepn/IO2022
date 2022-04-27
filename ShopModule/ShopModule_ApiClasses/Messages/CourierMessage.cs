@@ -1,4 +1,4 @@
-﻿namespace ShopModule.Models.Messages
+﻿namespace ShopModule_ApiClasses.Messages
 {
     public class CourierMessage
     {

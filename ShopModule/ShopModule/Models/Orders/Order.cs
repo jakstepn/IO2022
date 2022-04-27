@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Models;
-using Models.Messages;
 using ShopModule.Employees;
 using ShopModule.Location;
+using ShopModule_ApiClasses.Messages;
 
 namespace ShopModule.Orders
 {
@@ -18,6 +17,7 @@ namespace ShopModule.Orders
 		public DateTime DeliveryDate { get; set; }
 		public Address ClientAddress { get; set; }
 		public string AdditionalInfo { get; set; }
+		public bool ConfirmedPayment { get; set; }
 
 		public virtual Shop Shop { get; set; }
 		public virtual Courier Courier { get; set; }
@@ -40,11 +40,13 @@ namespace ShopModule.Orders
 
 		public Order(OrderMessage message)
         {
-			OrderStatus = message.orderStatus;
+			Id = message.orderId;
+			ConfirmedPayment = message.confirmedPayment;
+			OrderStatus = (OrderStatus) message.orderStatus;
 			CreationDate = message.creationDate;
 			DeliveryDate= message.deliveryDate;
 			AdditionalInfo = message.additionalInfo;
-			ClientAddress = message.clientAddress;
+			ClientAddress = new Address(message.clientAddress);
         }
 
 		public void ChangeStatus(OrderStatus status) => OrderStatus = status;
@@ -56,7 +58,7 @@ namespace ShopModule.Orders
 		[ForeignKey("Courier")]
 		public string CourierFK { get; set; }
 		[ForeignKey("Address")]
-		public int AddressId { get; set; }
+		public int AddressFK { get; set; }
 
 	}
 }

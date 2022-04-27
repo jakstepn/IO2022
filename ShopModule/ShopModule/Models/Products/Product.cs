@@ -1,4 +1,5 @@
 ﻿using ShopModule.Orders;
+using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,12 +17,22 @@ namespace ShopModule.Products
 		public int TaxRate { get; set; }
 		public string ProductName { get; set; }
 		public bool Available { get; set; }
+		public int Quantity { get; set; }
 
 		public virtual Shop Shop { get; set; }
 		public virtual ProductType ProductType { get; set; }
+
 		public Product()
 		{
 		}
+
+		public Product(ProductMessage message)
+        {
+			Price = message.price;
+			Quantity = message.quantity;
+			ProductTypeFK = message.category;
+			ProductName = message.name;
+        }
 
 		// DataBase Relations
 		[ForeignKey("Shop")]

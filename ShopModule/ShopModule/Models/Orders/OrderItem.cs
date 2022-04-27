@@ -1,4 +1,5 @@
 ﻿using ShopModule.Products;
+using ShopModule_ApiClasses.Messages;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,12 +16,22 @@ namespace ShopModule.Orders
         public decimal Tax { get; set; }
         public string ProductName { get; set; }
         public int Quantity { get; set; }
+        public string Currency { get; set; }
 
         public virtual Product Product { get; set; }
         public virtual Order Order { get; set; }
 
         public OrderItem()
         {
+        }
+
+        public OrderItem(OrderItemMessage message)
+        {
+            Id = message.orderItemId;
+            GrossPrice = message.grossPrice;
+            ProductName = message.productName;
+            Quantity = message.quantity;
+            Currency = message.currency;
         }
 
         // DataBase Relations

@@ -8,7 +8,6 @@ using System.Net.Http;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using ShopModule.Models;
-using ShopModule.Models.Messages;
 using ShopModule.Orders;
 using ShopModule.Products;
 
@@ -30,9 +29,9 @@ namespace ShopModule.Employees
         {
         }
 
-        public void ChangeOrderStatus(Order order, OrderStatus status) { }
-        public OrderStatus GetOrderStatus(Order order) { return OrderStatus.Collecting; }
-        public void RejectOrder(Order order) { order.OrderStatus = OrderStatus.RejectedByShop; }
+        public void ChangeOrderStatus(Order order, OrderStatus status) => order.OrderStatus = status; 
+        public OrderStatus GetOrderStatus(Order order) => order.OrderStatus;
+        public void RejectOrder(Order order) => order.OrderStatus = OrderStatus.RejectedByShop;
         public void SetProductAsUnavailable(Product product) => product.Available = false;
         public async void NotifyDeliveryThatPackageIsReady(Order order)
         {

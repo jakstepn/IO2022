@@ -3,6 +3,7 @@ using ShopModule.Data;
 using ShopModule.Models;
 using ShopModule.Products;
 using ShopModule.Services;
+using ShopModule_ApiClasses.Messages;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,9 +27,9 @@ namespace ShopModule.Controllers
             return ResponseMessage.Success(result, 200);
         }
         [HttpPost]
-        public IActionResult AddProductsToShopEndpoint([FromBody] Product product)
+        public IActionResult AddProductsToShopEndpoint([FromBody] ProductMessage product)
         {
-            var result = _service.AddProduct(product);
+            var result = _service.AddProduct(new Product(product));
             if (result != null)
             {
                 return ResponseMessage.Success("Successfully added product.", 200);

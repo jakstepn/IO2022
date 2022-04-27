@@ -1,10 +1,10 @@
 using Complaints;
 using Microsoft.AspNetCore.Mvc;
 using ShopModule.Data;
-using ShopModule.Messages;
 using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Services;
+using ShopModule_ApiClasses.Messages;
 using System.Collections.Generic;
 namespace ShopModule.Controllers
 {
@@ -20,9 +20,9 @@ namespace ShopModule.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult CreateComplaintEndpoint([FromBody] Complaint complaint)
+        public IActionResult CreateComplaintEndpoint([FromBody] ComplaintMessage complaint)
         {
-            var res = _complaintService.AddComplaint(complaint);
+            var res = _complaintService.AddComplaint(new Complaint(complaint));
             if (res != null)
             {
                 return ResponseMessage.Success(res, 201);

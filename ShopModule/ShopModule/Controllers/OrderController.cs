@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Models.Messages;
 using ShopModule.Data;
 using ShopModule.Employees;
 using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Services;
+using ShopModule_ApiClasses.Messages;
 using System.Collections.Generic;
 
 namespace ShopModule.Controllers
@@ -23,7 +23,13 @@ namespace ShopModule.Controllers
         [HttpPost("place")]
         public IActionResult PlaceOrder([FromBody] OrderMessage message)
         {
-            if (_orderService.AddOrderItems(message.orderItems) != null)
+            int len = message.orderItems.Length;
+            OrderItem[] items = new OrderItem[len];
+            for (int i = 0; i < len; i++)
+            {
+                items[i] = new OrderItem(message.orderItems[i]);
+            }
+            if (_orderService.AddOrderItems(items) != null)
             {
                 return ResponseMessage.Success(message, 201);
             }
@@ -34,7 +40,7 @@ namespace ShopModule.Controllers
         }
 
         [HttpGet("pending/{shopId}")]
-        public IActionResult GetPendingOrdersAssignedToShop([FromRoute] string shopID)
+        public IActionResult GetPendingOrdersAssignedToShop([FromRoute] string shopId)
         {
             var pending = _orderService.FindPendingOrders();
             if (pending.Count > 0)
