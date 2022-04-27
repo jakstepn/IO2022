@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  clientModule:
+    image: ${DOCKER_REGISTRY-}clientModule
+    ports: 
+    - "44382:443"
+    build:
+      context: .
+      dockerfile: ../ClientModule/ClientModule/Dockerfile
+    depends_on:
+        - identityserver
+    networks:
+      - internal
+
+  identityserver:
+    image: ${DOCKER_REGISTRY-}identityserver
+    ports:
+    - "443:443"
+    build:
+      context: .
+      dockerfile: ../IdentityServer/IdentityServer/Dockerfile
+    networks:
+        - internal
+
+networks:
+  internal:
