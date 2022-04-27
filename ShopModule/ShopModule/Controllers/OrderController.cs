@@ -29,7 +29,8 @@ namespace ShopModule.Controllers
             for (int i = 0; i < len; i++)
             {
                 items[i] = new OrderItem(message.orderItems[i]);
-                if (!(allItemsExist = items[i].Product.Available))
+                if (!(allItemsExist = items[i].Product.Available) &&
+                    !(allItemsExist = items[i].Product.Quantity-items[i].Quantity <= 0))
                 {
                     break;
                 }
@@ -43,6 +44,15 @@ namespace ShopModule.Controllers
             if (allItemsExist && _orderService.AddOrder(changeStatus()) != null &&
                 _orderService.AddOrderItems(items) != null)
             {
+                foreach (var item in items)
+                {
+                    var product = _orderService.GetProduct(item.ProductFK);
+                    product.Quantity -= item.Quantity;
+                    if (product != null && product.Quantity <= 0)
+                    {
+                        product.Available = false;
+                    }
+                }
                 return ResponseMessage.Success(message, 201);
             }
             else
