@@ -5,11 +5,13 @@ namespace ShopModule.Orders
 	public enum OrderStatus
 	{
 		WaitingForCollection,
-		WaitingForCourier,
 		Collecting,
+		WaitingForCourier,
+		ParcelCollected,
 		OnTheWay,
+		Delivered,
 		RejectedByShop,
 		RejectedByCustomer,
-		Delivered
+		Pending
 	}
 }

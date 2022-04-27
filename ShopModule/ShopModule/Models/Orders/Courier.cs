@@ -7,7 +7,7 @@ namespace ShopModule.Orders
 	public class Courier
 	{
 		[Key]
-		public int Id { get; set; }
+		public string Id { get; set; }
 		public string Email { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
@@ -17,15 +17,9 @@ namespace ShopModule.Orders
 		
 		public Courier()
 		{
-			Id = -1;
-			Email = string.Empty;
-			FirstName = string.Empty;
-			LastName = string.Empty;
-			PhoneNumber = string.Empty;
-			CurrentState = CourierCurrentState.Away_from_work;
 		}
 
-		public Courier(int id, string email, string first_name, string last_name, string phone_number)
+		public Courier(string id, string email, string first_name, string last_name, string phone_number)
         {
 			Id = id;
 			Email = email;

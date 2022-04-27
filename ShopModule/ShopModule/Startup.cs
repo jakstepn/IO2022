@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ShopModule.Data;
+using ShopModule.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace ShopModule
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddSwaggerGen(o => o.SwaggerDoc("v1", new OpenApiInfo { Title="ShopModule", Version="v1"}));
             services.AddDbContext<ShopModuleDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -38,18 +39,29 @@ namespace ShopModule
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopModule", Version = "v1" });
+                c.SwaggerDoc("v2", new OpenApiInfo { Title = "ShopModule", Version = "V1" });
             });
+            services.AddSwaggerGen();
+
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IComplaintService, ComplaintService>();
+            services.AddScoped<IProductService, ProductService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Enable swagger to act as a Json endpoint
+            app.UseSwagger();
+
+            // Specify the swagger Json endpoint
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("v2/swagger.json", "ShopModule Api v1"));
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopModule v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("v2/swagger.json", "ShopModule v1"));
             }
 
             app.UseHttpsRedirection();

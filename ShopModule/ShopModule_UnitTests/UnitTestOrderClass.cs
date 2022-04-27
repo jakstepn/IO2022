@@ -3,6 +3,8 @@ using Xunit;
 using ShopModule;
 using ShopModule.Orders;
 using ShopModule.Products;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace ShopModule_UnitTests
 {
@@ -12,7 +14,7 @@ namespace ShopModule_UnitTests
         public void TestDefaultOrderStatus()
         {
             Order o = new Order();
-            Assert.Equal(OrderStatus.Delivered, o.OrderStatus);
+            Assert.Equal(OrderStatus.WaitingForCollection, o.OrderStatus);
         }
 
         [Theory]
@@ -26,7 +28,7 @@ namespace ShopModule_UnitTests
         public void TestOrderStatus(OrderStatus status)
         {
             OrderStatus defStatus = OrderStatus.Collecting;
-            Order o = new Order(0, null, DateTime.Now, DateTime.Now, "", defStatus);
+            Order o = new Order("testid", null, DateTime.Now, DateTime.Now, "", defStatus);
             o.ChangeStatus(status);
             Assert.Equal(status, o.OrderStatus);
         }
@@ -42,9 +44,10 @@ namespace ShopModule_UnitTests
         [Fact]
         public void TestShopProductAvability()
         {
-            Product p = new Product();
-            p.Available = true;
+            Product p = new Product { Available = true };
             Shop shop = new Shop();
+            shop.Products = new List<Product>();
+            shop.Products.Add(p);
             Assert.True(shop.IsProductAvailable(p));
         }
     }

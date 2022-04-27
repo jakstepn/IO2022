@@ -1,106 +1,126 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopModule.Data;
+using ShopModule.Employees;
+using ShopModule.Models;
 using ShopModule.Orders;
+using ShopModule.Services;
+using ShopModule_ApiClasses.Messages;
+using System.Collections.Generic;
+
 namespace ShopModule.Controllers
 {
-    [ApiController]
     [Route("orders")]
-    public class OverController : Controller
+    [ApiController]
+    public class OrderController : Controller
     {
-        private readonly ShopModuleDbContext _context;
+        private readonly IOrderService _orderService;
 
-        public OverController(ShopModuleDbContext context)
+        public OrderController(IOrderService orderService)
         {
-            _context = context;
-        }
-        [HttpPost("/orders/place")]
-        public IActionResult PlaceOrder([FromBody] OrderItem item)
-        {
-            bool orderCreated = false;
-
-            // Adding an OrderItem to the database
-            _context.OrderItem.Add(item);
-            if(_context.SaveChanges() == 1)
-            {
-                orderCreated = true;
-            }
-
-            if (orderCreated)
-            {
-                var res = new JsonResult(item);
-                res.StatusCode = 201;
-                return res;
-            }
-            else
-            {
-                var res = new JsonResult("Failed to create an order");
-                res.StatusCode = 404;
-                return res;
-            }
+            _orderService = orderService;
         }
 
-        [HttpGet("/orders/pending/{shopId}")]
-        public IActionResult GetPendingOrdersAssignedToShop([FromRoute] int shopID)
+        [HttpPost("place")]
+        public IActionResult PlaceOrder([FromBody] OrderMessage message)
         {
-            Shop shop = _context.Shop.Find(shopID);
-            Order pending = null;
-
-            if (shop != null)
+            int len = message.orderItems.Length;
+            OrderItem[] items = new OrderItem[len];
+            bool allItemsExist = true;
+            for (int i = 0; i < len; i++)
             {
-                foreach (var order in shop.Orders)
+                items[i] = new OrderItem(message.orderItems[i]);
+                if (!(allItemsExist = items[i].Product.Available))
                 {
-                    if(order.OrderStatus == Orders.OrderStatus.WaitingForCollection)
-                    {
-                        pending = order;
-                        break;
-                    }
+                    break;
                 }
-                var res = pending != null ? new JsonResult(pending) :
-                    new JsonResult("No pending order found!");
-                res.StatusCode = 200;
-                return res;
+            }
+            Order changeStatus()
+            {
+                var order = new Order(message);
+                order.OrderStatus = OrderStatus.Pending;
+                return order;
+            }
+            if (allItemsExist && _orderService.AddOrder(changeStatus()) != null &&
+                _orderService.AddOrderItems(items) != null)
+            {
+                return ResponseMessage.Success(message, 201);
             }
             else
             {
-                var res = new JsonResult("Failed to find a shop!");
-                res.StatusCode = 404;
-                return res;
+                _orderService.RemoveOrder(message.orderId);
+                return ResponseMessage.Error("Failed to create order", 404);
             }
         }
-        [HttpGet("/orders/{orderId}")]
-        public IActionResult GetChosenOrder([FromRoute] int orderId)
+
+        [HttpGet("pending/{shopId}")]
+        public IActionResult GetPendingOrdersAssignedToShop([FromRoute] string shopId)
         {
-            Order order = _context.Order.Find(orderId);
+            var pending = _orderService.FindPendingOrders();
+            if (pending.Count > 0)
+            {
+                return ResponseMessage.Success(pending, 200);
+            }
+            else
+            {
+                return ResponseMessage.Error("Failed to get pending orders", 404);
+            }
+        }
+        [HttpGet("{orderId}")]
+        public IActionResult GetChosenOrder([FromRoute] string orderId)
+        {
+            Order order = _orderService.FindOrder(orderId);
             if (order != null)
             {
-                var res = new JsonResult(order);
-                res.StatusCode = 200;
-                return res;
+                return ResponseMessage.Success(order, 200);
             }
             else
             {
-                var res = new JsonResult("Failed to get this order!");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Failed to get this order.", 404);
             }
         }
-        [HttpPost("/orders/{orderId}")]
-        public IActionResult SetChosenOrder([FromRoute] int orderId)
+        /// <summary>
+        /// Set status for a chosen order
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        [HttpPut("{orderId}")]
+        public IActionResult SetChosenOrder([FromRoute] string orderId, [FromBody] OrderStatus status)
         {
-            bool set = false;
-            Order order = _context.Order.Find(orderId);
-            if (set)
+            Order order = _orderService.FindOrder(orderId);
+            if (order != null)
             {
-                var res = new JsonResult("Successfully set order status!");
-                res.StatusCode = 200;
-                return res;
+                order.ChangeStatus(status);
+                if (status == OrderStatus.WaitingForCollection)
+                {
+                    ShopEmployee shopEmployee = new ShopEmployee();
+                    shopEmployee.NotifyDeliveryThatPackageIsReady(order);
+                    order.ChangeStatus(OrderStatus.WaitingForCourier);
+                }
+                if (status == OrderStatus.ParcelCollected)
+                {
+                    NotifyClientPackageCollected();
+                }
+                if (status == OrderStatus.Delivered)
+                {
+                    NotifyClientPackageDelivered();
+                }
+                return ResponseMessage.Success(order, 200);
             }
             else
             {
-                var res = new JsonResult("Order doesn't exist!");
-                res.StatusCode = 404;
-                return res;
+                return ResponseMessage.Error("Order doesn't exist!", 404);
             }
+        }
+
+        private void NotifyClientPackageCollected()
+        {
+
+        }
+
+        private void NotifyClientPackageDelivered()
+        {
+
         }
     }
 }

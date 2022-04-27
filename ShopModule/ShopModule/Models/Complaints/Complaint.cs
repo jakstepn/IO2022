@@ -1,14 +1,27 @@
+using ShopModule.Complaints;
+using ShopModule_ApiClasses.Messages;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Complaints
 {
     public class Complaint
     {
+        [Key]
+        public string Id { get; set; }
+        public string Text { get; set; }
+        public CurrentComplaintState CurrentStatus { get; set; }
+
         public Complaint()
         {
+
         }
-        public int Id { get; set; }
-        public string Text { get; set; }
-        public virtual Complaint ComplaintFK { get; set; }
+
+        public Complaint(ComplaintMessage message)
+        {
+            Id = message.complaintId;
+            Text = message.text;
+            CurrentStatus = (CurrentComplaintState)message.status;
+        }
     }
 }
