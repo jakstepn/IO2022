@@ -7,25 +7,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClientModule.Database_Models
+using ClientModule.Database_Models;
+
+namespace ClientModule.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<Client>
+    public class ApplicationDbContext : ApiAuthorizationDbContext<Client>, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
 
         }
-        public DbSet<Client> Clients;
-        public DbSet<Address> Addresses;
-        public DbSet<Complaint> Complaints;
-        public DbSet<ComplaintState> ComplaintStates;
-        public DbSet<Order> Orders;
-        public DbSet<OrderStatusClass> OrderStatuses;
-        public DbSet<Payment> Payments;
-        public DbSet<PaymentMethodClass> PaymentMethods;
-        public DbSet<Product> Products;
-        public DbSet<ShoppingCart> ShoppingCarts;
+        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Complaint> Complaints { get; set; }
+        public virtual DbSet<ComplaintState> ComplaintStates { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderStatusClass> OrderStatuses { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<PaymentMethodClass> PaymentMethods { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

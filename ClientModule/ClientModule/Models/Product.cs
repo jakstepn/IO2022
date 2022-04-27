@@ -6,9 +6,10 @@ namespace ClientModule.Database_Models
     [DisplayColumn("Product")]
     public class Product
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
+        public string Currency { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
 

@@ -7,7 +7,7 @@ namespace ClientModule.Database_Models
     public class Address
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
         [Required]
         public string Country { get; set; }
         [Required]

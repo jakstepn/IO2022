@@ -7,7 +7,7 @@ namespace ClientModule.Database_Models
     [Index(nameof(Database_Models.Complaint.ComplaintFK))]
     public class Complaint
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Text { get; set; }
         public virtual Complaint ComplaintFK { get; set; }
     }

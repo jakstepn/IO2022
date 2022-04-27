@@ -12,7 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using ClientModule.Database_Models;
+using ClientModule.Services;
+using ClientModule.Data;
+using Newtonsoft.Json;
+
 namespace ClientModule
 {
     public class Startup
@@ -33,6 +36,12 @@ namespace ClientModule
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ClientModule", Version = "v1" });
             });
+
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+            services.AddScoped<IOrderService, OrderService>();
+
+            var jsonSerializerSettings = new JsonSerializerSettings();
+            jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ClientModule.Data;
 
-using ClientModule.Database_Models;
-
+using System.Linq;
 namespace ClientModule.Controllers
 {
     [Route("clients")]
