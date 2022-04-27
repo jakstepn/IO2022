@@ -41,11 +41,11 @@ namespace ShopModule_UnitTests
                 ShopFK = "0",
                 TaxRate = 1
             };
+            s.Products = new List<Product>();
             sm.AddProduct(s, p);
 
             // Check if product exists
-            bool exists = s.Products.Contains(p);
-            Assert.True(exists);
+            Assert.Contains(p, s.Products);
         }
         [Fact]
         public void TestDeleteProduct()
@@ -75,12 +75,12 @@ namespace ShopModule_UnitTests
                 ShopFK = "0",
                 TaxRate = 1
             };
+            s.Products = new List<Product>();
             sm.AddProduct(s, p);
             sm.DeleteProduct(s, p);
 
             // Check if product exists
-            bool exists = s.Products.Contains(p);
-            Assert.False(exists);
+            Assert.DoesNotContain(p, s.Products);
         }
         [Fact]
         public void TestAddShop()
