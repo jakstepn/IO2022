@@ -54,7 +54,8 @@ namespace ClientModule
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClientModule v1"));
             }
 
-            app.UseHttpsRedirection();
+            //Enable that after setting up certificates
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

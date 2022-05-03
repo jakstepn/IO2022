@@ -2,26 +2,54 @@ version: '3.4'
 
 services:
   clientModule:
-    image: ${DOCKER_REGISTRY-}clientModule
+    image: ${DOCKER_REGISTRY-}clientmodule
     ports: 
     - "44382:443"
+    - "44383:80"
     build:
-      context: .
-      dockerfile: ../ClientModule/ClientModule/Dockerfile
+      context: ..
+      dockerfile: ./ClientModule/ClientModule/Dockerfile
     depends_on:
         - identityserver
     networks:
-      - internal
+      - grocerionetwork
+
+  deliveryModule:
+    image: ${DOCKER_REGISTRY-}deliverymodule
+    ports: 
+    - "44384:443"
+    - "44385:80"
+    build:
+      context: ..
+      dockerfile: ./DeliveryModule/DeliveryModule/Dockerfile
+    depends_on:
+        - identityserver
+    networks:
+      - grocerionetwork
+
+  shopModule:
+    image: ${DOCKER_REGISTRY-}shopmodule
+    ports: 
+    - "44386:443"
+    - "44387:80"
+    build:
+      context: ..
+      dockerfile: ./ShopModule/ShopModule/Dockerfile
+    depends_on:
+        - identityserver
+    networks:
+      - grocerionetwork    
 
   identityserver:
     image: ${DOCKER_REGISTRY-}identityserver
     ports:
-    - "443:443"
+    - "44443:443"
     build:
-      context: .
-      dockerfile: ../IdentityServer/IdentityServer/Dockerfile
+      context: ..
+      dockerfile: ./IdentityServer/IdentityServer/Dockerfile
     networks:
-        - internal
+        - grocerionetwork
 
 networks:
-  internal:
+  grocerionetwork:
+    driver: bridge
