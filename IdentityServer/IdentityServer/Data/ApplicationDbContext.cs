@@ -4,7 +4,7 @@ using ClientModule.Database_Models;
 
 namespace IdentityServerGrocierio.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<Client>
+    public class ApplicationDbContext : IdentityDbContext<IdentityClient>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

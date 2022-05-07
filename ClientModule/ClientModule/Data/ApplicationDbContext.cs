@@ -11,14 +11,14 @@ using ClientModule.Database_Models;
 
 namespace ClientModule.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<Client>, IApplicationDbContext
+    public class ApplicationDbContext : ApiAuthorizationDbContext<IdentityClient>, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
 
         }
-        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<IdentityClient> Clients { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Complaint> Complaints { get; set; }
         public virtual DbSet<ComplaintState> ComplaintStates { get; set; }
