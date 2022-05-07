@@ -4,7 +4,8 @@
 
 using IdentityServer4;
 using IdentityServerGrocierio.Data;
-using IdentityServerGrocierio.Models;
+using ClientModule.Database_Models;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -33,7 +34,7 @@ namespace IdentityServerGrocierio
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<Client, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 

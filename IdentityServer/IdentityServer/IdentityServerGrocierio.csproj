@@ -25,4 +25,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.16" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ClientModule\ClientModule\ClientModule.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
 </Project>

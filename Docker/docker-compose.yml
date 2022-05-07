@@ -1,6 +1,16 @@
 version: '3.4'
 
 services:
+  database:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+        SA_PASSWORD: "DevPassword1!"
+        ACCEPT_EULA: "Y"
+    ports: 
+     - "44381:1433"
+    networks:
+      - grocerionetwork
+
   clientModule:
     image: ${DOCKER_REGISTRY-}clientmodule
     ports: 
@@ -11,6 +21,7 @@ services:
       dockerfile: ./ClientModule/ClientModule/Dockerfile
     depends_on:
         - identityserver
+        - database
     networks:
       - grocerionetwork
 
@@ -24,6 +35,7 @@ services:
       dockerfile: ./DeliveryModule/DeliveryModule/Dockerfile
     depends_on:
         - identityserver
+        - database
     networks:
       - grocerionetwork
 
@@ -37,6 +49,7 @@ services:
       dockerfile: ./ShopModule/ShopModule/Dockerfile
     depends_on:
         - identityserver
+        - database
     networks:
       - grocerionetwork    
 
@@ -48,6 +61,8 @@ services:
     build:
       context: ..
       dockerfile: ./IdentityServer/IdentityServer/Dockerfile
+    depends_on:
+        - database
     networks:
         - grocerionetwork
 
