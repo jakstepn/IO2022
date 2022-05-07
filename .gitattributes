@@ -19,3 +19,6 @@
 /IdentityServer/IdentityServer/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map filter=lfs diff=lfs merge=lfs -text
 /IdentityServer/IdentityServer/wwwroot/lib/jquery/dist/jquery.js filter=lfs diff=lfs merge=lfs -text
 /IdentityServer/IdentityServer/wwwroot/lib/jquery/dist/jquery.min.map filter=lfs diff=lfs merge=lfs -text
+/IdentityServer/IdentityServer/AspIdUsers.db filter=lfs diff=lfs merge=lfs -text
+/IdentityServer/IdentityServer/wwwroot/lib/jquery/dist/jquery.slim.js filter=lfs diff=lfs merge=lfs -text
+/IdentityServer/IdentityServer/wwwroot/lib/jquery/dist/jquery.slim.min.map filter=lfs diff=lfs merge=lfs -text

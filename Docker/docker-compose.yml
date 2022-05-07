@@ -43,7 +43,8 @@ services:
   identityserver:
     image: ${DOCKER_REGISTRY-}identityserver
     ports:
-    - "44443:443"
+    - "44388:443"
+    - "44389:80"
     build:
       context: ..
       dockerfile: ./IdentityServer/IdentityServer/Dockerfile
