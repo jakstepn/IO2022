@@ -6,7 +6,7 @@ using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
-namespace IdentityServer
+namespace IdentityServerGrocierio
 {
     public static class Config
     {

@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["IdentityServer/IdentityServer/IdentityServer.csproj", "IdentityServer/IdentityServer/"]
-RUN dotnet restore "IdentityServer/IdentityServer/IdentityServer.csproj"
+COPY ["IdentityServer/IdentityServer/IdentityServerGrocierio.csproj", "IdentityServer/IdentityServer/"]
+RUN dotnet restore "IdentityServer/IdentityServer/IdentityServerGrocierio.csproj"
 COPY . .
 WORKDIR "/src/IdentityServer/IdentityServer"
-RUN dotnet build "IdentityServer.csproj" -c Release -o /app/build
+RUN dotnet build "IdentityServerGrocierio.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "IdentityServer.csproj" -c Release -o /app/publish
+RUN dotnet publish "IdentityServerGrocierio.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "IdentityServer.dll"]
+ENTRYPOINT ["dotnet", "IdentityServerGrocierio.dll"]
