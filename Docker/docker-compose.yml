@@ -10,7 +10,8 @@ services:
      - "44381:1433"
     networks:
       - grocerionetwork
-
+    volumes:
+      - dbvolume:/var/opt/mssql
   clientModule:
     image: ${DOCKER_REGISTRY-}clientmodule
     ports: 
@@ -69,3 +70,6 @@ services:
 networks:
   grocerionetwork:
     driver: bridge
+
+volumes:
+  dbvolume:
