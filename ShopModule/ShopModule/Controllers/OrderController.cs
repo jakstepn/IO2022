@@ -23,6 +23,7 @@ namespace ShopModule.Controllers
         [HttpPost("place")]
         public IActionResult PlaceOrder([FromBody] OrderMessage message)
         {
+            OrderStatus orderStatus = OrderStatus.Pending;
             int len = message.orderItems.Length;
             OrderItem[] items = new OrderItem[len];
             bool allItemsExist = true;
@@ -30,7 +31,7 @@ namespace ShopModule.Controllers
             {
                 items[i] = new OrderItem(message.orderItems[i]);
                 if (!(allItemsExist = items[i].Product.Available) &&
-                    !(allItemsExist = items[i].Product.Quantity-items[i].Quantity >= 0))
+                    !(allItemsExist = items[i].Product.Quantity - items[i].Quantity >= 0))
                 {
                     break;
                 }
@@ -38,7 +39,7 @@ namespace ShopModule.Controllers
             Order changeStatus()
             {
                 var order = new Order(message);
-                order.OrderStatus = OrderStatus.Pending;
+                order.OrderStatus = orderStatus;
                 return order;
             }
             if (allItemsExist && _orderService.AddOrder(changeStatus()) != null &&
@@ -53,6 +54,7 @@ namespace ShopModule.Controllers
                         product.Available = false;
                     }
                 }
+                _orderService.NotifyDeliveryStatusOfStatus(orderStatus);
                 return ResponseMessage.Success(message, 201);
             }
             else
@@ -101,19 +103,17 @@ namespace ShopModule.Controllers
             if (order != null)
             {
                 order.ChangeStatus(status);
-                if (status == OrderStatus.WaitingForCollection)
-                {
-                    ShopEmployee shopEmployee = new ShopEmployee();
-                    shopEmployee.NotifyDeliveryThatPackageIsReady(order);
-                    order.ChangeStatus(OrderStatus.WaitingForCourier);
-                }
                 if (status == OrderStatus.ParcelCollected)
                 {
                     NotifyClientPackageCollected();
                 }
-                if (status == OrderStatus.Delivered)
+                else if (status == OrderStatus.Delivered)
                 {
                     NotifyClientPackageDelivered();
+                }
+                else
+                {
+                    _orderService.NotifyDeliveryStatusOfStatus(status);
                 }
                 return ResponseMessage.Success(order, 200);
             }

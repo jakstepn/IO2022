@@ -38,7 +38,6 @@ namespace ShopModule_UnitTests
                 Available = true,
                 Price = 10,
                 ProductName = "testname",
-                ShopFK = "0",
                 TaxRate = 1
             };
             s.Products = new List<Product>();
@@ -72,7 +71,6 @@ namespace ShopModule_UnitTests
                 Available = true,
                 Price = 10,
                 ProductName = "testname",
-                ShopFK = "0",
                 TaxRate = 1
             };
             s.Products = new List<Product>();

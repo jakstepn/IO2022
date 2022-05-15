@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopModule.Orders
 {
+	[Table("Couriers")]
 	public class Courier
 	{
 		[Key]
@@ -32,6 +34,6 @@ namespace ShopModule.Orders
 		public CourierCurrentState CheckCourierAvailability() => CurrentState;
 
 		// DataBase relations
-		public virtual ICollection<Order> Orders { get; set; }
+		public ICollection<Order> Orders { get; set; }
 	}
 }
