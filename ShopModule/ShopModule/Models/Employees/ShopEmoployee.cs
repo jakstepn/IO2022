@@ -13,6 +13,7 @@ using ShopModule.Products;
 
 namespace ShopModule.Employees
 {
+    [Table("ShopEmployees")]
     public class ShopEmployee
     {
         [Key]
@@ -23,7 +24,6 @@ namespace ShopModule.Employees
         public string PhoneNumber { get; set; }
         public DateTime EmployedSince { get; set; }
         public CurrentState CurrentState { get; set; }
-        public Shop Shop { get; set; }
 
         public ShopEmployee()
         {
@@ -42,9 +42,5 @@ namespace ShopModule.Employees
                         JsonSerializer.Serialize(order.Id)));
             }
         }
-
-        // Database relations
-        [ForeignKey("Shop")]
-        public string ShopFK { get; set; }
     }
 }

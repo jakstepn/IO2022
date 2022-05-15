@@ -33,7 +33,6 @@ namespace ShopModule_UnitTests
                 Price = 10,
                 ProductName = "bulbulator",
                 ProductTypeFK = "1",
-                ShopFK = "1",
                 TaxRate = 10
             };
 
@@ -59,7 +58,6 @@ namespace ShopModule_UnitTests
                 Price = 10,
                 ProductName = "bulbulator",
                 ProductTypeFK = "1",
-                ShopFK = "1",
                 TaxRate = 10
             };
 
@@ -84,7 +82,6 @@ namespace ShopModule_UnitTests
                 Price = 10,
                 ProductName = "bulbulator",
                 ProductTypeFK = "1",
-                ShopFK = "1",
                 TaxRate = 10
             };
 
@@ -110,7 +107,6 @@ namespace ShopModule_UnitTests
                 Price = 10,
                 ProductName = "bulbulator",
                 ProductTypeFK = "1",
-                ShopFK = "1",
                 TaxRate = 10
             };
 
@@ -140,7 +136,6 @@ namespace ShopModule_UnitTests
                 Price = 10,
                 ProductName = "bulbulator1",
                 ProductTypeFK = "1",
-                ShopFK = "1",
                 TaxRate = 10
             };
 
@@ -151,7 +146,6 @@ namespace ShopModule_UnitTests
                 Price = 10,
                 ProductName = "bulbulator2",
                 ProductTypeFK = "2",
-                ShopFK = "1",
                 TaxRate = 10
             };
 

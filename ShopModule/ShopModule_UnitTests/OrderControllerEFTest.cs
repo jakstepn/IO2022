@@ -31,7 +31,7 @@ namespace ShopModule_UnitTests
                                       ClientAddress = new Address { City="nonecity", Country="nocountry",
                                                                     Region="noregion", Street="nostreet",
                                                                     StreetNumber="1a", ZipCode="nozipcode" },
-                                      AdditionalInfo="none", ShopFK="0", CourierFK="0" };
+                                      AdditionalInfo="none", CourierFK="0" };
 
             mockOrderSet.Verify(m => m.Add(It.IsAny<Order>()), Times.Once);
         }
@@ -80,7 +80,6 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                ShopFK = "0",
                 CourierFK = "2"
             };
 
@@ -99,7 +98,6 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                ShopFK = "0",
                 CourierFK = "1"
             };
 
@@ -118,7 +116,6 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                ShopFK = "0",
                 CourierFK = "4"
             };
 
@@ -156,7 +153,6 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                ShopFK = "0",
                 CourierFK = "2"
             };
 
@@ -176,7 +172,6 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                ShopFK = "0",
                 CourierFK = "2"
             };
 

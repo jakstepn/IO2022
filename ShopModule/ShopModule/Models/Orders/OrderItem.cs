@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopModule.Orders
 {
+    [Table("OrderItems")]
     public class OrderItem
     {
         [Key]
@@ -18,8 +19,8 @@ namespace ShopModule.Orders
         public int Quantity { get; set; }
         public string Currency { get; set; }
 
-        public virtual Product Product { get; set; }
-        public virtual Order Order { get; set; }
+        public Product Product { get; set; }
+        public Order Order { get; set; }
 
         public OrderItem()
         {

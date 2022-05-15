@@ -8,6 +8,7 @@ using ShopModule_ApiClasses.Messages;
 
 namespace ShopModule.Orders
 {
+	[Table("Orders")]
 	public class Order
 	{
 		[Key]
@@ -18,9 +19,7 @@ namespace ShopModule.Orders
 		public Address ClientAddress { get; set; }
 		public string AdditionalInfo { get; set; }
 		public bool ConfirmedPayment { get; set; }
-
-		public virtual Shop Shop { get; set; }
-		public virtual Courier Courier { get; set; }
+		public Courier Courier { get; set; }
 		public ICollection<OrderItem> Items { get; set; }
 
 		public Order()
@@ -50,10 +49,6 @@ namespace ShopModule.Orders
         }
 
 		public void ChangeStatus(OrderStatus status) => OrderStatus = status;
-
-		// DataBase relations
-		[ForeignKey("Shop")]
-		public string ShopFK { get; set; }
 
 		[ForeignKey("Courier")]
 		public string CourierFK { get; set; }

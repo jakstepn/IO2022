@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopModule.Products
 {
+	[Table("Products")]
 	public class Product
 	{
 		[Key]
@@ -18,10 +19,8 @@ namespace ShopModule.Products
 		public string ProductName { get; set; }
 		public bool Available { get; set; }
 		public int Quantity { get; set; }
-
-		public virtual Shop Shop { get; set; }
-		public virtual ProductType ProductType { get; set; }
-
+		public ProductType ProductType { get; set; }
+		public ICollection<Order> Orders { get; set; }
 		public Product()
 		{
 		}
@@ -33,10 +32,6 @@ namespace ShopModule.Products
 			ProductTypeFK = message.category;
 			ProductName = message.name;
         }
-
-		// DataBase Relations
-		[ForeignKey("Shop")]
-		public string ShopFK { get; set; }
 
 		[ForeignKey("ProductType")]
 		public string ProductTypeFK { get; set; }
