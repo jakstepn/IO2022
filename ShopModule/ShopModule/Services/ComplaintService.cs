@@ -29,7 +29,16 @@ namespace ShopModule.Services
         public Complaint AddComplaint(Complaint complaint)
         {
             _context.Complaints.Add(complaint);
-            return _context.SaveChanges() == 1 ? complaint : null;
+            bool added = _context.SaveChanges() == 1;
+            if(added)
+            {
+                NotifyClientComplaintPending();
+                return complaint;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -75,12 +84,65 @@ namespace ShopModule.Services
             if (res != null)
             {
                 res.CurrentStatus = state;
-                return _context.SaveChanges() == 1 ? res : null;
+                switch (state)
+                {
+                    case Complaints.CurrentComplaintState.Rejected:
+                        NotifyClientComplaintRejected();
+                        break;
+                    case Complaints.CurrentComplaintState.Accepted:
+                        NotifyClientComplaintAccepted();
+                        Refund();
+                        break;
+                    case Complaints.CurrentComplaintState.Pending:
+                        NotifyClientComplaintPending();
+                        break;
+                    default:
+                        break;
+                }
+                bool added = _context.SaveChanges() == 1;
+                if(added)
+                {
+                    return res;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {
                 return null;
             }
+        }
+
+        private void Refund()
+        {
+            // TODO
+            // Send a notification to the payment service
+        }
+
+        private void NotifyClientComplaintPending()
+        {
+            // TODO
+            // Notify Client Complaint Pending
+        }
+
+        private void NotifyClientComplaintAccepted()
+        {
+            // TODO
+            // Notify Client Complaint Accepted
+        }
+
+        private void NotifyClientComplaintRejected()
+        {
+            // TODO
+            // Notify Client Complaint Rejected
+        }
+
+        private void NotifyClientComplaintReceived()
+        {
+            // TODO
+            // Notify client
         }
 
         /// <summary>

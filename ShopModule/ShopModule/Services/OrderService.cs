@@ -16,6 +16,7 @@ namespace ShopModule.Services
         Order RemoveOrder(string orderId);
         int GetProductQuantity(string productId);
         Product GetProduct(string productId);
+        void NotifyDeliveryStatusOfStatus(OrderStatus status);
     }
     public class OrderService : IOrderService
     {
@@ -94,6 +95,7 @@ namespace ShopModule.Services
             if (res != null)
             {
                 _context.Orders.Remove(res);
+                _context.SaveChanges();
             }
             return res;
         }
@@ -122,6 +124,49 @@ namespace ShopModule.Services
         public Product GetProduct(string productId)
         {
             return _context.Products.Find(productId);
+        }
+
+        /// <summary>
+        /// Notify Delivery Module of an order status change
+        /// </summary>
+        /// <param name="status">New order status</param>
+        public void NotifyDeliveryStatusOfStatus(OrderStatus status)
+        {
+            //TODO
+            // Add module message
+
+            switch (status)
+            {
+                case OrderStatus.WaitingForCollection:
+                    // Notify: Ready to pickup
+                    break;
+                case OrderStatus.Collecting:
+                    break;
+                case OrderStatus.WaitingForCourier:
+                    break;
+                case OrderStatus.OnTheWay:
+                    break;
+                case OrderStatus.RejectedByShop:
+                    // Nofity: Reject order
+                    break;
+                case OrderStatus.RejectedByCustomer:
+                    break;
+                case OrderStatus.Pending:
+                    // Notify: In preparation
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void NotifyClientPackageCollected()
+        {
+
+        }
+
+        private void NotifyClientPackageDelivered()
+        {
+
         }
     }
 }

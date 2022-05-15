@@ -66,8 +66,6 @@ namespace ShopModule.Controllers
             var accepted = _complaintService.AcceptComplaint(complaintId);
             if (accepted != null)
             {
-                NotifyClientAccept();
-                Refund();
                 return ResponseMessage.Success("Accepted complaint.", 200);
             }
             else
@@ -81,28 +79,12 @@ namespace ShopModule.Controllers
             var rejected = _complaintService.RejectComplaint(complaintId);
             if (rejected != null)
             {
-                NotifyClientReject();
                 return ResponseMessage.Success("Rejected complaint!", 200);
             }
             else
             {
                 return ResponseMessage.Error("Complaint not found.", 404);
             }
-        }
-
-        private void NotifyClientReject()
-        {
-            // Send an email to the client
-        }
-
-        private void NotifyClientAccept()
-        {
-            // Send an email to the client
-        }
-
-        private void Refund()
-        {
-            // Send a notification to the payment service
         }
     }
 }
