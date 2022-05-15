@@ -10,8 +10,8 @@ using ShopModule.Data;
 namespace ShopModule.Migrations
 {
     [DbContext(typeof(ShopModuleDbContext))]
-    [Migration("20220427112643_SecondDatabaseMigration")]
-    partial class SecondDatabaseMigration
+    [Migration("20220515174229_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,10 +45,6 @@ namespace ShopModule.Migrations
                     b.Property<int>("CurrentState")
                         .HasColumnType("int");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -64,16 +60,14 @@ namespace ShopModule.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ShopFK")
+                    b.Property<string>("ShopId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ShopFK");
+                    b.HasIndex("ShopId");
 
                     b.ToTable("ShopEmployees");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("ShopEmployee");
                 });
 
             modelBuilder.Entity("ShopModule.Location.Address", b =>
@@ -125,7 +119,7 @@ namespace ShopModule.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courier");
+                    b.ToTable("Couriers");
                 });
 
             modelBuilder.Entity("ShopModule.Orders.Order", b =>
@@ -157,7 +151,10 @@ namespace ShopModule.Migrations
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("ShopFK")
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ShopId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -166,7 +163,9 @@ namespace ShopModule.Migrations
 
                     b.HasIndex("CourierFK");
 
-                    b.HasIndex("ShopFK");
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ShopId");
 
                     b.ToTable("Orders");
                 });
@@ -226,7 +225,7 @@ namespace ShopModule.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("ShopFK")
+                    b.Property<string>("ShopId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("TaxRate")
@@ -236,7 +235,7 @@ namespace ShopModule.Migrations
 
                     b.HasIndex("ProductTypeFK");
 
-                    b.HasIndex("ShopFK");
+                    b.HasIndex("ShopId");
 
                     b.ToTable("Products");
                 });
@@ -279,16 +278,14 @@ namespace ShopModule.Migrations
                 {
                     b.HasBaseType("ShopModule.Employees.ShopEmployee");
 
-                    b.HasDiscriminator().HasValue("ShopManager");
+                    b.ToTable("ShopManagers");
                 });
 
             modelBuilder.Entity("ShopModule.Employees.ShopEmployee", b =>
                 {
-                    b.HasOne("ShopModule.Shop", "Shop")
+                    b.HasOne("ShopModule.Shop", null)
                         .WithMany("ShopEmoployees")
-                        .HasForeignKey("ShopFK");
-
-                    b.Navigation("Shop");
+                        .HasForeignKey("ShopId");
                 });
 
             modelBuilder.Entity("ShopModule.Orders.Order", b =>
@@ -301,15 +298,17 @@ namespace ShopModule.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("CourierFK");
 
-                    b.HasOne("ShopModule.Shop", "Shop")
+                    b.HasOne("ShopModule.Products.Product", null)
                         .WithMany("Orders")
-                        .HasForeignKey("ShopFK");
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("ShopModule.Shop", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("ShopId");
 
                     b.Navigation("ClientAddress");
 
                     b.Navigation("Courier");
-
-                    b.Navigation("Shop");
                 });
 
             modelBuilder.Entity("ShopModule.Orders.OrderItem", b =>
@@ -330,16 +329,14 @@ namespace ShopModule.Migrations
             modelBuilder.Entity("ShopModule.Products.Product", b =>
                 {
                     b.HasOne("ShopModule.Products.ProductType", "ProductType")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("ProductTypeFK");
 
-                    b.HasOne("ShopModule.Shop", "Shop")
+                    b.HasOne("ShopModule.Shop", null)
                         .WithMany("Products")
-                        .HasForeignKey("ShopFK");
+                        .HasForeignKey("ShopId");
 
                     b.Navigation("ProductType");
-
-                    b.Navigation("Shop");
                 });
 
             modelBuilder.Entity("ShopModule.Shop", b =>
@@ -349,6 +346,15 @@ namespace ShopModule.Migrations
                         .HasForeignKey("AddressId");
 
                     b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("ShopModule.Employees.ShopManager", b =>
+                {
+                    b.HasOne("ShopModule.Employees.ShopEmployee", null)
+                        .WithOne()
+                        .HasForeignKey("ShopModule.Employees.ShopManager", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ShopModule.Location.Address", b =>
@@ -364,6 +370,16 @@ namespace ShopModule.Migrations
             modelBuilder.Entity("ShopModule.Orders.Order", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("ShopModule.Products.Product", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("ShopModule.Products.ProductType", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ShopModule.Shop", b =>

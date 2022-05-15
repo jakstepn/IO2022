@@ -13,18 +13,19 @@ namespace ShopModule.Data
         {
         }
 
-        public ShopModuleDbContext()
-        { 
-        }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<ShopEmployee> ShopEmployees { get; set; }
+        public DbSet<ShopManager> ShopManagers { get; set; }
+        public DbSet<Shop> Shops { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Complaint> Complaints { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
 
-        public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<ShopEmployee> ShopEmployees { get; set; }
-        public virtual DbSet<ShopManager> ShopManagers { get; set; }
-        public virtual DbSet<Shop> Shops { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<OrderItem> OrderItems { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<Complaint> Complaints { get; set; }
-        public virtual DbSet<ProductType> ProductTypes { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+        }
     }
 }
