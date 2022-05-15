@@ -8,8 +8,8 @@ namespace ClientModule.Database_Models
 {
     //Not going to change the name 
     [DisplayColumn("Client")]
-    [Index(nameof(Client.Addresses))]
-    public class Client : IdentityUser
+    [Index(nameof(IdentityClient.Addresses))]
+    public class IdentityClient : IdentityUser
     {
         //Id, email, phone number is already in that class - inherited from IdentityUser
         public string FirstName { get; set; }

@@ -1,20 +1,36 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
-
+This is grocery app made by students for IO2. 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
 1.	Installation process
+
+In order to install this project all you have to do is to clone this repository, change your working subdirectory to Docker/ and use command `docker-compose up`
+
 2.	Software dependencies
+In order to run this project you need to have Docker installed in your system.
+
+For Windows refer to [Docker Windows installation page](https://docs.docker.com/desktop/windows/install/)
+For Linux refer to [Docker Linux installation page](https://docs.docker.com/desktop/linux/install/)
+For Mac refer to [Docekr Mac installation page](https://docs.docker.com/desktop/mac/install/)
+
 3.	Latest releases
+TODO: Write something here
 4.	API references
-
+TODO: Write something here
+---
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+- Rebuilding project after changes
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+In order to rebuild and run project after changes were made run these commands in Docker subdirectory.
+
+```
+docker-compose down
+docker-compose build
+docker-compose up
+```
+
+- Running tests
+
+In order to run tests run UnitTests projects present in every module directory
+TODO: Easy way to run all tests
+

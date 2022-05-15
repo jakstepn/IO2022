@@ -5,7 +5,7 @@ namespace ClientModule.Data
 {
     public interface IApplicationDbContext
     {
-        public DbSet<Client> Clients { get; }
+        public DbSet<IdentityClient> Clients { get; }
         public DbSet<Address> Addresses { get; }
         public DbSet<Complaint> Complaints { get; }
         public DbSet<ComplaintState> ComplaintStates { get; }

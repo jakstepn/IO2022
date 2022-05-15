@@ -20,7 +20,7 @@ namespace IdentityServerGrocierio.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
-            modelBuilder.Entity("IdentityServerAspNetIdentity.Models.ApplicationUser", b =>
+            modelBuilder.Entity("IdentityServerAspNetIdentity.Models.Client", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -187,7 +187,7 @@ namespace IdentityServerGrocierio.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("IdentityServerAspNetIdentity.Models.ApplicationUser")
+                    b.HasOne("IdentityServerAspNetIdentity.Models.Client")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -195,7 +195,7 @@ namespace IdentityServerGrocierio.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("IdentityServerAspNetIdentity.Models.ApplicationUser")
+                    b.HasOne("IdentityServerAspNetIdentity.Models.Client")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -208,7 +208,7 @@ namespace IdentityServerGrocierio.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("IdentityServerAspNetIdentity.Models.ApplicationUser")
+                    b.HasOne("IdentityServerAspNetIdentity.Models.Client")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -216,7 +216,7 @@ namespace IdentityServerGrocierio.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("IdentityServerAspNetIdentity.Models.ApplicationUser")
+                    b.HasOne("IdentityServerAspNetIdentity.Models.Client")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
