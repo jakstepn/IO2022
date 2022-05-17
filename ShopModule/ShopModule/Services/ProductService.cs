@@ -1,5 +1,6 @@
 ﻿using ShopModule.Data;
 using ShopModule.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,8 +8,8 @@ namespace ShopModule.Services
 {
     public interface IProductService
     {
-         Product RemoveProduct(string productId);
-         Product FindProduct(string productId);
+         Product RemoveProduct(Guid productId);
+         Product FindProduct(Guid productId);
          Product AddProduct(Product product);
          List<Product> GetPaginatedProductList(int page, int pageSize);
          List<Product> GetPaginatedProductListFromCategory(int page, int pageSize, string category);
@@ -28,7 +29,7 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="productId">Product id to be removed</param>
         /// <returns>Return found and removed product on success, null on failure</returns>
-        public Product RemoveProduct(string productId)
+        public Product RemoveProduct(Guid productId)
         {
             var res = _context.Products.Find(productId);
             bool removed = false;
@@ -45,7 +46,7 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="productId">Id of the element to be found</param>
         /// <returns>Returns the first matching product on success and a null on failure</returns>
-        public Product FindProduct(string productId)
+        public Product FindProduct(Guid productId)
         {
             return _context.Products.Find(productId);
         }

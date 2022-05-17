@@ -28,7 +28,7 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = "1",
+                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -53,7 +53,7 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = "1",
+                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -77,7 +77,7 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = "1",
+                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -102,7 +102,7 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = "1",
+                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -131,7 +131,7 @@ namespace ShopModule_UnitTests
 
             var testProduct1 = new Product
             {
-                Id = "1",
+                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator1",
@@ -141,7 +141,7 @@ namespace ShopModule_UnitTests
 
             var testProduct2 = new Product
             {
-                Id = "2",
+                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator2",

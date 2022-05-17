@@ -11,7 +11,7 @@ namespace ShopModule
 	public class Shop
 	{
 		[Key]
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 		public string PhoneNumber { get; set; }
 		public string Email { get; set; }
 		public Address Address { get; set; }
@@ -20,7 +20,7 @@ namespace ShopModule
 		{
 		}
 
-		public Shop(string id, string phone_number, string email, Address address)
+		public Shop(Guid id, string phone_number, string email, Address address)
         {
 			Id = id;
 			PhoneNumber = phone_number;

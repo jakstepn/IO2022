@@ -10,7 +10,7 @@ namespace ShopModule.Orders
     public class OrderItem
     {
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal GrossPrice { get; set; }
         [Column(TypeName = "decimal(18,4)")]
@@ -37,9 +37,9 @@ namespace ShopModule.Orders
 
         // DataBase Relations
         [ForeignKey("Product")]
-        public string ProductFK { get; set; }
+        public Guid ProductFK { get; set; }
         [ForeignKey("Order")]
-        public string OrderFK { get; set; }
+        public Guid OrderFK { get; set; }
 
     }
 }

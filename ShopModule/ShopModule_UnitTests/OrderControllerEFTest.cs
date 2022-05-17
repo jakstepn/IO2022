@@ -31,7 +31,8 @@ namespace ShopModule_UnitTests
                                       ClientAddress = new Address { City="nonecity", Country="nocountry",
                                                                     Region="noregion", Street="nostreet",
                                                                     StreetNumber="1a", ZipCode="nozipcode" },
-                                      AdditionalInfo="none", CourierFK="0" };
+                                      AdditionalInfo="none", CourierFK= Guid.NewGuid()
+            };
 
             mockOrderSet.Verify(m => m.Add(It.IsAny<Order>()), Times.Once);
         }
@@ -45,12 +46,12 @@ namespace ShopModule_UnitTests
 
             var service = new OrderService(mockContext.Object);
 
-            var testItem1 = new OrderItem { GrossPrice = 10, OrderFK = "1",
-                ProductFK = "1", ProductName = "test", Quantity = 0, Tax = 0 };
-            var testItem2 = new OrderItem { GrossPrice = 50, OrderFK = "1",
-                ProductFK = "2", ProductName = "test1", Quantity = 1, Tax = 0 };
-            var testItem3 = new OrderItem { GrossPrice = 60, OrderFK = "2",
-                ProductFK = "3", ProductName = "test2", Quantity = 2, Tax = 1 };
+            var testItem1 = new OrderItem { GrossPrice = 10, OrderFK = Guid.NewGuid(),
+                ProductFK = Guid.NewGuid(), ProductName = "test", Quantity = 0, Tax = 0 };
+            var testItem2 = new OrderItem { GrossPrice = 50, OrderFK = Guid.NewGuid(),
+                ProductFK = Guid.NewGuid(), ProductName = "test1", Quantity = 1, Tax = 0 };
+            var testItem3 = new OrderItem { GrossPrice = 60, OrderFK = Guid.NewGuid(),
+                ProductFK = Guid.NewGuid(), ProductName = "test2", Quantity = 2, Tax = 1 };
 
             service.AddOrderItems(new OrderItem[] { testItem1, testItem2, testItem3 });
             mockOrderItemSet.Verify(m => m.Add(It.IsAny<OrderItem>()), Times.Exactly(3));
@@ -80,7 +81,7 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                CourierFK = "2"
+                CourierFK = Guid.NewGuid()
             };
 
             var testOrder2 = new Order
@@ -98,7 +99,7 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                CourierFK = "1"
+                CourierFK = Guid.NewGuid()
             };
 
             var testOrder3 = new Order
@@ -116,7 +117,7 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                CourierFK = "4"
+                CourierFK = Guid.NewGuid()
             };
 
             service.AddOrder(testOrder1);
@@ -137,9 +138,11 @@ namespace ShopModule_UnitTests
 
             var service = new OrderService(mockContext.Object);
 
+            var toFind = Guid.NewGuid();
+
             var testOrder1 = new Order
             {
-                Id = "test",
+                Id = toFind,
                 OrderStatus = OrderStatus.Pending,
                 CreationDate = DateTime.MinValue,
                 DeliveryDate = DateTime.Now,
@@ -153,12 +156,12 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                CourierFK = "2"
+                CourierFK = Guid.NewGuid()
             };
 
             var testOrder2 = new Order
             {
-                Id="test2",
+                Id= Guid.NewGuid(),
                 OrderStatus = OrderStatus.Pending,
                 CreationDate = DateTime.MinValue,
                 DeliveryDate = DateTime.Now,
@@ -172,10 +175,10 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                CourierFK = "2"
+                CourierFK = Guid.NewGuid()
             };
 
-            var found = service.FindOrder("test");
+            var found = service.FindOrder(toFind);
 
             Assert.Equal(testOrder1, found);
         }

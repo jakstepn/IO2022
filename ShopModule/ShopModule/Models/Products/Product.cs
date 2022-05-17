@@ -11,7 +11,7 @@ namespace ShopModule.Products
 	public class Product
 	{
 		[Key]
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 
 		[Column(TypeName = "decimal(18,4)")]
 		public decimal Price { get; set; }
@@ -27,6 +27,7 @@ namespace ShopModule.Products
 
 		public Product(ProductMessage message)
         {
+			// TODO generate id
 			Price = message.price;
 			Quantity = message.quantity;
 			ProductTypeFK = message.category;

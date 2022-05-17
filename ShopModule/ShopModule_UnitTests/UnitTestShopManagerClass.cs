@@ -28,13 +28,13 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 Email = "noemail",
-                Id = "firstshop",
+                Id = Guid.NewGuid(),
                 PhoneNumber = "none",
             };
             ShopManager sm = new ShopManager();
             Product p = new Product
             {
-                Id = "test",
+                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "testname",
@@ -61,13 +61,13 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 Email = "noemail",
-                Id = "firstshop",
+                Id = Guid.NewGuid(),
                 PhoneNumber = "none",
             };
             ShopManager sm = new ShopManager();
             Product p = new Product
             {
-                Id = "test",
+                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "testname",

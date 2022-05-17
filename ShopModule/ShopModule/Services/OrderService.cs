@@ -1,6 +1,7 @@
 ﻿using ShopModule.Data;
 using ShopModule.Orders;
 using ShopModule.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,14 +9,14 @@ namespace ShopModule.Services
 {
     public interface IOrderService
     {
-        Order FindOrder(string orderId);
+        Order FindOrder(Guid orderId);
         OrderItem[] AddOrderItems(OrderItem[] items);
         OrderItem AddOrderItem(OrderItem item);
         Order AddOrder(Order order);
         List<Order> FindPendingOrders();
-        Order RemoveOrder(string orderId);
-        int GetProductQuantity(string productId);
-        Product GetProduct(string productId);
+        Order RemoveOrder(Guid orderId);
+        int GetProductQuantity(Guid productId);
+        Product GetProduct(Guid productId);
         void NotifyDeliveryStatusOfStatus(OrderStatus status);
     }
     public class OrderService : IOrderService
@@ -31,7 +32,7 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="productId">Id of the element to be found</param>
         /// <returns>Returns the first matching order on success and a null on failure</returns>
-        public Order FindOrder(string orderId)
+        public Order FindOrder(Guid orderId)
         {
             return _context.Orders.Find(orderId);
         }
@@ -89,7 +90,7 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns>Reurn removed order on succes, null if such doesn't exist</returns>
-        public Order RemoveOrder(string orderId)
+        public Order RemoveOrder(Guid orderId)
         {
             var res = _context.Orders.Find(orderId);
             if (res != null)
@@ -105,7 +106,7 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="productId"></param>
         /// <returns>Returns >=0 if product exists, else -1</returns>
-        public int GetProductQuantity(string productId)
+        public int GetProductQuantity(Guid productId)
         {
             int quantity = -1;
             var product = _context.Products.Find(productId);
@@ -121,7 +122,7 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="productId"></param>
         /// <returns>Rerurns product if exists, else null</returns>
-        public Product GetProduct(string productId)
+        public Product GetProduct(Guid productId)
         {
             return _context.Products.Find(productId);
         }

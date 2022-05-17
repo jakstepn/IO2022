@@ -5,6 +5,7 @@ using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Services;
 using ShopModule_ApiClasses.Messages;
+using System;
 using System.Collections.Generic;
 
 namespace ShopModule.Controllers
@@ -78,7 +79,7 @@ namespace ShopModule.Controllers
             }
         }
         [HttpGet("{orderId}")]
-        public IActionResult GetChosenOrder([FromRoute] string orderId)
+        public IActionResult GetChosenOrder([FromRoute] Guid orderId)
         {
             Order order = _orderService.FindOrder(orderId);
             if (order != null)
@@ -97,7 +98,7 @@ namespace ShopModule.Controllers
         /// <param name="status"></param>
         /// <returns></returns>
         [HttpPut("{orderId}")]
-        public IActionResult SetChosenOrder([FromRoute] string orderId, [FromBody] OrderStatus status)
+        public IActionResult SetChosenOrder([FromRoute] Guid orderId, [FromBody] OrderStatus status)
         {
             Order order = _orderService.FindOrder(orderId);
             if (order != null)

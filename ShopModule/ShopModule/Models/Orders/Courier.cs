@@ -9,7 +9,7 @@ namespace ShopModule.Orders
 	public class Courier
 	{
 		[Key]
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 		public string Email { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
@@ -21,7 +21,7 @@ namespace ShopModule.Orders
 		{
 		}
 
-		public Courier(string id, string email, string first_name, string last_name, string phone_number)
+		public Courier(Guid id, string email, string first_name, string last_name, string phone_number)
         {
 			Id = id;
 			Email = email;

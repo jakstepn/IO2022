@@ -1,8 +1,10 @@
-﻿namespace ShopModule_ApiClasses.Messages
+﻿using System;
+
+namespace ShopModule_ApiClasses.Messages
 {
     public class CourierMessage
     {
-        public string courierId { get; set; }
-        public string orderId { get; set; }
+        public Guid courierId { get; set; }
+        public Guid orderId { get; set; }
     }
 }
