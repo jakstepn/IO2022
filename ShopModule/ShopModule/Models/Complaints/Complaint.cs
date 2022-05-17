@@ -1,3 +1,4 @@
+using ShopModule;
 using ShopModule.Complaints;
 using ShopModule_ApiClasses.Messages;
 using System;
@@ -24,6 +25,11 @@ namespace Complaints
             Id = message.complaintId;
             Text = message.text;
             CurrentStatus = (CurrentComplaintState)message.status;
+        }
+
+        public ComplaintMessage Convert(IVisitor visitor)
+        {
+            return visitor.Visit(this);
         }
     }
 }

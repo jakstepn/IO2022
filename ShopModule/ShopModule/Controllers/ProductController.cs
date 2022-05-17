@@ -28,8 +28,8 @@ namespace ShopModule.Controllers
         [HttpPost]
         public IActionResult AddProductsToShopEndpoint([FromBody] ProductMessage product)
         {
-            
-            var result = _service.AddProduct(new Product(product));
+            ProductType category = _service.GetOrCreateCategory(product.category);
+            var result = _service.AddProduct(new Product(product, category));
             if (result != null)
             {
                 return ResponseMessage.Success("Successfully added product.", 200);
@@ -40,12 +40,12 @@ namespace ShopModule.Controllers
             }
         }
         [HttpDelete("{productId}")]
-        public IActionResult DeleteProductEndpoint([FromRoute] Guid productId)
+        public IActionResult DeleteProductEndpoint([FromRoute] string productId)
         {
             var prod = _service.RemoveProduct(productId);
             if (prod != null)
             {
-                return ResponseMessage.Success(prod, 200);
+                return ResponseMessage.Success(prod.Convert(StaticData.defaultConverter), 200);
             }
             else
             {
@@ -53,12 +53,12 @@ namespace ShopModule.Controllers
             }
         }
         [HttpGet("{productId}")]
-        public IActionResult GetProductInfoEndpoint([FromRoute] Guid productId)
+        public IActionResult GetProductInfoEndpoint([FromRoute] string productId)
         {
             var prod = _service.FindProduct(productId);
             if (prod != null)
             {
-                return ResponseMessage.Success(prod, 200);
+                return ResponseMessage.Success(prod.Convert(StaticData.defaultConverter), 200);
             }
             else
             {

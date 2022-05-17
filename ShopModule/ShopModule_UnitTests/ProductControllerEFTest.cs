@@ -2,6 +2,7 @@
 using Moq;
 using ShopModule.Data;
 using ShopModule.Location;
+using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Products;
 using ShopModule.Services;
@@ -28,7 +29,6 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -38,7 +38,7 @@ namespace ShopModule_UnitTests
 
             service.AddProduct(testProduct);
             var products = service.GetPaginatedProductList(0, 1);
-            Assert.Contains(testProduct, products);
+            Assert.Contains(testProduct.Convert(StaticData.defaultConverter), products);
         }
 
         [Fact]
@@ -53,7 +53,6 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -77,7 +76,6 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -86,7 +84,7 @@ namespace ShopModule_UnitTests
             };
 
             service.AddProduct(testProduct);
-            service.RemoveProduct(testProduct.Id);
+            service.RemoveProduct(testProduct.ProductName);
             mockOrderSet.Verify(m => m.Remove(It.IsAny<Product>()), Times.Once);
         }
 
@@ -102,7 +100,6 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -111,7 +108,7 @@ namespace ShopModule_UnitTests
             };
 
             service.AddProduct(testProduct);
-            var product = service.FindProduct(testProduct.Id);
+            var product = service.FindProduct(testProduct.ProductName);
             Assert.Equal(testProduct, product);
         }
 
@@ -131,7 +128,6 @@ namespace ShopModule_UnitTests
 
             var testProduct1 = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator1",
@@ -141,7 +137,6 @@ namespace ShopModule_UnitTests
 
             var testProduct2 = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator2",
@@ -152,7 +147,7 @@ namespace ShopModule_UnitTests
             service.AddProduct(testProduct1);
             service.AddProduct(testProduct2);
             var product = service.GetPaginatedProductListFromCategory(0,1,testCategory1.Name);
-            Assert.Contains(testProduct1, product);
+            Assert.Contains(testProduct1.Convert(StaticData.defaultConverter), product);
         }
     }
 }

@@ -3,6 +3,7 @@ using Moq;
 using ShopModule.Controllers;
 using ShopModule.Data;
 using ShopModule.Location;
+using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Services;
 using System;
@@ -46,12 +47,9 @@ namespace ShopModule_UnitTests
 
             var service = new OrderService(mockContext.Object);
 
-            var testItem1 = new OrderItem { GrossPrice = 10, OrderFK = Guid.NewGuid(),
-                ProductFK = Guid.NewGuid(), ProductName = "test", Quantity = 0, Tax = 0 };
-            var testItem2 = new OrderItem { GrossPrice = 50, OrderFK = Guid.NewGuid(),
-                ProductFK = Guid.NewGuid(), ProductName = "test1", Quantity = 1, Tax = 0 };
-            var testItem3 = new OrderItem { GrossPrice = 60, OrderFK = Guid.NewGuid(),
-                ProductFK = Guid.NewGuid(), ProductName = "test2", Quantity = 2, Tax = 1 };
+            var testItem1 = new OrderItem { GrossPrice = 10, OrderFK = Guid.NewGuid(), ProductName = "test", Quantity = 0, Tax = 0 };
+            var testItem2 = new OrderItem { GrossPrice = 50, OrderFK = Guid.NewGuid(), ProductName = "test1", Quantity = 1, Tax = 0 };
+            var testItem3 = new OrderItem { GrossPrice = 60, OrderFK = Guid.NewGuid(), ProductName = "test2", Quantity = 2, Tax = 1 };
 
             service.AddOrderItems(new OrderItem[] { testItem1, testItem2, testItem3 });
             mockOrderItemSet.Verify(m => m.Add(It.IsAny<OrderItem>()), Times.Exactly(3));
@@ -175,7 +173,7 @@ namespace ShopModule_UnitTests
 
             var found = service.FindOrder(toFind);
 
-            Assert.Equal(testOrder1, found);
+            Assert.Equal(testOrder1.Convert(StaticData.defaultConverter), found);
         }
     }
 }

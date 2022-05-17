@@ -24,44 +24,29 @@ namespace ShopModule.Controllers
         [HttpPost("place")]
         public IActionResult PlaceOrder([FromBody] OrderMessage message)
         {
-            OrderStatus orderStatus = OrderStatus.Pending;
-            int len = message.orderItems.Length;
-            OrderItem[] items = new OrderItem[len];
-            bool allItemsExist = true;
-            for (int i = 0; i < len; i++)
+            bool success = false;
+            try
             {
-                items[i] = new OrderItem(message.orderItems[i]);
-                if (!(allItemsExist = items[i].Product.Available) &&
-                    !(allItemsExist = items[i].Product.Quantity - items[i].Quantity >= 0))
+                Order o = new Order(message);
+                var messages = _orderService.AddOrderAndItems(message.orderItems, o);
+                if(messages != null)
                 {
-                    break;
+                    success = true;
+                }
+
+                if (success)
+                {
+                    _orderService.NotifyDeliveryStatusOfStatus(o.OrderStatus);
+                    return ResponseMessage.Success(message, 201);
+                }
+                else
+                {
+                    return ResponseMessage.Error("Failed to create order", 404);
                 }
             }
-            Order changeStatus()
+            catch (Exception)
             {
-                var order = new Order(message);
-                order.OrderStatus = orderStatus;
-                return order;
-            }
-            if (allItemsExist && _orderService.AddOrder(changeStatus()) != null &&
-                _orderService.AddOrderItems(items) != null)
-            {
-                foreach (var item in items)
-                {
-                    var product = _orderService.GetProduct(item.ProductFK);
-                    product.Quantity -= item.Quantity;
-                    if (product != null && product.Quantity <= 0)
-                    {
-                        product.Available = false;
-                    }
-                }
-                _orderService.NotifyDeliveryStatusOfStatus(orderStatus);
-                return ResponseMessage.Success(message, 201);
-            }
-            else
-            {
-                _orderService.RemoveOrder(message.orderId);
-                return ResponseMessage.Error("Failed to create order", 404);
+                throw;
             }
         }
 
@@ -81,7 +66,7 @@ namespace ShopModule.Controllers
         [HttpGet("{orderId}")]
         public IActionResult GetChosenOrder([FromRoute] Guid orderId)
         {
-            Order order = _orderService.FindOrder(orderId);
+            OrderMessage order = _orderService.FindOrder(orderId);
             if (order != null)
             {
                 return ResponseMessage.Success(order, 200);
@@ -100,10 +85,9 @@ namespace ShopModule.Controllers
         [HttpPut("{orderId}")]
         public IActionResult SetChosenOrder([FromRoute] Guid orderId, [FromBody] OrderStatus status)
         {
-            Order order = _orderService.FindOrder(orderId);
+            OrderMessage order = _orderService.FindOrder(orderId);
             if (order != null)
             {
-                order.ChangeStatus(status);
                 if (status == OrderStatus.ParcelCollected)
                 {
                     // TODO

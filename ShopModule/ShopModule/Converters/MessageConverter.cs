@@ -1,4 +1,6 @@
-﻿using ShopModule.Orders;
+﻿using Complaints;
+using ShopModule.Orders;
+using ShopModule.Products;
 using ShopModule_ApiClasses.Messages;
 
 namespace ShopModule.Converters
@@ -28,13 +30,42 @@ namespace ShopModule.Converters
             return new OrderMessage
             {
                 additionalInfo = order.AdditionalInfo,
-                clientAddress = new AddressMessage { city = order.ClientAddress.City, street = order.ClientAddress.Street, zipCode = order.ClientAddress.ZipCode },
+                clientAddress = order.ClientAddress != null ? new AddressMessage
+                {
+                    city = order.ClientAddress.City,
+                    street = order.ClientAddress.Street,
+                    zipCode = order.ClientAddress.ZipCode
+                } : null,
                 confirmedPayment = order.ConfirmedPayment,
                 creationDate = order.CreationDate,
                 deliveryDate = order.DeliveryDate,
                 orderItems = items,
                 orderId = order.Id,
                 orderStatus = (OrderStatusMessage)order.OrderStatus,
+            };
+        }
+
+        public ComplaintMessage Visit(Complaint complaint)
+        {
+            return new ComplaintMessage
+            {
+                complaintId = complaint.Id,
+                // TODO
+                // ADD orderid
+                orderId = System.Guid.Empty,
+                status = (CurrentComplaintStateMessage)complaint.CurrentStatus,
+                text = complaint.Text
+            };
+        }
+
+        public ProductMessage Visit(Product product)
+        {
+            return new ProductMessage
+            {
+                category = product.ProductTypeFK,
+                name = product.ProductName,
+                price = product.Price,
+                quantity = product.Quantity
             };
         }
     }

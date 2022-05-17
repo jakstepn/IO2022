@@ -26,18 +26,20 @@ namespace ShopModule.Orders
         {
         }
 
-        public OrderItem(OrderItemMessage message)
+        public OrderItem(OrderItemMessage message, Order order, Product product)
         {
             Id = message.orderItemId;
             GrossPrice = message.grossPrice;
             ProductName = message.productName;
             Quantity = message.quantity;
             Currency = message.currency;
+            Order = order;
+            Product = product;
         }
 
         // DataBase Relations
         [ForeignKey("Product")]
-        public Guid ProductFK { get; set; }
+        public string ProductFK { get; set; }
         [ForeignKey("Order")]
         public Guid OrderFK { get; set; }
 

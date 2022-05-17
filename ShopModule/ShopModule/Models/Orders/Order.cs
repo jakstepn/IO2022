@@ -46,14 +46,6 @@ namespace ShopModule.Orders
 			DeliveryDate= message.deliveryDate;
 			AdditionalInfo = message.additionalInfo;
 			ClientAddress = new Address(message.clientAddress);
-			Items = new List<OrderItem>();
-			if (message.orderItems != null)
-			{
-				foreach (var item in message.orderItems)
-				{
-					Items.Add(new OrderItem(item));
-				}
-			}
 		}
 
 		public void ChangeStatus(OrderStatus status) => OrderStatus = status;

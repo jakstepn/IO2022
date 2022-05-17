@@ -1,5 +1,7 @@
 ﻿using Complaints;
 using ShopModule.Data;
+using ShopModule.Models;
+using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +12,7 @@ namespace ShopModule.Services
         Complaint AddComplaint(Complaint complaint);
         Complaint AcceptComplaint(Guid complaintId);
         Complaint RejectComplaint(Guid complaintId);
-        List<Complaint> PendingComplaints();
+        List<ComplaintMessage> PendingComplaints();
         Complaint GetComplaint(Guid complaintId);
 
     }
@@ -46,14 +48,14 @@ namespace ShopModule.Services
         /// Gets all of existing Complaints that has status set as pending
         /// </summary>
         /// <returns>List of Complaint objects</returns>
-        public List<Complaint> PendingComplaints()
+        public List<ComplaintMessage> PendingComplaints()
         {
-            List<Complaint> res = new List<Complaint>();
+            List<ComplaintMessage> res = new List<ComplaintMessage>();
             foreach (var complaint in _context.Complaints)
             {
                 if (complaint.CurrentStatus == Complaints.CurrentComplaintState.Pending)
                 {
-                    res.Add(complaint);
+                    res.Add(complaint.Convert(StaticData.defaultConverter));
                 }
             }
             return res;

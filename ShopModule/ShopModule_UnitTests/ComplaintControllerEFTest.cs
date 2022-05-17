@@ -4,6 +4,7 @@ using Moq;
 using ShopModule.Complaints;
 using ShopModule.Data;
 using ShopModule.Location;
+using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Services;
 using System;
@@ -72,7 +73,7 @@ namespace ShopModule_UnitTests
 
             var complaints = service.PendingComplaints();
 
-            Assert.Contains(testComplaint2, complaints);
+            Assert.Contains(testComplaint2.Convert(StaticData.defaultConverter), complaints);
         }
 
         [Fact]
