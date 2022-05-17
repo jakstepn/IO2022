@@ -5,6 +5,7 @@ using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Services;
 using ShopModule_ApiClasses.Messages;
+using System;
 using System.Collections.Generic;
 namespace ShopModule.Controllers
 {
@@ -20,7 +21,7 @@ namespace ShopModule.Controllers
         }
 
         [HttpGet("{complaintId}")]
-        public IActionResult GetChosenComplaint([FromBody] string complaintId)
+        public IActionResult GetChosenComplaint([FromBody] Guid complaintId)
         {
             var res = _complaintService.GetComplaint(complaintId);
             if (res != null)
@@ -61,7 +62,7 @@ namespace ShopModule.Controllers
             }
         }
         [HttpPut("{complaintId}/accept")]
-        public IActionResult AcceptComplaintEndpoint([FromRoute] string complaintId)
+        public IActionResult AcceptComplaintEndpoint([FromRoute] Guid complaintId)
         {
             var accepted = _complaintService.AcceptComplaint(complaintId);
             if (accepted != null)
@@ -74,7 +75,7 @@ namespace ShopModule.Controllers
             }
         }
         [HttpPut("{complaintId}/reject")]
-        public IActionResult RejectComplaintEndpoint([FromRoute] string complaintId)
+        public IActionResult RejectComplaintEndpoint([FromRoute] Guid complaintId)
         {
             var rejected = _complaintService.RejectComplaint(complaintId);
             if (rejected != null)

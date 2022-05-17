@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopModule.Data;
 
 namespace ShopModule.Migrations
 {
     [DbContext(typeof(ShopModuleDbContext))]
-    partial class ShopModuleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220516113818_firstguidmigration")]
+    partial class firstguidmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,9 +23,8 @@ namespace ShopModule.Migrations
 
             modelBuilder.Entity("Complaints.Complaint", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CurrentStatus")
                         .HasColumnType("int");
@@ -38,9 +39,8 @@ namespace ShopModule.Migrations
 
             modelBuilder.Entity("ShopModule.Employees.ShopEmployee", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CurrentState")
                         .HasColumnType("int");
@@ -60,8 +60,8 @@ namespace ShopModule.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ShopId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ShopId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -72,9 +72,10 @@ namespace ShopModule.Migrations
 
             modelBuilder.Entity("ShopModule.Location.Address", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -101,9 +102,8 @@ namespace ShopModule.Migrations
 
             modelBuilder.Entity("ShopModule.Orders.Courier", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -124,24 +124,23 @@ namespace ShopModule.Migrations
 
             modelBuilder.Entity("ShopModule.Orders.Order", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AdditionalInfo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("AddressFK")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("AddressFK")
+                        .HasColumnType("int");
 
-                    b.Property<Guid?>("ClientAddressId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("ClientAddressId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("ConfirmedPayment")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("CourierFK")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CourierFK")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -152,11 +151,11 @@ namespace ShopModule.Migrations
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid?>("ShopId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ShopId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -173,9 +172,8 @@ namespace ShopModule.Migrations
 
             modelBuilder.Entity("ShopModule.Orders.OrderItem", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
@@ -183,11 +181,11 @@ namespace ShopModule.Migrations
                     b.Property<decimal>("GrossPrice")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<Guid>("OrderFK")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("OrderFK")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("ProductFK")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProductFK")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
@@ -209,9 +207,8 @@ namespace ShopModule.Migrations
 
             modelBuilder.Entity("ShopModule.Products.Product", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Available")
                         .HasColumnType("bit");
@@ -228,8 +225,8 @@ namespace ShopModule.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ShopId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ShopId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("TaxRate")
                         .HasColumnType("int");
@@ -258,12 +255,11 @@ namespace ShopModule.Migrations
 
             modelBuilder.Entity("ShopModule.Shop", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid?>("AddressId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -300,9 +296,7 @@ namespace ShopModule.Migrations
 
                     b.HasOne("ShopModule.Orders.Courier", "Courier")
                         .WithMany("Orders")
-                        .HasForeignKey("CourierFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourierFK");
 
                     b.HasOne("ShopModule.Products.Product", null)
                         .WithMany("Orders")
@@ -321,15 +315,11 @@ namespace ShopModule.Migrations
                 {
                     b.HasOne("ShopModule.Orders.Order", "Order")
                         .WithMany("Items")
-                        .HasForeignKey("OrderFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderFK");
 
                     b.HasOne("ShopModule.Products.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductFK");
 
                     b.Navigation("Order");
 

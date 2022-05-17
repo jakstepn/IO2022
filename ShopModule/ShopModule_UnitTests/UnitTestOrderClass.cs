@@ -28,7 +28,7 @@ namespace ShopModule_UnitTests
         public void TestOrderStatus(OrderStatus status)
         {
             OrderStatus defStatus = OrderStatus.Collecting;
-            Order o = new Order("testid", null, DateTime.Now, DateTime.Now, "", defStatus);
+            Order o = new Order(Guid.NewGuid(), null, DateTime.Now, DateTime.Now, "", defStatus);
             o.ChangeStatus(status);
             Assert.Equal(status, o.OrderStatus);
         }

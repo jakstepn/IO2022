@@ -1,5 +1,6 @@
 ﻿using Complaints;
 using ShopModule.Data;
+using System;
 using System.Collections.Generic;
 
 namespace ShopModule.Services
@@ -7,10 +8,10 @@ namespace ShopModule.Services
     public interface IComplaintService
     {
         Complaint AddComplaint(Complaint complaint);
-        Complaint AcceptComplaint(string complaintId);
-        Complaint RejectComplaint(string complaintId);
+        Complaint AcceptComplaint(Guid complaintId);
+        Complaint RejectComplaint(Guid complaintId);
         List<Complaint> PendingComplaints();
-        Complaint GetComplaint(string complaintId);
+        Complaint GetComplaint(Guid complaintId);
 
     }
     public class ComplaintService : IComplaintService
@@ -63,7 +64,7 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="complaintId">Complaint primary key</param>
         /// <returns>Returns found Complaint object or null if such doesn't exist</returns>
-        public Complaint AcceptComplaint(string complaintId)
+        public Complaint AcceptComplaint(Guid complaintId)
         {
             return ChangeState(complaintId, Complaints.CurrentComplaintState.Accepted);
         }
@@ -73,12 +74,12 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="complaintId">Complaint primary key</param>
         /// <returns>Returns found Complaint object or null if such doesn't exist</returns>
-        public Complaint RejectComplaint(string complaintId)
+        public Complaint RejectComplaint(Guid complaintId)
         {
             return ChangeState(complaintId, Complaints.CurrentComplaintState.Rejected);
         }
 
-        private Complaint ChangeState(string complaintId, Complaints.CurrentComplaintState state)
+        private Complaint ChangeState(Guid complaintId, Complaints.CurrentComplaintState state)
         {
             var res = _context.Complaints.Find(complaintId);
             if (res != null)
@@ -150,7 +151,7 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="complaintId"></param>
         /// <returns>Returns complaint on success and null on failure</returns>
-        public Complaint GetComplaint(string complaintId)
+        public Complaint GetComplaint(Guid complaintId)
         {
             return _context.Complaints.Find(complaintId);
         }

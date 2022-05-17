@@ -4,6 +4,7 @@ using ShopModule.Models;
 using ShopModule.Products;
 using ShopModule.Services;
 using ShopModule_ApiClasses.Messages;
+using System;
 
 namespace ShopModule.Controllers
 {
@@ -38,7 +39,7 @@ namespace ShopModule.Controllers
             }
         }
         [HttpDelete("{productId}")]
-        public IActionResult DeleteProductEndpoint([FromRoute] string productId)
+        public IActionResult DeleteProductEndpoint([FromRoute] Guid productId)
         {
             var prod = _service.RemoveProduct(productId);
             if (prod != null)
@@ -51,7 +52,7 @@ namespace ShopModule.Controllers
             }
         }
         [HttpGet("{productId}")]
-        public IActionResult GetProductInfoEndpoint([FromRoute] string productId)
+        public IActionResult GetProductInfoEndpoint([FromRoute] Guid productId)
         {
             var prod = _service.FindProduct(productId);
             if (prod != null)

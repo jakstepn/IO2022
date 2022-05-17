@@ -12,7 +12,7 @@ namespace ShopModule.Orders
 	public class Order
 	{
 		[Key]
-		public string Id { get; set; }	
+		public Guid Id { get; set; }	
 		public OrderStatus OrderStatus { get; set; }
 		public DateTime CreationDate { get; set; }
 		public DateTime DeliveryDate { get; set; }
@@ -26,7 +26,7 @@ namespace ShopModule.Orders
 		{
 		}
 
-		public Order(string id, Address client_address, DateTime delivery_date, DateTime creation_date,
+		public Order(Guid id, Address client_address, DateTime delivery_date, DateTime creation_date,
 			string additional_info = "", OrderStatus order_status = OrderStatus.WaitingForCollection)
         {
 			Id = id;
@@ -51,9 +51,9 @@ namespace ShopModule.Orders
 		public void ChangeStatus(OrderStatus status) => OrderStatus = status;
 
 		[ForeignKey("Courier")]
-		public string CourierFK { get; set; }
+		public Guid CourierFK { get; set; }
 		[ForeignKey("Address")]
-		public int AddressFK { get; set; }
+		public Guid AddressFK { get; set; }
 
 	}
 }
