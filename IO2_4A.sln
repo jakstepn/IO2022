@@ -31,15 +31,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{95
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontEndWebApp", "FrontEnd\FrontEndWebApp\FrontEndWebApp.csproj", "{1E41017B-8992-42E1-B73A-32C78EEA3FAD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EB579985-3EB1-42B1-8BCE-25F88EA84D5F}"
-	ProjectSection(SolutionItems) = preProject
-		Docker\.env = Docker\.env
-		Docker\docker-compose.yml = Docker\docker-compose.yml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{94B9929B-8379-4BCB-B545-F6B8A552728B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerGrocierio", "IdentityServer\IdentityServer\IdentityServerGrocierio.csproj", "{D489BCA3-8CA3-4B60-883E-E144FB50C17C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{5B5DF504-B6B3-47A6-88F8-739B801E92C3}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "Docker\docker-compose.dcproj", "{993B75CA-4F0C-4845-9936-DA06EEE15580}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +89,10 @@ Global
 		{D489BCA3-8CA3-4B60-883E-E144FB50C17C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D489BCA3-8CA3-4B60-883E-E144FB50C17C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D489BCA3-8CA3-4B60-883E-E144FB50C17C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{993B75CA-4F0C-4845-9936-DA06EEE15580}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{993B75CA-4F0C-4845-9936-DA06EEE15580}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{993B75CA-4F0C-4845-9936-DA06EEE15580}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{993B75CA-4F0C-4845-9936-DA06EEE15580}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +109,7 @@ Global
 		{365ECB74-4100-4901-9E37-C4E9A6AD3948} = {FD08FCB4-4B5C-4C8C-8AA0-19D917A20500}
 		{1E41017B-8992-42E1-B73A-32C78EEA3FAD} = {95FA22DC-674E-44D6-ADD8-363E0FC45D3A}
 		{D489BCA3-8CA3-4B60-883E-E144FB50C17C} = {94B9929B-8379-4BCB-B545-F6B8A552728B}
+		{993B75CA-4F0C-4845-9936-DA06EEE15580} = {5B5DF504-B6B3-47A6-88F8-739B801E92C3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D136A22-D369-484A-89D1-9D0BCAFAB762}

@@ -12,11 +12,13 @@ services:
       - grocerionetwork
     volumes:
       - dbvolume:/var/opt/mssql
-  clientModule:
+  clientmodule:
     image: ${DOCKER_REGISTRY-}clientmodule
     ports: 
     - "44382:443"
     - "44383:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
     build:
       context: ..
       dockerfile: ./ClientModule/ClientModule/Dockerfile
@@ -26,11 +28,13 @@ services:
     networks:
       - grocerionetwork
 
-  deliveryModule:
+  deliverymodule:
     image: ${DOCKER_REGISTRY-}deliverymodule
     ports: 
     - "44384:443"
     - "44385:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
     build:
       context: ..
       dockerfile: ./DeliveryModule/DeliveryModule/Dockerfile
@@ -40,11 +44,13 @@ services:
     networks:
       - grocerionetwork
 
-  shopModule:
+  shopmodule:
     image: ${DOCKER_REGISTRY-}shopmodule
     ports: 
     - "44386:443"
     - "44387:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
     build:
       context: ..
       dockerfile: ./ShopModule/ShopModule/Dockerfile
@@ -59,6 +65,8 @@ services:
     ports:
     - "44388:443"
     - "44389:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
     build:
       context: ..
       dockerfile: ./IdentityServer/IdentityServer/Dockerfile
