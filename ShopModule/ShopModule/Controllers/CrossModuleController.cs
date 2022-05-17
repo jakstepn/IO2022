@@ -38,16 +38,5 @@ namespace ShopModule.Controllers
         {
             return null;
         }
-
-        private async Task<bool> SendMessageAsync<T>(string url, T message)
-        {
-            //using (var client = new HttpClient())
-            //{
-            //    var response = await client.PostAsync(url,
-            //        new StringContent(
-            //            JsonSerializer.Serialize(message)));
-            //}
-            return true;
-        }
     }
 }

@@ -106,11 +106,13 @@ namespace ShopModule.Controllers
                 order.ChangeStatus(status);
                 if (status == OrderStatus.ParcelCollected)
                 {
-                    NotifyClientPackageCollected();
+                    // TODO
+                    // Notify Client package collected
                 }
                 else if (status == OrderStatus.Delivered)
                 {
-                    NotifyClientPackageDelivered();
+                    // TODO
+                    // Notify client package delivered
                 }
                 else
                 {
@@ -122,16 +124,6 @@ namespace ShopModule.Controllers
             {
                 return ResponseMessage.Error("Order doesn't exist!", 404);
             }
-        }
-
-        private void NotifyClientPackageCollected()
-        {
-
-        }
-
-        private void NotifyClientPackageDelivered()
-        {
-
         }
     }
 }

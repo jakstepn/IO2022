@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShopModule_ApiClasses.Messages;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,5 +16,10 @@ namespace ShopModule.Products
 		public ProductType()
         {
         }
+
+		public ProductType(ProductTypeMessage message)
+		{
+			Name = message.name;
+		}
 	}
 }
