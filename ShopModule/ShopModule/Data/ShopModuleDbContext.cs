@@ -16,7 +16,6 @@ namespace ShopModule.Data
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ShopEmployee> ShopEmployees { get; set; }
         public DbSet<ShopManager> ShopManagers { get; set; }
-        public DbSet<Shop> Shops { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -25,7 +24,7 @@ namespace ShopModule.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            //modelBuilder.Seed();
         }
     }
 }

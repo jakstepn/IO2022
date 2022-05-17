@@ -15,7 +15,7 @@ namespace ShopModule.Data
             builder.Entity<Address>().HasData(
                 new Address
                 {
-                    Id = System.Guid.Parse("TEST1"),
+                    Id = System.Guid.Parse("EEEEEEEE-DDDD-CCCC-0000-000000000000"),
                     City = "test",
                     Country = "test",
                     Region = "test",
@@ -25,7 +25,7 @@ namespace ShopModule.Data
                 },
             new Address
             {
-                Id = System.Guid.Parse("TEST2"),
+                Id = System.Guid.Parse("EEEEEEEE-DDDD-FFFF-0000-000000000000"),
                 City = "test2",
                 Country = "test2",
                 Region = "test2",
@@ -39,10 +39,12 @@ namespace ShopModule.Data
             builder.Entity<ProductType>().HasData(
                 new ProductType
                 {
+                    Id = "category1",
                     Name = "testingCategory"
                 },
                 new ProductType
                 {
+                    Id = "category2",
                     Name = "testingCategory2"
                 });
 
@@ -50,7 +52,7 @@ namespace ShopModule.Data
             builder.Entity<Product>().HasData(
                 new Product
                 {
-                    Id = System.Guid.Parse("TESTPRODUCT"),
+                    Id = System.Guid.Parse("EEEEEEEE-AAAA-CCCC-0000-000000000000"),
                     ProductName = "testName",
                     Price = 1,
                     Available = true,
@@ -60,6 +62,8 @@ namespace ShopModule.Data
                 },
                 new Product
                 {
+
+                    Id = System.Guid.Parse("FFFFFFFF-AAAA-CCC0-0000-000000000000"),
                     ProductName = "testName2",
                     Price = 3,
                     Available = true,
@@ -69,6 +73,7 @@ namespace ShopModule.Data
                 },
                 new Product
                 {
+                    Id = System.Guid.Parse("FFFFFFFF-AAAA-C000-0000-000000000000"),
                     ProductName = "testName3",
                     Price = 5,
                     Available = false,
@@ -78,6 +83,7 @@ namespace ShopModule.Data
                 },
                 new Product
                 {
+                    Id = System.Guid.Parse("FFFFFFFF-AAAA-CC00-0000-000000000000"),
                     ProductName = "testName4",
                     Price = 6,
                     Available = true,
@@ -90,7 +96,7 @@ namespace ShopModule.Data
             builder.Entity<ShopEmployee>().HasData(
                 new ShopEmployee
                 {
-                    Id = System.Guid.Parse("TESTOWYPRACOWNIK"),
+                    Id = System.Guid.Parse("FFFFFFFF-CCCC-CCCC-0000-000000000000"),
                     CurrentState = CurrentState.Idle,
                     Email = "testmail",
                     EmployedSince = System.DateTime.MinValue,
@@ -103,13 +109,14 @@ namespace ShopModule.Data
             builder.Entity<ShopManager>().HasData(
                 new ShopManager
                 {
-                    Id = System.Guid.Parse("TESTOWYPRACOWNIK")
+                    Id = System.Guid.Parse("FFFFFFFF-CCCC-FFFF-0000-000000000000")
                 });
 
             // Add seed Complaint
             builder.Entity<Complaint>().HasData(
                 new Complaint
                 {
+                    Id = System.Guid.Parse("FFFFFFFF-AAAA-0000-0000-000000000000"),
                     CurrentStatus = Complaints.CurrentComplaintState.Pending,
                     Text = "test_complaint"
                 });
@@ -118,10 +125,11 @@ namespace ShopModule.Data
             builder.Entity<OrderItem>().HasData(
                 new OrderItem
                 {
+                    Id = System.Guid.Parse("FFFFFFFF-AAAA-CCCC-A000-000000000000"),
                     Currency = "USD",
-                    OrderFK = System.Guid.Parse("TESTOWYORDER"),
+                    OrderFK = System.Guid.Parse("EEEEEEEE-CCCC-AAAA-0000-000000000000"),
                     GrossPrice = 10,
-                    ProductFK = System.Guid.Parse("TESTPRODUCT"),
+                    ProductFK = System.Guid.Parse("EEEEEEEE-AAAA-CCCC-0000-000000000000"),
                     ProductName = "name",
                     Quantity = 1,
                     Tax = 0,
@@ -131,11 +139,12 @@ namespace ShopModule.Data
             builder.Entity<Order>().HasData(
                 new Order
                 {
-                    Id = System.Guid.Parse("TESTOWYORDER"),
+                    Id = System.Guid.Parse("EEEEEEEE-CCCC-AAAA-0000-000000000000"),
                     AdditionalInfo = "additional",
                     ConfirmedPayment = false,
                     CreationDate = System.DateTime.MinValue,
                     DeliveryDate = System.DateTime.MinValue,
+                    AddressFK = System.Guid.Parse("EEEEEEEE-DDDD-FFFF-0000-000000000000")
                 });
         }
     }

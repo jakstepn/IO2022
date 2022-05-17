@@ -33,22 +33,22 @@ namespace ShopModule_UnitTests
             Assert.Equal(status, o.OrderStatus);
         }
 
-        [Fact]
-        public void TestDefaultCourierStatus()
-        {
-            Courier courier = new Courier();
-            Assert.Equal(CourierCurrentState.Away_from_work,
-                courier.CheckCourierAvailability());
-        }
+        //[Fact]
+        //public void TestDefaultCourierStatus()
+        //{
+        //    Courier courier = new Courier();
+        //    Assert.Equal(CourierCurrentState.Away_from_work,
+        //        courier.CheckCourierAvailability());
+        //}
 
-        [Fact]
-        public void TestShopProductAvability()
-        {
-            Product p = new Product { Available = true };
-            Shop shop = new Shop();
-            shop.Products = new List<Product>();
-            shop.Products.Add(p);
-            Assert.True(shop.IsProductAvailable(p));
-        }
+        //    [Fact]
+        //    public void TestShopProductAvability()
+        //    {
+        //        Product p = new Product { Available = true };
+        //        Shop shop = new Shop();
+        //        shop.Products = new List<Product>();
+        //        shop.Products.Add(p);
+        //        Assert.True(shop.IsProductAvailable(p));
+        //    }
     }
 }

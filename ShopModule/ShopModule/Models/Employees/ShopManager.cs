@@ -14,21 +14,21 @@ namespace ShopModule.Employees
 		{
 		}
 
-		public void AddProduct(Shop shop, Product product) { shop.Products.Add(product); }
-		public void DeleteProduct(Shop shop, Product product) { shop.Products.Remove(product); }
-		public void AddShop(Shop shop, Product product) { shop.Products.Add(product); }
-		public void DeleteShop(Shop shop) { }
-		public List<Order> GetOrdersHistory(Shop shop) 
-		{ 
-			List<Order> finished = new List<Order>();
-            foreach (var item in shop.Orders)
-            {
-				if(item.OrderStatus == OrderStatus.Delivered)
-                {
-					finished.Add(item);
-                }
-            }
-			return finished;
-		}
+		//public void AddProduct(Shop shop, Product product) { shop.Products.Add(product); }
+		//public void DeleteProduct(Shop shop, Product product) { shop.Products.Remove(product); }
+		//public void AddShop(Shop shop, Product product) { shop.Products.Add(product); }
+		//public void DeleteShop(Shop shop) { }
+		//public List<Order> GetOrdersHistory(Shop shop) 
+		//{ 
+		//	List<Order> finished = new List<Order>();
+  //          foreach (var item in shop.Orders)
+  //          {
+		//		if(item.OrderStatus == OrderStatus.Delivered)
+  //              {
+		//			finished.Add(item);
+  //              }
+  //          }
+		//	return finished;
+		//}
 	}
 }
