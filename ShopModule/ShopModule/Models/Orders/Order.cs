@@ -19,7 +19,7 @@ namespace ShopModule.Orders
 		public Address ClientAddress { get; set; }
 		public string AdditionalInfo { get; set; }
 		public bool ConfirmedPayment { get; set; }
-		public Courier Courier { get; set; }
+		//public Courier Courier { get; set; }
 		public ICollection<OrderItem> Items { get; set; }
 
 		public Order()
