@@ -39,12 +39,10 @@ namespace ShopModule.Data
             builder.Entity<ProductType>().HasData(
                 new ProductType
                 {
-                    Id = "category1",
                     Name = "testingCategory"
                 },
                 new ProductType
                 {
-                    Id = "category2",
                     Name = "testingCategory2"
                 });
 

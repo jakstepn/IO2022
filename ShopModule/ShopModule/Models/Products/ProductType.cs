@@ -9,7 +9,7 @@ namespace ShopModule.Products
 	[Table("ProductTypes")]
 	public class ProductType
 	{
-		public string Id { get; set; }
+        [Key]
 		public string Name { get; set; }
 		public ICollection<Product> Products { get; set; }
 

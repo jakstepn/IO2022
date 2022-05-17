@@ -28,6 +28,7 @@ namespace ShopModule.Controllers
         [HttpPost]
         public IActionResult AddProductsToShopEndpoint([FromBody] ProductMessage product)
         {
+            
             var result = _service.AddProduct(new Product(product));
             if (result != null)
             {

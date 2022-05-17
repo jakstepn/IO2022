@@ -125,8 +125,8 @@ namespace ShopModule_UnitTests
 
             var service = new ProductService(mockContext.Object);
 
-            var testCategory1 = new ProductType { Id="1", Name="test1"};
-            var testCategory2 = new ProductType { Id="2", Name="test2"};
+            var testCategory1 = new ProductType { Name="test1"};
+            var testCategory2 = new ProductType { Name="test2"};
 
 
             var testProduct1 = new Product

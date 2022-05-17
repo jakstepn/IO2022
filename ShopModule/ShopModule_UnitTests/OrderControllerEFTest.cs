@@ -31,7 +31,7 @@ namespace ShopModule_UnitTests
                                       ClientAddress = new Address { City="nonecity", Country="nocountry",
                                                                     Region="noregion", Street="nostreet",
                                                                     StreetNumber="1a", ZipCode="nozipcode" },
-                                      AdditionalInfo="none", CourierFK= Guid.NewGuid()
+                                      AdditionalInfo="none"
             };
 
             mockOrderSet.Verify(m => m.Add(It.IsAny<Order>()), Times.Once);
@@ -81,7 +81,6 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                CourierFK = Guid.NewGuid()
             };
 
             var testOrder2 = new Order
@@ -99,7 +98,6 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                CourierFK = Guid.NewGuid()
             };
 
             var testOrder3 = new Order
@@ -117,7 +115,6 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                CourierFK = Guid.NewGuid()
             };
 
             service.AddOrder(testOrder1);
@@ -156,7 +153,6 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                CourierFK = Guid.NewGuid()
             };
 
             var testOrder2 = new Order
@@ -175,7 +171,6 @@ namespace ShopModule_UnitTests
                     ZipCode = "nozipcode"
                 },
                 AdditionalInfo = "none",
-                CourierFK = Guid.NewGuid()
             };
 
             var found = service.FindOrder(toFind);

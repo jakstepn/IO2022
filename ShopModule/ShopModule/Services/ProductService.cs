@@ -92,5 +92,14 @@ namespace ShopModule.Services
                 return null;
             }
         }
+
+        public void CreateCategoryIfDoesntExist(string name)
+        {
+            var category = _context.ProductTypes.Find(name);
+            if(category == null)
+            {
+                _context.ProductTypes.Add(new ProductType { Name = name });
+            }
+        }
     }
 }
