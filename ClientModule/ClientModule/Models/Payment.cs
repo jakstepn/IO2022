@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 namespace ClientModule.Database_Models
 {
     [DisplayColumn("Payment")]
-    [Index(nameof(Payment.PaymentMethod))]
     public class Payment
     {
         [Key]

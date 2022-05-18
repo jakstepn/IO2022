@@ -7,7 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using IdentityModel;
 using IdentityServerGrocierio.Data;
-using ClientModule.Database_Models;
+using IdentityServerGrocierio.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +24,7 @@ namespace IdentityServerGrocierio
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlite(connectionString));
 
-            services.AddIdentity<IdentityClient, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -35,11 +35,11 @@ namespace IdentityServerGrocierio
                     var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
                     context.Database.Migrate();
 
-                    var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityClient>>();
+                    var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                     var alice = userMgr.FindByNameAsync("alice").Result;
                     if (alice == null)
                     {
-                        alice = new IdentityClient
+                        alice = new ApplicationUser
                         {
                             UserName = "alice",
                             Email = "AliceSmith@email.com",
@@ -71,7 +71,7 @@ namespace IdentityServerGrocierio
                     var bob = userMgr.FindByNameAsync("bob").Result;
                     if (bob == null)
                     {
-                        bob = new IdentityClient
+                        bob = new ApplicationUser
                         {
                             UserName = "bob",
                             Email = "BobSmith@email.com",
