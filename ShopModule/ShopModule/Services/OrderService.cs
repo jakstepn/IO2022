@@ -216,15 +216,16 @@ namespace ShopModule.Services
         public OrderMessage ChangeStatus(Guid orderId, OrderStatus status)
         {
             Order o = _context.Orders.Find(orderId);
-            o.ChangeStatus(status);
-            if (_context.SaveChanges() == 1)
+            if (o != null)
             {
-                return o.Convert(StaticData.defaultConverter);
+                LoadOrder(o);
+                o.ChangeStatus(status);
+                if (_context.SaveChanges() == 1)
+                {
+                    return o.Convert(StaticData.defaultConverter);
+                }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         /// <summary>

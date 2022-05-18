@@ -87,8 +87,8 @@ namespace ShopModule.Controllers
             OrderStatus status;
             bool accepted_enum = Enum.TryParse<OrderStatus>(string_status, out status);
             OrderMessage order;
-            bool notified = false;
-            if (accepted_enum && (order = _orderService.FindOrder(orderId)) != null)
+            bool notified;
+            if (accepted_enum && (order = _orderService.ChangeStatus(orderId, status)) != null)
             {
                 if (status == OrderStatus.ParcelCollected)
                 {
