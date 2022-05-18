@@ -254,23 +254,22 @@ namespace ShopModule.Services
                     }
                     return true;
                 case OrderStatus.Collecting:
-                    break;
+                    return true;
                 case OrderStatus.WaitingForCourier:
-                    break;
+                    return true;
                 case OrderStatus.OnTheWay:
-                    break;
+                    return true;
                 case OrderStatus.RejectedByShop:
                     // Nofity: Reject order
-                    break;
+                    return true;
                 case OrderStatus.RejectedByCustomer:
-                    break;
+                    return true;
                 case OrderStatus.Pending:
                     // Notify: In preparation
-                    break;
+                    return true;
                 default:
-                    break;
+                    return false;
             }
-            return false;
         }
 
         private void NotifyClientPackageCollected()
