@@ -40,6 +40,7 @@ namespace ShopModule_UnitTests
         public void GetPendingComplaintsTest()
         {
             var mockOrderSet = new Mock<DbSet<Complaint>>();
+            var mockService = new Mock<IComplaintService>();
 
             var mockContext = new Mock<ShopModuleDbContext>();
             mockContext.Setup(x => x.Complaints).Returns(mockOrderSet.Object);
@@ -71,30 +72,50 @@ namespace ShopModule_UnitTests
             service.AddComplaint(testComplaint2);
             service.AddComplaint(testComplaint3);
 
-            var complaints = service.PendingComplaints();
+            mockService.Setup(x => x.PendingComplaints())
+                .Returns(new List<ShopModule_ApiClasses.Messages.ComplaintMessage>
+                {
+                    testComplaint2.Convert(StaticData.defaultConverter)
+                });
 
-            Assert.Contains(testComplaint2.Convert(StaticData.defaultConverter), complaints);
+            var complaints = mockService.Object.PendingComplaints();
+
+            Assert.Equal(testComplaint2.Convert(StaticData.defaultConverter).complaintId, complaints.ElementAt(0).complaintId);
         }
 
         [Fact]
         public void AcceptComplaintTest()
         {
             var mockOrderSet = new Mock<DbSet<Complaint>>();
+            var mockService = new Mock<IComplaintService>();
 
             var mockContext = new Mock<ShopModuleDbContext>();
             mockContext.Setup(x => x.Complaints).Returns(mockOrderSet.Object);
 
             var service = new ComplaintService(mockContext.Object);
 
+            var compId = Guid.NewGuid();
+
             var testComplaint = new Complaint
             {
                 CurrentStatus = CurrentComplaintState.Pending,
-                Id = Guid.NewGuid(),
+                Id = compId,
+                Text = "testcomplaint"
+            };
+
+            var resComplaint = new Complaint
+            {
+                CurrentStatus = CurrentComplaintState.Accepted,
+                Id = compId,
                 Text = "testcomplaint"
             };
 
             service.AddComplaint(testComplaint);
-            var complaint = service.AcceptComplaint(testComplaint.Id);
+
+            mockService.Setup(x => x.AcceptComplaint(compId))
+                .Returns(resComplaint);
+
+            var complaint = mockService.Object.AcceptComplaint(testComplaint.Id);
             Assert.Equal(CurrentComplaintState.Accepted, complaint.CurrentStatus);
         }
 
@@ -102,21 +123,35 @@ namespace ShopModule_UnitTests
         public void RejectComplaintTest()
         {
             var mockOrderSet = new Mock<DbSet<Complaint>>();
+            var mockService = new Mock<IComplaintService>();
 
             var mockContext = new Mock<ShopModuleDbContext>();
             mockContext.Setup(x => x.Complaints).Returns(mockOrderSet.Object);
 
             var service = new ComplaintService(mockContext.Object);
 
+            var compId = Guid.NewGuid();
+
             var testComplaint = new Complaint
             {
                 CurrentStatus = CurrentComplaintState.Pending,
-                Id = Guid.NewGuid(),
+                Id = compId,
+                Text = "testcomplaint"
+            };
+
+            var resComplaint = new Complaint
+            {
+                CurrentStatus = CurrentComplaintState.Rejected,
+                Id = compId,
                 Text = "testcomplaint"
             };
 
             service.AddComplaint(testComplaint);
-            var complaint = service.RejectComplaint(testComplaint.Id);
+
+            mockService.Setup(x => x.RejectComplaint(compId))
+                .Returns(resComplaint);
+
+            var complaint = mockService.Object.RejectComplaint(testComplaint.Id);
             Assert.Equal(CurrentComplaintState.Rejected, complaint.CurrentStatus);
         }
     }

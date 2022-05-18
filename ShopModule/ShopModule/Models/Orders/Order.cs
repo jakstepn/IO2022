@@ -12,15 +12,15 @@ namespace ShopModule.Orders
 	public class Order
 	{
 		[Key]
-		public Guid Id { get; set; }	
-		public OrderStatus OrderStatus { get; set; }
-		public DateTime CreationDate { get; set; }
-		public DateTime DeliveryDate { get; set; }
-		public Address ClientAddress { get; set; }
-		public string AdditionalInfo { get; set; }
-		public bool ConfirmedPayment { get; set; }
+		public virtual Guid Id { get; set; }	
+		public virtual OrderStatus OrderStatus { get; set; }
+		public virtual DateTime CreationDate { get; set; }
+		public virtual DateTime DeliveryDate { get; set; }
+		public virtual Address ClientAddress { get; set; }
+		public virtual string AdditionalInfo { get; set; }
+		public virtual bool ConfirmedPayment { get; set; }
 		//public Courier Courier { get; set; }
-		public ICollection<OrderItem> Items { get; set; }
+		public virtual ICollection<OrderItem> Items { get; set; }
 
 		public Order()
 		{
@@ -56,6 +56,6 @@ namespace ShopModule.Orders
         }
 
 		[ForeignKey("Address")]
-		public Guid AddressFK { get; set; }
+		public virtual Guid AddressFK { get; set; }
 	}
 }

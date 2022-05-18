@@ -102,15 +102,8 @@ namespace ShopModule.Services
                     default:
                         break;
                 }
-                bool added = _context.SaveChanges() == 1;
-                if(added)
-                {
-                    return res;
-                }
-                else
-                {
-                    return null;
-                }
+                _context.SaveChanges();
+                return res;
             }
             else
             {

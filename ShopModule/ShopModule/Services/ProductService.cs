@@ -38,8 +38,10 @@ namespace ShopModule.Services
             bool removed = false;
             if (res != null)
             {
+                _context.OrderItems.RemoveRange(_context.OrderItems.Where(x => x.ProductFK == productId));
                 _context.Remove(res);
-                removed = _context.SaveChanges() == 1;
+                _context.SaveChanges();
+                removed = true;
             }
             return removed ? res : null;
         }
@@ -90,7 +92,7 @@ namespace ShopModule.Services
         /// <returns>Returns <= pageSize elements from a database. Returns null if category doesn't exist</returns>
         public List<ProductMessage> GetPaginatedProductListFromCategory(int page, int pageSize, string category)
         {
-            var categoryList = _context.Products.Where(p => p.ProductType.Name == category);
+            var categoryList = _context.Products.Where(p => p.ProductTypeFK == category);
             if (categoryList.Count() > 0)
             {
                 List<ProductMessage> productMessages = new List<ProductMessage>();

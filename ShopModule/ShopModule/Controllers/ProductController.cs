@@ -20,7 +20,7 @@ namespace ShopModule.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllProductsEndpoint([FromQuery] int page, [FromRoute] int pageSize)
+        public IActionResult GetAllProductsEndpoint([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _service.GetPaginatedProductList(page, pageSize);
             return ResponseMessage.Success(result, 200);
@@ -65,9 +65,9 @@ namespace ShopModule.Controllers
                 return ResponseMessage.Error("Product not found.", 404);
             }
         }
-        [HttpGet("{category}")]
+        [HttpGet("category/{category}")]
         public IActionResult GetProductsFromCategoryEndpoint([FromRoute] string category,
-            [FromQuery] int page, [FromRoute] int pageSize)
+            [FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _service.GetPaginatedProductListFromCategory(page, pageSize, category);
             if (result != null)

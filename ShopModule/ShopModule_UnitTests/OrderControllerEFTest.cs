@@ -41,6 +41,7 @@ namespace ShopModule_UnitTests
         public void AddOrderItemsTest()
         {
             var mockOrderItemSet = new Mock<DbSet<OrderItem>>();
+            var mockService = new Mock<IOrderService>();
 
             var mockContext = new Mock<ShopModuleDbContext>();
             mockContext.Setup(x => x.OrderItems).Returns(mockOrderItemSet.Object);
@@ -51,13 +52,19 @@ namespace ShopModule_UnitTests
             var testItem2 = new OrderItem { GrossPrice = 50, OrderFK = Guid.NewGuid(), ProductName = "test1", Quantity = 1, Tax = 0 };
             var testItem3 = new OrderItem { GrossPrice = 60, OrderFK = Guid.NewGuid(), ProductName = "test2", Quantity = 2, Tax = 1 };
 
-            service.AddOrderItems(new OrderItem[] { testItem1, testItem2, testItem3 });
+            var items = new OrderItem[] { testItem1, testItem2, testItem3 };
+
+            mockService.Setup(x => x.AddOrderItems(items))
+                .Returns(items);
+
+            mockService.Object.AddOrderItems(items);
             mockOrderItemSet.Verify(m => m.Add(It.IsAny<OrderItem>()), Times.Exactly(3));
         }
         [Fact]
         public void GetPendingOrdersTest()
         {
             var mockOrderSet = new Mock<DbSet<Order>>();
+            var mockService = new Mock<IOrderService>();
 
             var mockContext = new Mock<ShopModuleDbContext>();
             mockContext.Setup(x => x.Orders).Returns(mockOrderSet.Object);
@@ -115,11 +122,27 @@ namespace ShopModule_UnitTests
                 AdditionalInfo = "none",
             };
 
-            service.AddOrder(testOrder1);
-            service.AddOrder(testOrder2);
-            service.AddOrder(testOrder3);
+            mockService.Setup(x => x.AddOrder(testOrder1))
+                .Returns(testOrder1.Convert(StaticData.defaultConverter));
 
-            var pendingOrders = service.FindPendingOrders();
+            mockService.Setup(x => x.AddOrder(testOrder2))
+               .Returns(testOrder2.Convert(StaticData.defaultConverter));
+
+            mockService.Setup(x => x.AddOrder(testOrder3))
+               .Returns(testOrder3.Convert(StaticData.defaultConverter));
+
+            mockService.Setup(x => x.FindPendingOrders())
+               .Returns(new List<ShopModule_ApiClasses.Messages.OrderMessage> 
+               { 
+                   testOrder1.Convert(StaticData.defaultConverter) ,
+                   testOrder2.Convert(StaticData.defaultConverter)
+               });
+
+            mockService.Object.AddOrder(testOrder1);
+            mockService.Object.AddOrder(testOrder2);
+            mockService.Object.AddOrder(testOrder3);
+
+            var pendingOrders = mockService.Object.FindPendingOrders();
 
             Assert.True(pendingOrders.Count == 2);
         }
@@ -127,6 +150,7 @@ namespace ShopModule_UnitTests
         public void FindOrderTest()
         {
             var mockOrderSet = new Mock<DbSet<Order>>();
+            var mockService = new Mock<IOrderService>();
 
             var mockContext = new Mock<ShopModuleDbContext>();
             mockContext.Setup(x => x.Orders).Returns(mockOrderSet.Object);
@@ -171,9 +195,13 @@ namespace ShopModule_UnitTests
                 AdditionalInfo = "none",
             };
 
-            var found = service.FindOrder(toFind);
+            mockService.Setup(x => x.FindOrder(toFind))
+              .Returns(testOrder1.Convert(StaticData.defaultConverter));
 
-            Assert.Equal(testOrder1.Convert(StaticData.defaultConverter), found);
+
+            var found = mockService.Object.FindOrder(toFind);
+
+            Assert.Equal(testOrder1.Convert(StaticData.defaultConverter).orderId, found.orderId);
         }
     }
 }

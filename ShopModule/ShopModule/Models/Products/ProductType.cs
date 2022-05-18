@@ -10,8 +10,8 @@ namespace ShopModule.Products
 	public class ProductType
 	{
         [Key]
-		public string Name { get; set; }
-		public ICollection<Product> Products { get; set; }
+		public virtual string Name { get; set; }
+		public virtual ICollection<Product> Products { get; set; }
 
 		public ProductType()
         {

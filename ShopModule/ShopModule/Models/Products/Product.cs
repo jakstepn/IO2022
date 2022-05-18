@@ -8,17 +8,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ShopModule.Products
 {
 	[Table("Products")]
-	public class Product
+	public class Product : IProduct
 	{
 		[Column(TypeName = "decimal(18,4)")]
-		public decimal Price { get; set; }
-		public int TaxRate { get; set; }
+		public virtual decimal Price { get; set; }
+		public virtual int TaxRate { get; set; }
         [Key]
-		public string ProductName { get; set; }
-		public bool Available { get; set; }
-		public int Quantity { get; set; }
-		public ProductType ProductType { get; set; }
-		public ICollection<OrderItem> OrdersItems { get; set; }
+		public virtual string ProductName { get; set; }
+		public virtual bool Available { get; set; }
+		public virtual int Quantity { get; set; }
+		public virtual ProductType ProductType { get; set; }
+		public virtual ICollection<OrderItem> OrdersItems { get; set; }
 		public Product()
 		{
 		}
@@ -32,12 +32,12 @@ namespace ShopModule.Products
 			Available = Quantity > 0;
         }
 
-		public ProductMessage Convert(IVisitor visitor)
+		public virtual ProductMessage Convert(IVisitor visitor)
         {
 			return visitor.Visit(this);
         }
 
 		[ForeignKey("ProductType")]
-		public string ProductTypeFK { get; set; }
+		public virtual string ProductTypeFK { get; set; }
 	}
 }

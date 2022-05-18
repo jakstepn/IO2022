@@ -72,8 +72,8 @@ namespace ShopModule.Services
                     item.Product.Available = false;
                 }
             }
-            bool saved = _context.SaveChanges() == items.Length * 2;
-            return saved ? items : null;
+            _context.SaveChanges();
+            return items;
         }
 
         /// <summary>

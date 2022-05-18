@@ -10,17 +10,17 @@ namespace ShopModule.Orders
     public class OrderItem
     {
         [Key]
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
         [Column(TypeName = "decimal(18,4)")]
-        public decimal GrossPrice { get; set; }
+        public virtual decimal GrossPrice { get; set; }
         [Column(TypeName = "decimal(18,4)")]
-        public decimal Tax { get; set; }
-        public string ProductName { get; set; }
-        public int Quantity { get; set; }
-        public string Currency { get; set; }
+        public virtual decimal Tax { get; set; }
+        public virtual string ProductName { get; set; }
+        public virtual int Quantity { get; set; }
+        public virtual string Currency { get; set; }
 
-        public Product Product { get; set; }
-        public Order Order { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Order Order { get; set; }
 
         public OrderItem()
         {
@@ -39,9 +39,9 @@ namespace ShopModule.Orders
 
         // DataBase Relations
         [ForeignKey("Product")]
-        public string ProductFK { get; set; }
+        public virtual string ProductFK { get; set; }
         [ForeignKey("Order")]
-        public Guid OrderFK { get; set; }
+        public virtual Guid OrderFK { get; set; }
 
     }
 }
