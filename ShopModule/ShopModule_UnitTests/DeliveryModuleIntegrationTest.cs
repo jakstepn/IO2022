@@ -12,13 +12,6 @@ namespace ShopModule_UnitTests
     public class DeliveryModuleIntegrationTest
     {
 
-        private readonly HttpClient _client;
-
-        public DeliveryModuleIntegrationTest()
-        {
-            _client = new HttpClient();
-        }
-
         [Fact]
         public void RequestPickupTest()
         {

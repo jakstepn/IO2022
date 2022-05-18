@@ -7,7 +7,7 @@ namespace ShopModule_ApiClasses.Messages
     {
         public Guid complaintId { get; set; }
         public Guid orderId { get; set; }
-        public CurrentComplaintStateMessage status { get; set; }
+        public string status { get; set; }
         public string text { get; set; }
 
         public ComplaintMessage()

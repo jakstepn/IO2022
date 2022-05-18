@@ -27,7 +27,7 @@ namespace ShopModule_UnitTests
 
             var service = new OrderService(mockContext.Object);
 
-            var testOrder = new Order{ OrderStatus = OrderStatus.WaitingForCollection,
+            var testOrder = new Order{ OrderStatus = OrderStatus.WaitingForCollection.ToString(),
                                       CreationDate = DateTime.MinValue, DeliveryDate = DateTime.Now,
                                       ClientAddress = new Address { City="nonecity", Country="nocountry",
                                                                     Region="noregion", Street="nostreet",
@@ -73,7 +73,7 @@ namespace ShopModule_UnitTests
 
             var testOrder1 = new Order
             {
-                OrderStatus = OrderStatus.Pending,
+                OrderStatus = OrderStatus.Pending.ToString(),
                 CreationDate = DateTime.MinValue,
                 DeliveryDate = DateTime.Now,
                 ClientAddress = new Address
@@ -90,7 +90,7 @@ namespace ShopModule_UnitTests
 
             var testOrder2 = new Order
             {
-                OrderStatus = OrderStatus.Pending,
+                OrderStatus = OrderStatus.Pending.ToString(),
                 CreationDate = DateTime.MinValue,
                 DeliveryDate = DateTime.Now,
                 ClientAddress = new Address
@@ -107,7 +107,7 @@ namespace ShopModule_UnitTests
 
             var testOrder3 = new Order
             {
-                OrderStatus = OrderStatus.WaitingForCollection,
+                OrderStatus = OrderStatus.WaitingForCollection.ToString(),
                 CreationDate = DateTime.MinValue,
                 DeliveryDate = DateTime.Now,
                 ClientAddress = new Address
@@ -122,13 +122,13 @@ namespace ShopModule_UnitTests
                 AdditionalInfo = "none",
             };
 
-            mockService.Setup(x => x.AddOrder(testOrder1))
+            mockService.Setup(x => x.AddOrder(testOrder1.Convert(StaticData.defaultConverter)))
                 .Returns(testOrder1.Convert(StaticData.defaultConverter));
 
-            mockService.Setup(x => x.AddOrder(testOrder2))
+            mockService.Setup(x => x.AddOrder(testOrder2.Convert(StaticData.defaultConverter)))
                .Returns(testOrder2.Convert(StaticData.defaultConverter));
 
-            mockService.Setup(x => x.AddOrder(testOrder3))
+            mockService.Setup(x => x.AddOrder(testOrder3.Convert(StaticData.defaultConverter)))
                .Returns(testOrder3.Convert(StaticData.defaultConverter));
 
             mockService.Setup(x => x.FindPendingOrders())
@@ -138,9 +138,9 @@ namespace ShopModule_UnitTests
                    testOrder2.Convert(StaticData.defaultConverter)
                });
 
-            mockService.Object.AddOrder(testOrder1);
-            mockService.Object.AddOrder(testOrder2);
-            mockService.Object.AddOrder(testOrder3);
+            mockService.Object.AddOrder(testOrder1.Convert(StaticData.defaultConverter));
+            mockService.Object.AddOrder(testOrder2.Convert(StaticData.defaultConverter));
+            mockService.Object.AddOrder(testOrder3.Convert(StaticData.defaultConverter));
 
             var pendingOrders = mockService.Object.FindPendingOrders();
 
@@ -162,7 +162,7 @@ namespace ShopModule_UnitTests
             var testOrder1 = new Order
             {
                 Id = toFind,
-                OrderStatus = OrderStatus.Pending,
+                OrderStatus = OrderStatus.Pending.ToString(),
                 CreationDate = DateTime.MinValue,
                 DeliveryDate = DateTime.Now,
                 ClientAddress = new Address
@@ -180,7 +180,7 @@ namespace ShopModule_UnitTests
             var testOrder2 = new Order
             {
                 Id= Guid.NewGuid(),
-                OrderStatus = OrderStatus.Pending,
+                OrderStatus = OrderStatus.Pending.ToString(),
                 CreationDate = DateTime.MinValue,
                 DeliveryDate = DateTime.Now,
                 ClientAddress = new Address

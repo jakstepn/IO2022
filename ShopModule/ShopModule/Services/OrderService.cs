@@ -6,6 +6,7 @@ using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ShopModule.Services
 {
@@ -14,9 +15,9 @@ namespace ShopModule.Services
         OrderMessage ChangeStatus(Guid orderId, OrderStatus staus);
         OrderMessage FindOrder(Guid orderId);
         OrderItem[] AddOrderItems(OrderItem[] items);
-        OrderItemMessage[] AddOrderAndItems(OrderItemMessage[] items, Order order);
+        OrderItemMessage[] AddOrderAndItems(OrderItemMessage[] items, OrderMessage order);
         OrderItem AddOrderItem(OrderItem item);
-        OrderMessage AddOrder(Order order);
+        OrderMessage AddOrder(OrderMessage order);
         List<OrderMessage> FindPendingOrders();
         OrderMessage RemoveOrder(Guid orderId);
         void NotifyDeliveryStatusOfStatus(OrderStatus status);
@@ -50,7 +51,7 @@ namespace ShopModule.Services
         {
             foreach (var item in items)
             {
-                if (item.Product.Available)
+                if (Regex.IsMatch(item.Currency, StaticData.regexCurrency) && item.Product.Available)
                 {
                     _context.OrderItems.Add(item);
                 }
@@ -67,7 +68,7 @@ namespace ShopModule.Services
                 {
                     return null;
                 }
-                if(count == 0)
+                if (count == 0)
                 {
                     item.Product.Available = false;
                 }
@@ -82,9 +83,10 @@ namespace ShopModule.Services
         /// <param name="items"></param>
         /// <param name="order"></param>
         /// <returns></returns>
-        public OrderItemMessage[] AddOrderAndItems(OrderItemMessage[] items, Order order)
+        public OrderItemMessage[] AddOrderAndItems(OrderItemMessage[] items, OrderMessage message)
         {
             List<Product> products = new List<Product>();
+            Order order = new Order(message);
             foreach (var item in items)
             {
                 var product = _context.Products.Find(item.productName);
@@ -116,9 +118,15 @@ namespace ShopModule.Services
                 i++;
             }
 
-            _context.Orders.Add(order);
+            if (Enum.IsDefined(typeof(OrderStatus), message.orderStatus))
+            {
+                _context.Orders.Add(order);
+            }
+            else
+            {
+                return null;
+            }
             _context.SaveChanges();
-
             return items;
         }
 
@@ -139,11 +147,20 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="order">Order to be added</param>
         /// <returns>Returns an order if success, else null</returns>
-        public OrderMessage AddOrder(Order order)
+        public OrderMessage AddOrder(OrderMessage message)
         {
-            _context.Orders.Add(order);
-            bool saved = _context.SaveChanges() == 1;
-            return saved ? order.Convert(StaticData.defaultConverter) : null;
+            Order order = new Order(message);
+            bool saved;
+            if (Enum.IsDefined(typeof(OrderStatus), message.orderStatus))
+            {
+                _context.Orders.Add(order);
+            }
+            else
+            {
+                return null;
+            }
+            saved = _context.SaveChanges() == 1;
+            return saved ? message : null;
         }
 
         /// <summary>
@@ -153,7 +170,7 @@ namespace ShopModule.Services
         public List<OrderMessage> FindPendingOrders()
         {
             List<OrderMessage> orders = new List<OrderMessage>();
-            foreach (var ord in _context.Orders.Where(x => x.OrderStatus == OrderStatus.Pending).ToList())
+            foreach (var ord in _context.Orders.Where(x => x.OrderStatus == OrderStatus.Pending.ToString()).ToList())
             {
                 LoadOrder(ord);
 

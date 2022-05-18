@@ -12,21 +12,21 @@ services:
       - grocerionetwork
     volumes:
       - dbvolume:/var/opt/mssql
-  #clientmodule:
-  #  image: ${DOCKER_REGISTRY-}clientmodule
-  #  ports: 
-  #  - "44382:443"
-  #  - "44383:80"
-  #  environment:
-  #  - ASPNETCORE_ENVIRONMENT=Development
-  #  build:
-  #    context: ..
-  #    dockerfile: ./ClientModule/ClientModule/Dockerfile
-  #  depends_on:
-  #      - identityserver
-  #      - database
-  #  networks:
-  #    - grocerionetwork
+  clientmodule:
+    image: ${DOCKER_REGISTRY-}clientmodule
+    ports: 
+    - "44382:443"
+    - "44383:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: ..
+      dockerfile: ./ClientModule/ClientModule/Dockerfile
+    depends_on:
+        - identityserver
+        - database
+    networks:
+      - grocerionetwork
 
   deliverymodule:
     image: ${DOCKER_REGISTRY-}deliverymodule

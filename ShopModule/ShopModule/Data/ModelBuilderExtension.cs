@@ -111,7 +111,7 @@ namespace ShopModule.Data
                 new Complaint
                 {
                     Id = System.Guid.Parse("FFFFFFFF-AAAA-0000-0000-000000000000"),
-                    CurrentStatus = Complaints.CurrentComplaintState.Pending,
+                    CurrentStatus = Complaints.CurrentComplaintState.Pending.ToString(),
                     Text = "test_complaint"
                 });
 

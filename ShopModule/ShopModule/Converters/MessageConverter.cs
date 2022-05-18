@@ -41,7 +41,7 @@ namespace ShopModule.Converters
                 deliveryDate = order.DeliveryDate,
                 orderItems = items,
                 orderId = order.Id,
-                orderStatus = (OrderStatusMessage)order.OrderStatus,
+                orderStatus = order.OrderStatus,
             };
         }
 
@@ -53,7 +53,7 @@ namespace ShopModule.Converters
                 // TODO
                 // ADD orderid
                 orderId = System.Guid.Empty,
-                status = (CurrentComplaintStateMessage)complaint.CurrentStatus,
+                status = complaint.CurrentStatus,
                 text = complaint.Text
             };
         }

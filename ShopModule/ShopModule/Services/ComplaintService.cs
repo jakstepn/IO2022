@@ -9,7 +9,7 @@ namespace ShopModule.Services
 {
     public interface IComplaintService
     {
-        Complaint AddComplaint(Complaint complaint);
+        ComplaintMessage AddComplaint(ComplaintMessage complaint);
         Complaint AcceptComplaint(Guid complaintId);
         Complaint RejectComplaint(Guid complaintId);
         List<ComplaintMessage> PendingComplaints();
@@ -29,14 +29,22 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="complaint">Complaint object to be added</param>
         /// <returns>Returns a given complaint on success and a null on error</returns>
-        public Complaint AddComplaint(Complaint complaint)
+        public ComplaintMessage AddComplaint(ComplaintMessage message)
         {
-            _context.Complaints.Add(complaint);
-            bool added = _context.SaveChanges() == 1;
-            if(added)
+            if (Enum.IsDefined(typeof(CurrentComplaintStateMessage), message.status))
             {
-                NotifyClientComplaintPending();
-                return complaint;
+                Complaint complaint = new Complaint(message);
+                _context.Complaints.Add(complaint);
+                bool added = _context.SaveChanges() == 1;
+                if (added)
+                {
+                    NotifyClientComplaintPending();
+                    return message;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {
@@ -53,7 +61,7 @@ namespace ShopModule.Services
             List<ComplaintMessage> res = new List<ComplaintMessage>();
             foreach (var complaint in _context.Complaints)
             {
-                if (complaint.CurrentStatus == Complaints.CurrentComplaintState.Pending)
+                if (complaint.CurrentStatus == Complaints.CurrentComplaintState.Pending.ToString())
                 {
                     res.Add(complaint.Convert(StaticData.defaultConverter));
                 }
@@ -86,7 +94,7 @@ namespace ShopModule.Services
             var res = _context.Complaints.Find(complaintId);
             if (res != null)
             {
-                res.CurrentStatus = state;
+                res.CurrentStatus = state.ToString();
                 switch (state)
                 {
                     case Complaints.CurrentComplaintState.Rejected:

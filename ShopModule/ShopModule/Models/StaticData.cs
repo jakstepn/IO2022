@@ -7,7 +7,8 @@ namespace ShopModule.Models
     {
         public static string urlDeliveryModule = "https://delivery.mini-delivery.com/";
         public static string urlClientModule = "https://client.mini-delivery.com/";
-        public static IVisitor defaultConverter => new MessageConverter(); 
+        public static IVisitor defaultConverter => new MessageConverter();
+        public static string regexCurrency = @"^[A-Z]{3}$";
         public static string urlRequestPickup
         {
             get

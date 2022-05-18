@@ -7,6 +7,7 @@ using ShopModule.Location;
 using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Services;
+using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +29,8 @@ namespace ShopModule_UnitTests
 
             var service = new ComplaintService(mockContext.Object);
 
-            var testComplaint = new Complaint { CurrentStatus = CurrentComplaintState.Pending,
-                                                Id = Guid.NewGuid(), Text="testcomplaint" };
+            var testComplaint = new ComplaintMessage { status = CurrentComplaintState.Pending.ToString(),
+                                                complaintId = Guid.NewGuid(), text="testcomplaint" };
 
             service.AddComplaint(testComplaint);
 
@@ -47,25 +48,25 @@ namespace ShopModule_UnitTests
 
             var service = new ComplaintService(mockContext.Object);
 
-            var testComplaint1 = new Complaint
+            var testComplaint1 = new ComplaintMessage
             {
-                CurrentStatus = CurrentComplaintState.Accepted,
-                Id = Guid.NewGuid(),
-                Text = "testcomplaint"
+                status = CurrentComplaintState.Accepted.ToString(),
+                complaintId = Guid.NewGuid(),
+                text = "testcomplaint"
             };
 
-            var testComplaint2 = new Complaint
+            var testComplaint2 = new ComplaintMessage
             {
-                CurrentStatus = CurrentComplaintState.Pending,
-                Id = Guid.NewGuid(),
-                Text = "testcomplaint"
+                status = CurrentComplaintState.Pending.ToString(),
+                complaintId = Guid.NewGuid(),
+                text = "testcomplaint"
             };
 
-            var testComplaint3 = new Complaint
+            var testComplaint3 = new ComplaintMessage
             {
-                CurrentStatus = CurrentComplaintState.Rejected,
-                Id = Guid.NewGuid(),
-                Text = "testcomplaint"
+                status = CurrentComplaintState.Rejected.ToString(),
+                complaintId = Guid.NewGuid(),
+                text = "testcomplaint"
             };
 
             service.AddComplaint(testComplaint1);
@@ -75,12 +76,12 @@ namespace ShopModule_UnitTests
             mockService.Setup(x => x.PendingComplaints())
                 .Returns(new List<ShopModule_ApiClasses.Messages.ComplaintMessage>
                 {
-                    testComplaint2.Convert(StaticData.defaultConverter)
+                    testComplaint2
                 });
 
             var complaints = mockService.Object.PendingComplaints();
 
-            Assert.Equal(testComplaint2.Convert(StaticData.defaultConverter).complaintId, complaints.ElementAt(0).complaintId);
+            Assert.Equal(testComplaint2.complaintId, complaints.ElementAt(0).complaintId);
         }
 
         [Fact]
@@ -98,25 +99,25 @@ namespace ShopModule_UnitTests
 
             var testComplaint = new Complaint
             {
-                CurrentStatus = CurrentComplaintState.Pending,
+                CurrentStatus = CurrentComplaintState.Pending.ToString(),
                 Id = compId,
                 Text = "testcomplaint"
             };
 
             var resComplaint = new Complaint
             {
-                CurrentStatus = CurrentComplaintState.Accepted,
+                CurrentStatus = CurrentComplaintState.Accepted.ToString(),
                 Id = compId,
                 Text = "testcomplaint"
             };
 
-            service.AddComplaint(testComplaint);
+            service.AddComplaint(testComplaint.Convert(StaticData.defaultConverter));
 
             mockService.Setup(x => x.AcceptComplaint(compId))
                 .Returns(resComplaint);
 
             var complaint = mockService.Object.AcceptComplaint(testComplaint.Id);
-            Assert.Equal(CurrentComplaintState.Accepted, complaint.CurrentStatus);
+            Assert.Equal(CurrentComplaintState.Accepted.ToString(), complaint.CurrentStatus);
         }
 
         [Fact]
@@ -134,25 +135,25 @@ namespace ShopModule_UnitTests
 
             var testComplaint = new Complaint
             {
-                CurrentStatus = CurrentComplaintState.Pending,
+                CurrentStatus = CurrentComplaintState.Pending.ToString(),
                 Id = compId,
                 Text = "testcomplaint"
             };
 
             var resComplaint = new Complaint
             {
-                CurrentStatus = CurrentComplaintState.Rejected,
+                CurrentStatus = CurrentComplaintState.Rejected.ToString(),
                 Id = compId,
                 Text = "testcomplaint"
             };
 
-            service.AddComplaint(testComplaint);
+            service.AddComplaint(testComplaint.Convert(StaticData.defaultConverter));
 
             mockService.Setup(x => x.RejectComplaint(compId))
                 .Returns(resComplaint);
 
             var complaint = mockService.Object.RejectComplaint(testComplaint.Id);
-            Assert.Equal(CurrentComplaintState.Rejected, complaint.CurrentStatus);
+            Assert.Equal(CurrentComplaintState.Rejected.ToString(), complaint.CurrentStatus);
         }
     }
 }

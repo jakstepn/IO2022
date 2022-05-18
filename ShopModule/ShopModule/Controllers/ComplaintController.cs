@@ -37,10 +37,10 @@ namespace ShopModule.Controllers
         [HttpPost("create")]
         public IActionResult CreateComplaintEndpoint([FromBody] ComplaintMessage complaint)
         {
-            var res = _complaintService.AddComplaint(new Complaint(complaint));
+            var res = _complaintService.AddComplaint(complaint);
             if (res != null)
             {
-                return ResponseMessage.Success(res.Convert(StaticData.defaultConverter), 201);
+                return ResponseMessage.Success(res, 201);
             }
             else
             {

@@ -25,7 +25,7 @@ namespace ShopModule_UnitTests
             ShopEmployee e = new ShopEmployee();
             Order o = new Order();
             e.ChangeOrderStatus(o, status);
-            Assert.Equal(status, o.OrderStatus);
+            Assert.Equal(status.ToString(), o.OrderStatus);
         }
 
         [Theory]
@@ -50,7 +50,7 @@ namespace ShopModule_UnitTests
             Order o = new Order();
             ShopEmployee e = new ShopEmployee();
             e.RejectOrder(o);
-            Assert.Equal(OrderStatus.RejectedByShop, o.OrderStatus);
+            Assert.Equal(OrderStatus.RejectedByShop.ToString(), o.OrderStatus);
         }
 
         [Fact]

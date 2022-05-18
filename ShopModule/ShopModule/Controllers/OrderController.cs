@@ -27,8 +27,7 @@ namespace ShopModule.Controllers
             bool success = false;
             try
             {
-                Order o = new Order(message);
-                var messages = _orderService.AddOrderAndItems(message.orderItems, o);
+                var messages = _orderService.AddOrderAndItems(message.orderItems, message);
                 if(messages != null)
                 {
                     success = true;
@@ -36,7 +35,7 @@ namespace ShopModule.Controllers
 
                 if (success)
                 {
-                    _orderService.NotifyDeliveryStatusOfStatus(o.OrderStatus);
+                    _orderService.NotifyDeliveryStatusOfStatus((OrderStatus)Enum.Parse(typeof(OrderStatus), message.orderStatus));
                     return ResponseMessage.Success(message, 201);
                 }
                 else
