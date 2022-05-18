@@ -36,7 +36,7 @@ namespace DeliveryModule.Models
             RequestedTime = ShopOrder.deliveryDate;
             Price = ShopOrder.orderItems.Sum(x => x.grossPrice);
             IsPaid = false;
-            switch (ShopOrder.orderStatus)
+            switch (Enum.Parse(typeof(ShopModule_ApiClasses.Messages.OrderStatusMessage), ShopOrder.orderStatus))
             {
                 case ShopModule_ApiClasses.Messages.OrderStatusMessage.Pending:
                     SetOrderStatus(Order.OrderStatusEnum.Pending);
