@@ -2,8 +2,8 @@
 {
     public static class Routs
     {
-        public static string ShopApi = "shopApi";
-        public static string ClientApi = "ClientApi";
+        public static string ShopApi = "ShopModule";
+        public static string ClientApi = "ClientModule";
         public static string ClientInterface = "ClientInterface";
         public static string ShopWorkerInterface = "ClientInterface";
     }

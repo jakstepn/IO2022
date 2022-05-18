@@ -96,7 +96,7 @@ namespace DeliveryModule.Controllers
                 {
                     return null;
                 }
-                var ShopOrder = getTask.Content.ReadFromJsonAsync<DeliveryModule_ApiClasses.Order>().Result;
+                var ShopOrder = getTask.Content.ReadFromJsonAsync<ShopModule_ApiClasses.Messages.OrderMessage>().Result;
                 return new Order(ShopOrder);
             }
         }
