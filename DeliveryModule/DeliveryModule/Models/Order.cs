@@ -29,33 +29,36 @@ namespace DeliveryModule.Models
         {
 
         }
-        public Order(DeliveryModule_ApiClasses.Order ShopOrder)
+        public Order(ShopModule_ApiClasses.Messages.OrderMessage ShopOrder)
         {
+            
             this.Id = ShopOrder.orderId;
             RequestedTime = ShopOrder.deliveryDate;
             Price = ShopOrder.orderItems.Sum(x => x.grossPrice);
             IsPaid = false;
-            switch (ShopOrder.orderStatus)
+            switch (Enum.Parse(typeof(ShopModule_ApiClasses.Messages.OrderStatusMessage), ShopOrder.orderStatus))
             {
-                case DeliveryModule_ApiClasses.orderStatus.OneOfPending:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.Pending:
                     SetOrderStatus(Order.OrderStatusEnum.Pending);
                     break;
 
-                case DeliveryModule_ApiClasses.orderStatus.InPreparation:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.WaitingForCollection:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.Collecting:
                     SetOrderStatus(Order.OrderStatusEnum.InPreparation);
                     break;
 
-                case DeliveryModule_ApiClasses.orderStatus.ReadyForDelivery:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.WaitingForCourier:
                     SetOrderStatus(Order.OrderStatusEnum.ReadyToPickUp);
                     break;
 
-                case DeliveryModule_ApiClasses.orderStatus.RejectedByShop:
-                case DeliveryModule_ApiClasses.orderStatus.RejectedByCustomer:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.RejectedByShop:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.RejectedByCustomer:
                     SetOrderStatus(Order.OrderStatusEnum.Rejected);
                     break;
 
-                case DeliveryModule_ApiClasses.orderStatus.PickedUpByCourier:
-                case DeliveryModule_ApiClasses.orderStatus.Delivered:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.ParcelCollected:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.OnTheWay:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.Delivered:
                     SetOrderStatus(Order.OrderStatusEnum.Delivered);
                     break;
             }
