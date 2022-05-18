@@ -18,16 +18,6 @@ namespace ApiGateway.Controllers
             _httpClientFactory = factory;
         }
 
-        [HttpGet]
-        [Route("orders")]
-        public async Task<HttpResponseMessage> GetClientDetails()
-        {
-            HttpResponseMessage response = null;
-            using (var client = _httpClientFactory.CreateClient())
-            {
-                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/");
-            }
-            return response;
-        }
+        
     }
 }

@@ -12,4 +12,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\ClientModule\ClientModule_ApiClasses\ClientModule_ApiClasses.csproj" />
+    <ProjectReference Include="..\..\DeliveryModule\DeliveryModule_ApiClasses\DeliveryModule_ApiClasses.csproj" />
+    <ProjectReference Include="..\..\ShopModule\ShopModule_ApiClasses\ShopModule_ApiClasses.csproj" />
+  </ItemGroup>
+
 </Project>
