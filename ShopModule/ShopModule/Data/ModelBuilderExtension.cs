@@ -39,12 +39,10 @@ namespace ShopModule.Data
             builder.Entity<ProductType>().HasData(
                 new ProductType
                 {
-                    Id = "category1",
                     Name = "testingCategory"
                 },
                 new ProductType
                 {
-                    Id = "category2",
                     Name = "testingCategory2"
                 });
 
@@ -52,7 +50,6 @@ namespace ShopModule.Data
             builder.Entity<Product>().HasData(
                 new Product
                 {
-                    Id = System.Guid.Parse("EEEEEEEE-AAAA-CCCC-0000-000000000000"),
                     ProductName = "testName",
                     Price = 1,
                     Available = true,
@@ -63,7 +60,6 @@ namespace ShopModule.Data
                 new Product
                 {
 
-                    Id = System.Guid.Parse("FFFFFFFF-AAAA-CCC0-0000-000000000000"),
                     ProductName = "testName2",
                     Price = 3,
                     Available = true,
@@ -73,7 +69,6 @@ namespace ShopModule.Data
                 },
                 new Product
                 {
-                    Id = System.Guid.Parse("FFFFFFFF-AAAA-C000-0000-000000000000"),
                     ProductName = "testName3",
                     Price = 5,
                     Available = false,
@@ -83,7 +78,6 @@ namespace ShopModule.Data
                 },
                 new Product
                 {
-                    Id = System.Guid.Parse("FFFFFFFF-AAAA-CC00-0000-000000000000"),
                     ProductName = "testName4",
                     Price = 6,
                     Available = true,
@@ -117,7 +111,7 @@ namespace ShopModule.Data
                 new Complaint
                 {
                     Id = System.Guid.Parse("FFFFFFFF-AAAA-0000-0000-000000000000"),
-                    CurrentStatus = Complaints.CurrentComplaintState.Pending,
+                    CurrentStatus = Complaints.CurrentComplaintState.Pending.ToString(),
                     Text = "test_complaint"
                 });
 
@@ -129,7 +123,7 @@ namespace ShopModule.Data
                     Currency = "USD",
                     OrderFK = System.Guid.Parse("EEEEEEEE-CCCC-AAAA-0000-000000000000"),
                     GrossPrice = 10,
-                    ProductFK = System.Guid.Parse("EEEEEEEE-AAAA-CCCC-0000-000000000000"),
+                    ProductFK = "testName",
                     ProductName = "name",
                     Quantity = 1,
                     Tax = 0,

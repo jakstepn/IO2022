@@ -20,7 +20,7 @@ namespace ShopModule.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllProductsEndpoint([FromQuery] int page, [FromRoute] int pageSize)
+        public IActionResult GetAllProductsEndpoint([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _service.GetPaginatedProductList(page, pageSize);
             return ResponseMessage.Success(result, 200);
@@ -28,7 +28,8 @@ namespace ShopModule.Controllers
         [HttpPost]
         public IActionResult AddProductsToShopEndpoint([FromBody] ProductMessage product)
         {
-            var result = _service.AddProduct(new Product(product));
+            ProductType category = _service.GetOrCreateCategory(product.category);
+            var result = _service.AddProduct(new Product(product, category));
             if (result != null)
             {
                 return ResponseMessage.Success("Successfully added product.", 200);
@@ -39,12 +40,12 @@ namespace ShopModule.Controllers
             }
         }
         [HttpDelete("{productId}")]
-        public IActionResult DeleteProductEndpoint([FromRoute] Guid productId)
+        public IActionResult DeleteProductEndpoint([FromRoute] string productId)
         {
             var prod = _service.RemoveProduct(productId);
             if (prod != null)
             {
-                return ResponseMessage.Success(prod, 200);
+                return ResponseMessage.Success(prod.Convert(StaticData.defaultConverter), 200);
             }
             else
             {
@@ -52,21 +53,21 @@ namespace ShopModule.Controllers
             }
         }
         [HttpGet("{productId}")]
-        public IActionResult GetProductInfoEndpoint([FromRoute] Guid productId)
+        public IActionResult GetProductInfoEndpoint([FromRoute] string productId)
         {
             var prod = _service.FindProduct(productId);
             if (prod != null)
             {
-                return ResponseMessage.Success(prod, 200);
+                return ResponseMessage.Success(prod.Convert(StaticData.defaultConverter), 200);
             }
             else
             {
                 return ResponseMessage.Error("Product not found.", 404);
             }
         }
-        [HttpGet("{category}")]
+        [HttpGet("category/{category}")]
         public IActionResult GetProductsFromCategoryEndpoint([FromRoute] string category,
-            [FromQuery] int page, [FromRoute] int pageSize)
+            [FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _service.GetPaginatedProductListFromCategory(page, pageSize, category);
             if (result != null)

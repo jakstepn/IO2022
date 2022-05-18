@@ -22,7 +22,7 @@ namespace ShopModule_ApiClasses.Messages
         public AddressMessage clientAddress { get; set; }
         public OrderItemMessage[] orderItems { get; set; }
         public string additionalInfo { get; set; }
-        public OrderStatusMessage orderStatus { get; set; }
+        public string orderStatus { get; set; }
         public bool confirmedPayment { get; set; }
 
         public OrderMessage()

@@ -7,7 +7,7 @@
         "clientmodule": "DoNotStart",
         "database": "StartWithoutDebugging",
         "deliverymodule": "StartDebugging",
-        "identityserver": "StartDebugging",
+        "identityserver": "DoNotStart",
         "shopmodule": "StartDebugging"
       }
     }

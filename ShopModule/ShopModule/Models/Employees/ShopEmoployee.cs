@@ -29,9 +29,9 @@ namespace ShopModule.Employees
         {
         }
 
-        public void ChangeOrderStatus(Order order, OrderStatus status) => order.OrderStatus = status; 
-        public OrderStatus GetOrderStatus(Order order) => order.OrderStatus;
-        public void RejectOrder(Order order) => order.OrderStatus = OrderStatus.RejectedByShop;
+        public void ChangeOrderStatus(Order order, OrderStatus status) => order.OrderStatus = status.ToString(); 
+        public OrderStatus GetOrderStatus(Order order) => (OrderStatus)Enum.Parse(typeof(OrderStatus), order.OrderStatus);
+        public void RejectOrder(Order order) => order.OrderStatus = OrderStatus.RejectedByShop.ToString();
         public void SetProductAsUnavailable(Product product) => product.Available = false;
         public async void NotifyDeliveryThatPackageIsReady(Order order)
         {

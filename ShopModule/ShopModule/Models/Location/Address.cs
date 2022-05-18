@@ -10,15 +10,15 @@ namespace ShopModule.Location
 	public class Address
 	{
 		[Key]
-		public Guid Id { get; set; }
-		public string Country { get; set; }
-		public string City { get; set; }
-		public string Region { get; set; }
-		public string Street { get; set; }
+		public virtual Guid Id { get; set; }
+		public virtual string Country { get; set; }
+		public virtual string City { get; set; }
+		public virtual string Region { get; set; }
+		public virtual string Street { get; set; }
 		// House numbers can contain letters
-		public string StreetNumber { get; set; }
-		public string ZipCode { get; set; }
-		public ICollection<Order> Orders { get; set; }
+		public virtual string StreetNumber { get; set; }
+		public virtual string ZipCode { get; set; }
+		public virtual ICollection<Order> Orders { get; set; }
 
 		public Address()
         {

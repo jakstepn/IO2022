@@ -1,3 +1,4 @@
+using ShopModule;
 using ShopModule.Complaints;
 using ShopModule_ApiClasses.Messages;
 using System;
@@ -12,7 +13,7 @@ namespace Complaints
         [Key]
         public Guid Id { get; set; }
         public string Text { get; set; }
-        public CurrentComplaintState CurrentStatus { get; set; }
+        public string CurrentStatus { get; set; }
 
         public Complaint()
         {
@@ -23,7 +24,12 @@ namespace Complaints
         {
             Id = message.complaintId;
             Text = message.text;
-            CurrentStatus = (CurrentComplaintState)message.status;
+            CurrentStatus = message.status;
+        }
+
+        public ComplaintMessage Convert(IVisitor visitor)
+        {
+            return visitor.Visit(this);
         }
     }
 }

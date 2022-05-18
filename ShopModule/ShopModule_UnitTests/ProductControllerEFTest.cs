@@ -2,9 +2,11 @@
 using Moq;
 using ShopModule.Data;
 using ShopModule.Location;
+using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Products;
 using ShopModule.Services;
+using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,25 +22,30 @@ namespace ShopModule_UnitTests
         public void GetProductsTest()
         {
             var mockOrderSet = new Mock<DbSet<Product>>();
+            var mockService = new Mock<IProductService>();
 
             var mockContext = new Mock<ShopModuleDbContext>();
             mockContext.Setup(x => x.Products).Returns(mockOrderSet.Object);
 
             var service = new ProductService(mockContext.Object);
 
+            var productCategory = new ProductType { Name = "testcategory" };
+
             var testProduct = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
-                ProductTypeFK = "1",
+                ProductType = productCategory,
                 TaxRate = 10
             };
 
+            mockService.Setup(x => x.GetPaginatedProductList(0,1))
+                .Returns(new List<ProductMessage> { testProduct.Convert(StaticData.defaultConverter) });
+
             service.AddProduct(testProduct);
-            var products = service.GetPaginatedProductList(0, 1);
-            Assert.Contains(testProduct, products);
+            var products = mockService.Object.GetPaginatedProductList(0, 1);
+            Assert.Equal(testProduct.Convert(StaticData.defaultConverter).name, products.ElementAt(0).name);
         }
 
         [Fact]
@@ -53,7 +60,6 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -69,6 +75,7 @@ namespace ShopModule_UnitTests
         public void DeleteProductTest()
         {
             var mockOrderSet = new Mock<DbSet<Product>>();
+            var mockService = new Mock<IProductService>();
 
             var mockContext = new Mock<ShopModuleDbContext>();
             mockContext.Setup(x => x.Products).Returns(mockOrderSet.Object);
@@ -77,7 +84,6 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -85,15 +91,19 @@ namespace ShopModule_UnitTests
                 TaxRate = 10
             };
 
-            service.AddProduct(testProduct);
-            service.RemoveProduct(testProduct.Id);
-            mockOrderSet.Verify(m => m.Remove(It.IsAny<Product>()), Times.Once);
+            mockService.Setup(x => x.RemoveProduct(testProduct.ProductName)).Returns(testProduct);
+            mockService.Setup(x => x.AddProduct(testProduct)).Returns(testProduct);
+
+            mockService.Object.AddProduct(testProduct);
+            mockService.Object.RemoveProduct(testProduct.ProductName);
+            mockOrderSet.Verify(m => m.Remove(It.IsAny<Product>()), Times.AtLeastOnce);
         }
 
         [Fact]
         public void GetProductInfoTest()
         {
             var mockOrderSet = new Mock<DbSet<Product>>();
+            var mockService = new Mock<IProductService>();
 
             var mockContext = new Mock<ShopModuleDbContext>();
             mockContext.Setup(x => x.Products).Returns(mockOrderSet.Object);
@@ -102,7 +112,6 @@ namespace ShopModule_UnitTests
 
             var testProduct = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator",
@@ -111,7 +120,8 @@ namespace ShopModule_UnitTests
             };
 
             service.AddProduct(testProduct);
-            var product = service.FindProduct(testProduct.Id);
+            mockService.Setup(x => x.FindProduct(testProduct.ProductName)).Returns(testProduct);
+            var product = mockService.Object.FindProduct(testProduct.ProductName);
             Assert.Equal(testProduct, product);
         }
 
@@ -119,40 +129,41 @@ namespace ShopModule_UnitTests
         public void GetProductsFromCategoryTest()
         {
             var mockOrderSet = new Mock<DbSet<Product>>();
+            var mockService = new Mock<IProductService>();
 
             var mockContext = new Mock<ShopModuleDbContext>();
             mockContext.Setup(x => x.Products).Returns(mockOrderSet.Object);
 
             var service = new ProductService(mockContext.Object);
 
-            var testCategory1 = new ProductType { Id="1", Name="test1"};
-            var testCategory2 = new ProductType { Id="2", Name="test2"};
-
+            var testCategory1 = new ProductType { Name="test1"};
+            var testCategory2 = new ProductType { Name="test2"};
 
             var testProduct1 = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator1",
-                ProductTypeFK = "1",
+                ProductType = testCategory1,
                 TaxRate = 10
             };
 
             var testProduct2 = new Product
             {
-                Id = Guid.NewGuid(),
                 Available = true,
                 Price = 10,
                 ProductName = "bulbulator2",
-                ProductTypeFK = "2",
+                ProductType = testCategory2,
                 TaxRate = 10
             };
 
+            mockService.Setup(x => x.GetPaginatedProductListFromCategory(0, 1, testCategory1.Name))
+                .Returns(new List<ProductMessage> { testProduct1.Convert(StaticData.defaultConverter) });
+
             service.AddProduct(testProduct1);
             service.AddProduct(testProduct2);
-            var product = service.GetPaginatedProductListFromCategory(0,1,testCategory1.Name);
-            Assert.Contains(testProduct1, product);
+            var product = mockService.Object.GetPaginatedProductListFromCategory(0,1,testCategory1.Name);
+            Assert.Equal(testProduct1.Convert(StaticData.defaultConverter).name, product.ElementAt(0).name);
         }
     }
 }

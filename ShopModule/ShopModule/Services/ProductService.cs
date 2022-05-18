@@ -1,5 +1,7 @@
 ﻿using ShopModule.Data;
+using ShopModule.Models;
 using ShopModule.Products;
+using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +10,12 @@ namespace ShopModule.Services
 {
     public interface IProductService
     {
-         Product RemoveProduct(Guid productId);
-         Product FindProduct(Guid productId);
-         Product AddProduct(Product product);
-         List<Product> GetPaginatedProductList(int page, int pageSize);
-         List<Product> GetPaginatedProductListFromCategory(int page, int pageSize, string category);
+        Product RemoveProduct(string productId);
+        Product FindProduct(string productId);
+        Product AddProduct(Product product);
+        List<ProductMessage> GetPaginatedProductList(int page, int pageSize);
+        List<ProductMessage> GetPaginatedProductListFromCategory(int page, int pageSize, string category);
+        ProductType GetOrCreateCategory(string name);
     }
 
     public class ProductService : IProductService
@@ -29,14 +32,16 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="productId">Product id to be removed</param>
         /// <returns>Return found and removed product on success, null on failure</returns>
-        public Product RemoveProduct(Guid productId)
+        public Product RemoveProduct(string productId)
         {
             var res = _context.Products.Find(productId);
             bool removed = false;
             if (res != null)
             {
+                _context.OrderItems.RemoveRange(_context.OrderItems.Where(x => x.ProductFK == productId));
                 _context.Remove(res);
-                removed = _context.SaveChanges() == 1;
+                _context.SaveChanges();
+                removed = true;
             }
             return removed ? res : null;
         }
@@ -46,7 +51,7 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="productId">Id of the element to be found</param>
         /// <returns>Returns the first matching product on success and a null on failure</returns>
-        public Product FindProduct(Guid productId)
+        public Product FindProduct(string productId)
         {
             return _context.Products.Find(productId);
         }
@@ -68,9 +73,14 @@ namespace ShopModule.Services
         /// <param name="page">Page index</param>
         /// <param name="pageSize">Number of elements on a page</param>
         /// <returns>List of products. If none were added returns an empty list</returns>
-        public List<Product> GetPaginatedProductList(int page, int pageSize)
+        public List<ProductMessage> GetPaginatedProductList(int page, int pageSize)
         {
-            return _context.Products.Skip(page * pageSize).Take(pageSize).ToList();
+            List<ProductMessage> productMessages = new List<ProductMessage>();
+            foreach (var item in _context.Products.Skip(page * pageSize).Take(pageSize).ToList())
+            {
+                productMessages.Add(item.Convert(StaticData.defaultConverter));
+            }
+            return productMessages;
         }
 
         /// <summary>
@@ -80,17 +90,33 @@ namespace ShopModule.Services
         /// <param name="pageSize">Number of elements on a page</param>
         /// <param name="category">Name of the category</param>
         /// <returns>Returns <= pageSize elements from a database. Returns null if category doesn't exist</returns>
-        public List<Product> GetPaginatedProductListFromCategory(int page, int pageSize, string category)
+        public List<ProductMessage> GetPaginatedProductListFromCategory(int page, int pageSize, string category)
         {
-            var categoryList = _context.Products.Where(p => p.ProductType.Name == category);
+            var categoryList = _context.Products.Where(p => p.ProductTypeFK == category);
             if (categoryList.Count() > 0)
             {
-                return categoryList.Skip(page * pageSize).Take(pageSize).ToList();
+                List<ProductMessage> productMessages = new List<ProductMessage>();
+                foreach (var item in categoryList.Skip(page * pageSize).Take(pageSize).ToList())
+                {
+                    productMessages.Add(item.Convert(StaticData.defaultConverter));
+                }
+                return productMessages;
             }
             else
             {
                 return null;
             }
+        }
+
+        public ProductType GetOrCreateCategory(string name)
+        {
+            var category = _context.ProductTypes.Find(name);
+            if (category == null)
+            {
+                _context.ProductTypes.Add(category = new ProductType { Name = name });
+                _context.SaveChanges();
+            }
+            return category;
         }
     }
 }
