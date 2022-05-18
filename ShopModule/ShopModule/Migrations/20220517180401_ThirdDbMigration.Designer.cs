@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopModule.Data;
 
 namespace ShopModule.Migrations
 {
     [DbContext(typeof(ShopModuleDbContext))]
-    partial class ShopModuleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220517180401_ThirdDbMigration")]
+    partial class ThirdDbMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,8 +27,8 @@ namespace ShopModule.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CurrentStatus")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CurrentStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -118,12 +120,17 @@ namespace ShopModule.Migrations
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("OrderStatus")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ClientAddressId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Orders");
                 });
@@ -143,8 +150,8 @@ namespace ShopModule.Migrations
                     b.Property<Guid>("OrderFK")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ProductFK")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("ProductFK")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
@@ -166,14 +173,18 @@ namespace ShopModule.Migrations
 
             modelBuilder.Entity("ShopModule.Products.Product", b =>
                 {
-                    b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Available")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductTypeFK")
                         .HasColumnType("nvarchar(450)");
@@ -184,7 +195,7 @@ namespace ShopModule.Migrations
                     b.Property<int>("TaxRate")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductName");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductTypeFK");
 
@@ -214,6 +225,10 @@ namespace ShopModule.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("ClientAddressId");
 
+                    b.HasOne("ShopModule.Products.Product", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId");
+
                     b.Navigation("ClientAddress");
                 });
 
@@ -226,8 +241,10 @@ namespace ShopModule.Migrations
                         .IsRequired();
 
                     b.HasOne("ShopModule.Products.Product", "Product")
-                        .WithMany("OrdersItems")
-                        .HasForeignKey("ProductFK");
+                        .WithMany()
+                        .HasForeignKey("ProductFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
 
@@ -264,7 +281,7 @@ namespace ShopModule.Migrations
 
             modelBuilder.Entity("ShopModule.Products.Product", b =>
                 {
-                    b.Navigation("OrdersItems");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("ShopModule.Products.ProductType", b =>

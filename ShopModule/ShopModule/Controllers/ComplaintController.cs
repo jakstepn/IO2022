@@ -26,7 +26,7 @@ namespace ShopModule.Controllers
             var res = _complaintService.GetComplaint(complaintId);
             if (res != null)
             {
-                return ResponseMessage.Success(res, 200);
+                return ResponseMessage.Success(res.Convert(StaticData.defaultConverter), 200);
             }
             else
             {
@@ -37,7 +37,7 @@ namespace ShopModule.Controllers
         [HttpPost("create")]
         public IActionResult CreateComplaintEndpoint([FromBody] ComplaintMessage complaint)
         {
-            var res = _complaintService.AddComplaint(new Complaint(complaint));
+            var res = _complaintService.AddComplaint(complaint);
             if (res != null)
             {
                 return ResponseMessage.Success(res, 201);

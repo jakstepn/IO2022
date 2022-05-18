@@ -14,7 +14,7 @@ namespace ShopModule_UnitTests
         public void TestDefaultOrderStatus()
         {
             Order o = new Order();
-            Assert.Equal(OrderStatus.WaitingForCollection, o.OrderStatus);
+            Assert.Equal(OrderStatus.WaitingForCollection.ToString(), o.OrderStatus);
         }
 
         [Theory]
@@ -30,7 +30,7 @@ namespace ShopModule_UnitTests
             OrderStatus defStatus = OrderStatus.Collecting;
             Order o = new Order(Guid.NewGuid(), null, DateTime.Now, DateTime.Now, "", defStatus);
             o.ChangeStatus(status);
-            Assert.Equal(status, o.OrderStatus);
+            Assert.Equal(status.ToString(), o.OrderStatus);
         }
 
         //[Fact]

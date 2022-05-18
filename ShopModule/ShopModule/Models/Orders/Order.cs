@@ -12,48 +12,50 @@ namespace ShopModule.Orders
 	public class Order
 	{
 		[Key]
-		public Guid Id { get; set; }	
-		public OrderStatus OrderStatus { get; set; }
-		public DateTime CreationDate { get; set; }
-		public DateTime DeliveryDate { get; set; }
-		public Address ClientAddress { get; set; }
-		public string AdditionalInfo { get; set; }
-		public bool ConfirmedPayment { get; set; }
+		public virtual Guid Id { get; set; }	
+		public virtual string OrderStatus { get; set; }
+		public virtual DateTime CreationDate { get; set; }
+		public virtual DateTime DeliveryDate { get; set; }
+		public virtual Address ClientAddress { get; set; }
+		public virtual string AdditionalInfo { get; set; }
+		public virtual bool ConfirmedPayment { get; set; }
 		//public Courier Courier { get; set; }
-		public ICollection<OrderItem> Items { get; set; }
+		public virtual ICollection<OrderItem> Items { get; set; }
 
 		public Order()
 		{
 		}
 
 		public Order(Guid id, Address client_address, DateTime delivery_date, DateTime creation_date,
-			string additional_info = "", OrderStatus order_status = OrderStatus.WaitingForCollection)
+			string additional_info = "", OrderStatus order_status = ShopModule.Orders.OrderStatus.WaitingForCollection)
         {
 			Id = id;
 			ClientAddress = client_address;
 			DeliveryDate = delivery_date;
 			CreationDate = creation_date;
 			AdditionalInfo = additional_info;
-			OrderStatus = order_status;
+			OrderStatus = order_status.ToString();
         }
 
 		public Order(OrderMessage message)
         {
 			Id = message.orderId;
 			ConfirmedPayment = message.confirmedPayment;
-			OrderStatus = (OrderStatus) message.orderStatus;
+			OrderStatus = message.orderStatus.ToString();
 			CreationDate = message.creationDate;
 			DeliveryDate= message.deliveryDate;
 			AdditionalInfo = message.additionalInfo;
 			ClientAddress = new Address(message.clientAddress);
+		}
+
+		public void ChangeStatus(OrderStatus status) => OrderStatus = status.ToString();
+
+        public OrderMessage Convert(IVisitor visitor)
+        {
+			return visitor.Visit(this);
         }
 
-		public void ChangeStatus(OrderStatus status) => OrderStatus = status;
-
-		[ForeignKey("Courier")]
-		public Guid CourierFK { get; set; }
 		[ForeignKey("Address")]
-		public Guid AddressFK { get; set; }
-
+		public virtual Guid AddressFK { get; set; }
 	}
 }

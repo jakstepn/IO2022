@@ -1,5 +1,7 @@
 ﻿using Complaints;
 using ShopModule.Data;
+using ShopModule.Models;
+using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 
@@ -7,10 +9,10 @@ namespace ShopModule.Services
 {
     public interface IComplaintService
     {
-        Complaint AddComplaint(Complaint complaint);
+        ComplaintMessage AddComplaint(ComplaintMessage complaint);
         Complaint AcceptComplaint(Guid complaintId);
         Complaint RejectComplaint(Guid complaintId);
-        List<Complaint> PendingComplaints();
+        List<ComplaintMessage> PendingComplaints();
         Complaint GetComplaint(Guid complaintId);
 
     }
@@ -27,14 +29,22 @@ namespace ShopModule.Services
         /// </summary>
         /// <param name="complaint">Complaint object to be added</param>
         /// <returns>Returns a given complaint on success and a null on error</returns>
-        public Complaint AddComplaint(Complaint complaint)
+        public ComplaintMessage AddComplaint(ComplaintMessage message)
         {
-            _context.Complaints.Add(complaint);
-            bool added = _context.SaveChanges() == 1;
-            if(added)
+            if (Enum.IsDefined(typeof(CurrentComplaintStateMessage), message.status))
             {
-                NotifyClientComplaintPending();
-                return complaint;
+                Complaint complaint = new Complaint(message);
+                _context.Complaints.Add(complaint);
+                bool added = _context.SaveChanges() == 1;
+                if (added)
+                {
+                    NotifyClientComplaintPending();
+                    return message;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {
@@ -46,14 +56,14 @@ namespace ShopModule.Services
         /// Gets all of existing Complaints that has status set as pending
         /// </summary>
         /// <returns>List of Complaint objects</returns>
-        public List<Complaint> PendingComplaints()
+        public List<ComplaintMessage> PendingComplaints()
         {
-            List<Complaint> res = new List<Complaint>();
+            List<ComplaintMessage> res = new List<ComplaintMessage>();
             foreach (var complaint in _context.Complaints)
             {
-                if (complaint.CurrentStatus == Complaints.CurrentComplaintState.Pending)
+                if (complaint.CurrentStatus == Complaints.CurrentComplaintState.Pending.ToString())
                 {
-                    res.Add(complaint);
+                    res.Add(complaint.Convert(StaticData.defaultConverter));
                 }
             }
             return res;
@@ -84,7 +94,7 @@ namespace ShopModule.Services
             var res = _context.Complaints.Find(complaintId);
             if (res != null)
             {
-                res.CurrentStatus = state;
+                res.CurrentStatus = state.ToString();
                 switch (state)
                 {
                     case Complaints.CurrentComplaintState.Rejected:
@@ -100,15 +110,8 @@ namespace ShopModule.Services
                     default:
                         break;
                 }
-                bool added = _context.SaveChanges() == 1;
-                if(added)
-                {
-                    return res;
-                }
-                else
-                {
-                    return null;
-                }
+                _context.SaveChanges();
+                return res;
             }
             else
             {
