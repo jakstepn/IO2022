@@ -91,7 +91,7 @@ namespace DeliveryModule.Controllers
             {
                 client.BaseAddress = new Uri(Routs.ShopApi);
 
-                var getTask = client.GetAsync($"/orders/{Id}").Result;
+                var getTask = client.GetAsync($"orders/{Id}").Result;
                 if (!getTask.IsSuccessStatusCode)
                 {
                     return null;
