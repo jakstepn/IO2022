@@ -6,6 +6,8 @@ using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 
 namespace ShopModule.Services
@@ -20,7 +22,7 @@ namespace ShopModule.Services
         OrderMessage AddOrder(OrderMessage order);
         List<OrderMessage> FindPendingOrders();
         OrderMessage RemoveOrder(Guid orderId);
-        void NotifyDeliveryStatusOfStatus(OrderStatus status);
+        bool NotifyDeliveryStatusOfStatus(OrderStatus status, Guid guid);
     }
     public class OrderService : IOrderService
     {
@@ -214,22 +216,24 @@ namespace ShopModule.Services
         public OrderMessage ChangeStatus(Guid orderId, OrderStatus status)
         {
             Order o = _context.Orders.Find(orderId);
-            o.ChangeStatus(status);
-            if (_context.SaveChanges() == 1)
+            if (o != null)
             {
-                return o.Convert(StaticData.defaultConverter);
+                LoadOrder(o);
+                o.ChangeStatus(status);
+                if (_context.SaveChanges() == 1)
+                {
+                    return o.Convert(StaticData.defaultConverter);
+                }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         /// <summary>
         /// Notify Delivery Module of an order status change
         /// </summary>
         /// <param name="status">New order status</param>
-        public void NotifyDeliveryStatusOfStatus(OrderStatus status)
+        /// <returns>True if delivery notfied</returns>
+        public bool NotifyDeliveryStatusOfStatus(OrderStatus status, Guid guid)
         {
             //TODO
             // Add module message
@@ -238,23 +242,33 @@ namespace ShopModule.Services
             {
                 case OrderStatus.WaitingForCollection:
                     // Notify: Ready to pickup
-                    break;
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(StaticData.urlDeliveryModule);
+
+                        var getTask = client.PostAsJsonAsync<Guid>($"requestPickup", guid).Result;
+                        if (!getTask.IsSuccessStatusCode)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
                 case OrderStatus.Collecting:
-                    break;
+                    return true;
                 case OrderStatus.WaitingForCourier:
-                    break;
+                    return true;
                 case OrderStatus.OnTheWay:
-                    break;
+                    return true;
                 case OrderStatus.RejectedByShop:
                     // Nofity: Reject order
-                    break;
+                    return true;
                 case OrderStatus.RejectedByCustomer:
-                    break;
+                    return true;
                 case OrderStatus.Pending:
                     // Notify: In preparation
-                    break;
+                    return true;
                 default:
-                    break;
+                    return false;
             }
         }
 
