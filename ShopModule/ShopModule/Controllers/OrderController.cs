@@ -35,13 +35,13 @@ namespace ShopModule.Controllers
 
                 if (success)
                 {
-                    _orderService.NotifyDeliveryStatusOfStatus((OrderStatus)Enum.Parse(typeof(OrderStatus), message.orderStatus));
-                    return ResponseMessage.Success(message, 201);
+                    bool notified = _orderService.NotifyDeliveryStatusOfStatus((OrderStatus)Enum.Parse(typeof(OrderStatus), message.orderStatus), message.orderId);
+                    if (notified)
+                    {
+                        return ResponseMessage.Success(message, 201);
+                    }
                 }
-                else
-                {
                     return ResponseMessage.Error("Failed to create order", 404);
-                }
             }
             catch (Exception)
             {
@@ -82,31 +82,36 @@ namespace ShopModule.Controllers
         /// <param name="status"></param>
         /// <returns></returns>
         [HttpPut("{orderId}")]
-        public IActionResult SetChosenOrder([FromRoute] Guid orderId, [FromBody] OrderStatus status)
+        public IActionResult SetChosenOrder([FromRoute] Guid orderId, [FromBody] string string_status)
         {
-            OrderMessage order = _orderService.FindOrder(orderId);
-            if (order != null)
+            OrderStatus status;
+            bool accepted_enum = Enum.TryParse<OrderStatus>(string_status, out status);
+            OrderMessage order;
+            bool notified = false;
+            if (accepted_enum && (order = _orderService.FindOrder(orderId)) != null)
             {
                 if (status == OrderStatus.ParcelCollected)
                 {
                     // TODO
                     // Notify Client package collected
+                    notified = true;
                 }
                 else if (status == OrderStatus.Delivered)
                 {
                     // TODO
                     // Notify client package delivered
+                    notified = true;
                 }
                 else
                 {
-                    _orderService.NotifyDeliveryStatusOfStatus(status);
+                    notified = _orderService.NotifyDeliveryStatusOfStatus(status, orderId);
                 }
-                return ResponseMessage.Success(order, 200);
+                if (notified)
+                {
+                    return ResponseMessage.Success(order, 200);
+                }
             }
-            else
-            {
-                return ResponseMessage.Error("Order doesn't exist!", 404);
-            }
+            return ResponseMessage.Error("Order doesn't exist!", 404);
         }
     }
 }

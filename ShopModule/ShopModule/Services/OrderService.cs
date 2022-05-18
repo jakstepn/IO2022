@@ -6,6 +6,8 @@ using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 
 namespace ShopModule.Services
@@ -20,7 +22,7 @@ namespace ShopModule.Services
         OrderMessage AddOrder(OrderMessage order);
         List<OrderMessage> FindPendingOrders();
         OrderMessage RemoveOrder(Guid orderId);
-        void NotifyDeliveryStatusOfStatus(OrderStatus status);
+        bool NotifyDeliveryStatusOfStatus(OrderStatus status, Guid guid);
     }
     public class OrderService : IOrderService
     {
@@ -229,7 +231,8 @@ namespace ShopModule.Services
         /// Notify Delivery Module of an order status change
         /// </summary>
         /// <param name="status">New order status</param>
-        public void NotifyDeliveryStatusOfStatus(OrderStatus status)
+        /// <returns>True if delivery notfied</returns>
+        public bool NotifyDeliveryStatusOfStatus(OrderStatus status, Guid guid)
         {
             //TODO
             // Add module message
@@ -238,7 +241,17 @@ namespace ShopModule.Services
             {
                 case OrderStatus.WaitingForCollection:
                     // Notify: Ready to pickup
-                    break;
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(StaticData.urlDeliveryModule);
+
+                        var getTask = client.PostAsJsonAsync<Guid>($"requestPickup", guid).Result;
+                        if (!getTask.IsSuccessStatusCode)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
                 case OrderStatus.Collecting:
                     break;
                 case OrderStatus.WaitingForCourier:
@@ -256,6 +269,7 @@ namespace ShopModule.Services
                 default:
                     break;
             }
+            return false;
         }
 
         private void NotifyClientPackageCollected()
