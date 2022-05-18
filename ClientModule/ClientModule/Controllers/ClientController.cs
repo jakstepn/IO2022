@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClientModule.Data;
+using ClientModule.Services;
 
 using System.Linq;
 namespace ClientModule.Controllers
@@ -10,18 +11,17 @@ namespace ClientModule.Controllers
     [ApiController]
     public class ClientController : ControllerBase
     {
-        ApplicationDbContext _context;
-        public ClientController(ApplicationDbContext context)
+        IClientService _clientService;
+        public ClientController(IClientService clientService)
         {
-            _context = context;
+            _clientService = clientService;
         }
 
         [HttpGet]
         [Route("{clientAddress}")]
         public ActionResult GetClientDetails([FromRoute]string clientAddress)
         {
-            var result = new JsonResult("Success!");
-            return result;
+            return new JsonResult(_clientService.GetClientDetails(clientAddress));
         }
     }
 }

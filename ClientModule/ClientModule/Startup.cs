@@ -33,6 +33,7 @@ namespace ClientModule
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -41,6 +42,7 @@ namespace ClientModule
 
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IClientService, ClientService>();
 
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());

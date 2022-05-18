@@ -7,7 +7,6 @@ namespace ClientModule.Database_Models
 {
     [DisplayColumn("Order")]
     [Index(nameof(Order.Date))]
-    [Index(nameof(Order.Status))]
     public class Order
     {
         [Key]
