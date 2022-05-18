@@ -26,6 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ClientModule\ClientModule_ApiClasses\ClientModule_ApiClasses.csproj" />
+    <ProjectReference Include="..\..\ShopModule\ShopModule_ApiClasses\ShopModule_ApiClasses.csproj" />
     <ProjectReference Include="..\DeliveryModule_ApiClasses\DeliveryModule_ApiClasses.csproj" />
   </ItemGroup>
 
