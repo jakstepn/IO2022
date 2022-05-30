@@ -27,9 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientModule_ApiClasses", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientModule_UnitTests", "ClientModule\ClientModule_UnitTests\ClientModule_UnitTests.csproj", "{365ECB74-4100-4901-9E37-C4E9A6AD3948}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{95FA22DC-674E-44D6-ADD8-363E0FC45D3A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{95FA22DC-674E-44D6-ADD8-363E0FC45D3A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontEndWebApp", "FrontEnd\FrontEndWebApp\FrontEndWebApp.csproj", "{1E41017B-8992-42E1-B73A-32C78EEA3FAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontendWebApp", "Frontend\FrontendWebApp\FrontendWebApp.csproj", "{1E41017B-8992-42E1-B73A-32C78EEA3FAD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{94B9929B-8379-4BCB-B545-F6B8A552728B}"
 EndProject
@@ -41,7 +41,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "Docker\do
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{DDEB8E4D-CD3B-4466-96D7-C416BD6CB5DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway\ApiGateway.csproj", "{541A674D-D123-4F2D-A39F-33D5104EA433}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\ApiGateway\ApiGateway.csproj", "{541A674D-D123-4F2D-A39F-33D5104EA433}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
