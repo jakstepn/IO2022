@@ -3,6 +3,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import {useLocation, useNavigate } from 'react-router-dom';
 import { TeamOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { GlobalStore, globalContext } from '../../reducers/GlobalStore';
+import { Product } from "./classes/Product";
 
 import {Typography} from "antd"
 
@@ -13,7 +14,7 @@ export default function CustomerHome() {
   const { globalState } = useContext(globalContext);
   const navigate = useNavigate();
   const location = useLocation(); 
-
+    
 
   useEffect(() => {
     if(!globalState.isUserAuthenticated) {
