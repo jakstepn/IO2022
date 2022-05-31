@@ -8,7 +8,7 @@ namespace ApiGateway.Controllers
     {
         public static string ClientModulePath;
         public static string DeliveryModulePath;
-        public static string ShopModulePath;
+        public static string ShopModulePath = "http://host.docker.internal:44385";
     }
     public class GatewayController : ControllerBase
     {
