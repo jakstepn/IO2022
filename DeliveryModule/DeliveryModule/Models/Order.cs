@@ -42,8 +42,7 @@ namespace DeliveryModule.Models
                     SetOrderStatus(Order.OrderStatusEnum.Pending);
                     break;
 
-                case ShopModule_ApiClasses.Messages.OrderStatusMessage.WaitingForCollection:
-                case ShopModule_ApiClasses.Messages.OrderStatusMessage.Collecting:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.InPreparation:
                     SetOrderStatus(Order.OrderStatusEnum.InPreparation);
                     break;
 
@@ -56,8 +55,6 @@ namespace DeliveryModule.Models
                     SetOrderStatus(Order.OrderStatusEnum.Rejected);
                     break;
 
-                case ShopModule_ApiClasses.Messages.OrderStatusMessage.ParcelCollected:
-                case ShopModule_ApiClasses.Messages.OrderStatusMessage.OnTheWay:
                 case ShopModule_ApiClasses.Messages.OrderStatusMessage.Delivered:
                     SetOrderStatus(Order.OrderStatusEnum.Delivered);
                     break;
