@@ -240,7 +240,7 @@ namespace ShopModule.Services
 
             switch (status)
             {
-                case OrderStatus.WaitingForCollection:
+                case OrderStatus.ReadyForDelivery:
                     // Notify: Ready to pickup
                     using (var client = new HttpClient())
                     {
@@ -253,12 +253,6 @@ namespace ShopModule.Services
                         }
                     }
                     return true;
-                case OrderStatus.Collecting:
-                    return true;
-                case OrderStatus.WaitingForCourier:
-                    return true;
-                case OrderStatus.OnTheWay:
-                    return true;
                 case OrderStatus.RejectedByShop:
                     // Nofity: Reject order
                     return true;
@@ -270,16 +264,6 @@ namespace ShopModule.Services
                 default:
                     return false;
             }
-        }
-
-        private void NotifyClientPackageCollected()
-        {
-
-        }
-
-        private void NotifyClientPackageDelivered()
-        {
-
         }
 
         private void LoadOrder(Order o)
