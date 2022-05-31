@@ -12,6 +12,7 @@ namespace Complaints
     {
         [Key]
         public Guid Id { get; set; }
+        public Guid OrderId { get; set; }
         public string Text { get; set; }
         public string CurrentStatus { get; set; }
 
@@ -24,6 +25,7 @@ namespace Complaints
         {
             Id = message.complaintId;
             Text = message.text;
+            OrderId = message.orderId;
             CurrentStatus = message.status;
         }
 

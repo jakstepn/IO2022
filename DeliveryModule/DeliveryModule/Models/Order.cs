@@ -47,7 +47,7 @@ namespace DeliveryModule.Models
                     SetOrderStatus(Order.OrderStatusEnum.InPreparation);
                     break;
 
-                case ShopModule_ApiClasses.Messages.OrderStatusMessage.WaitingForCourier:
+                case ShopModule_ApiClasses.Messages.OrderStatusMessage.ReadyForDelivery:
                     SetOrderStatus(Order.OrderStatusEnum.ReadyToPickUp);
                     break;
 
