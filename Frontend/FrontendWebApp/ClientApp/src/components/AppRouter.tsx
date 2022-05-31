@@ -4,6 +4,7 @@ import NotFound from './NotFound';
 import { globalContext } from '../reducers/GlobalStore';
 import Login from '../components/Login';
 import CourierHome from './courierApp/Home';
+import CustomerHome from './customerApp/Home';
 
 
 export const AppRouter: React.FC = () => {
@@ -14,6 +15,7 @@ export const AppRouter: React.FC = () => {
             { !globalState.isUserAuthenticated && <Route path='*' element={<Login />}/> }
             <Route path='/login' element={<Login />} />
             <Route path='/courier/home' element={<CourierHome />} />
+             <Route path='/customer/home' element={<CustomerHome />} />
             <Route path='*' element={<NotFound />}/>
       </Routes>
   );

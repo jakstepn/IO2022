@@ -9,6 +9,7 @@ import { Avatar, Button, Layout, Menu, message } from 'antd';
 import { GlobalStore, globalContext } from '../reducers/GlobalStore';
 import { AccountType } from '../reducers/Types';
 import { CourierNavMenu } from './courierApp/CourierNavMenu';
+import { CustomerNavMenu } from './customerApp/CustomerNavMenu';
 const { Header } = Layout;
 const { SubMenu } = Menu;
 
@@ -38,7 +39,9 @@ export function NavMenu() {
     if(globalState.accountType == AccountType.None)
       return defaultMenu();
     if(globalState.accountType == AccountType.Courier)
-      return CourierNavMenu();
+          return CourierNavMenu();
+   if (globalState.accountType == AccountType.Client)
+         return CustomerNavMenu();
   }
   function defaultMenu() {
     return <Menu.Item key="Home" icon={<HomeOutlined />}><NavLink tag={Link} to={navigateTo_IfLoggedIn("/login")}>Home</NavLink></Menu.Item>
