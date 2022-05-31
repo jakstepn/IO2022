@@ -21,6 +21,11 @@ namespace ShopModule.Controllers
             _orderService = orderService;
         }
 
+        /// <summary>
+        /// Create a new order
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         [HttpPost("place")]
         public IActionResult PlaceOrder([FromBody] OrderMessage message)
         {
@@ -49,6 +54,11 @@ namespace ShopModule.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all pending shop orders
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <returns></returns>
         [HttpGet("pending/{shopId}")]
         public IActionResult GetPendingOrdersAssignedToShop([FromRoute] string shopId)
         {
@@ -62,6 +72,12 @@ namespace ShopModule.Controllers
                 return ResponseMessage.Error("Failed to get pending orders", 404);
             }
         }
+
+        /// <summary>
+        /// Get chosen order
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
         [HttpGet("{orderId}")]
         public IActionResult GetChosenOrder([FromRoute] Guid orderId)
         {
@@ -90,7 +106,7 @@ namespace ShopModule.Controllers
             bool notified;
             if (accepted_enum && (order = _orderService.ChangeStatus(orderId, status)) != null)
             {
-                if (status == OrderStatus.ParcelCollected)
+                if (status == OrderStatus.PickedUpByCourier)
                 {
                     // TODO
                     // Notify Client package collected

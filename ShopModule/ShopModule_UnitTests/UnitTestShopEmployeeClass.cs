@@ -13,13 +13,12 @@ namespace ShopModule_UnitTests
     public class UnitTestShopEmployeeClass
     {
         [Theory]
-        [InlineData(OrderStatus.Collecting)]
-        [InlineData(OrderStatus.WaitingForCollection)]
         [InlineData(OrderStatus.Delivered)]
-        [InlineData(OrderStatus.WaitingForCourier)]
-        [InlineData(OrderStatus.RejectedByCustomer)]
-        [InlineData(OrderStatus.OnTheWay)]
+        [InlineData(OrderStatus.InPreparation)]
+        [InlineData(OrderStatus.PickedUpByCourier)]
+        [InlineData(OrderStatus.ReadyForDelivery)]
         [InlineData(OrderStatus.RejectedByShop)]
+        [InlineData(OrderStatus.RejectedByCustomer)]
         public void TestChangeOrderStatus(OrderStatus status)
         {
             ShopEmployee e = new ShopEmployee();
@@ -29,13 +28,12 @@ namespace ShopModule_UnitTests
         }
 
         [Theory]
-        [InlineData(OrderStatus.Collecting)]
-        [InlineData(OrderStatus.WaitingForCollection)]
         [InlineData(OrderStatus.Delivered)]
-        [InlineData(OrderStatus.WaitingForCourier)]
-        [InlineData(OrderStatus.RejectedByCustomer)]
-        [InlineData(OrderStatus.OnTheWay)]
+        [InlineData(OrderStatus.InPreparation)]
+        [InlineData(OrderStatus.PickedUpByCourier)]
+        [InlineData(OrderStatus.ReadyForDelivery)]
         [InlineData(OrderStatus.RejectedByShop)]
+        [InlineData(OrderStatus.RejectedByCustomer)]
         public void TestGetOrderStatus(OrderStatus status)
         {
             ShopEmployee e = new ShopEmployee();

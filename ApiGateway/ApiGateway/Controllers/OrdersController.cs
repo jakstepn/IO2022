@@ -83,8 +83,9 @@ namespace ApiGateway.Controllers
         }
         [HttpPut]
         [Route("{orderId}")]
-        public async Task<HttpResponseMessage> PutChosenOrder([FromRoute] string orderId, [FromBody] OrderStatus status)
+        public async Task<HttpResponseMessage> PutChosenOrder([FromRoute] string orderId, [FromBody] string status)
         {
+
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
             {

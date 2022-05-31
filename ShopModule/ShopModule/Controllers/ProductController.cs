@@ -19,12 +19,24 @@ namespace ShopModule.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Get products in a paginated fashion
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetAllProductsEndpoint([FromQuery] int page, [FromQuery] int pageSize)
         {
             var result = _service.GetPaginatedProductList(page, pageSize);
             return ResponseMessage.Success(result, 200);
         }
+
+        /// <summary>
+        /// Add product
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AddProductsToShopEndpoint([FromBody] ProductMessage product)
         {
@@ -39,6 +51,12 @@ namespace ShopModule.Controllers
                 return ResponseMessage.Error("Failed to add product", 404);
             }
         }
+
+        /// <summary>
+        /// Remove product
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         [HttpDelete("{productId}")]
         public IActionResult DeleteProductEndpoint([FromRoute] string productId)
         {
@@ -52,6 +70,12 @@ namespace ShopModule.Controllers
                 return ResponseMessage.Error("Product not found", 404);
             }
         }
+
+        /// <summary>
+        /// Get product
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         [HttpGet("{productId}")]
         public IActionResult GetProductInfoEndpoint([FromRoute] string productId)
         {
@@ -65,6 +89,14 @@ namespace ShopModule.Controllers
                 return ResponseMessage.Error("Product not found.", 404);
             }
         }
+
+        /// <summary>
+        /// Get products by category in a paginated fashion
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet("category/{category}")]
         public IActionResult GetProductsFromCategoryEndpoint([FromRoute] string category,
             [FromQuery] int page, [FromQuery] int pageSize)
