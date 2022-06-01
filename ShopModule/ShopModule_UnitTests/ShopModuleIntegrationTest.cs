@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using ShopModule.Converters;
 using ShopModule.Data;
 using ShopModule.Orders;
+using ShopModule.Products;
 using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
@@ -29,30 +30,53 @@ namespace ShopModule_UnitTests
         {
             var client = _factory.CreateClient();
             Guid guid = Guid.NewGuid();
+            var prodPost = await createProduct(client);
+            Assert.Equal(HttpStatusCode.OK, prodPost.StatusCode);
             var createdPost = await CreateOrder(guid, client);
-            //Assert.Equal(HttpStatusCode.OK, createdPost.StatusCode);
-            var response = await GetOrder(guid, client);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, createdPost.StatusCode);
+            //var response = await GetOrder(guid, client);
+            //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        private async Task<HttpResponseMessage> createProduct(HttpClient c)
+        {
+            ProductMessage p = new ProductMessage
+            {
+                quantity = 1000,
+                category = "test",
+                name = "testname",
+                price = 10,
+            };
+
+            return await c.PostAsJsonAsync("http://localhost/products", p);
         }
 
         private async Task<HttpResponseMessage> CreateOrder(Guid oguid, HttpClient c)
         {
-            OrderMessage om = new OrderMessage { 
+            var itId = Guid.NewGuid();
+            OrderItemMessage orderItem = new OrderItemMessage
+            {
+                currency = "USD",
+                grossPrice = 10,
+                orderItemId = itId,
+                productName = "testname",
+                quantity = 1,
+            };
+            OrderMessage om = new OrderMessage {
                 additionalInfo = "additionalInformation",
                 clientAddress = null,
                 confirmedPayment = false,
                 creationDate = DateTime.Now,
                 deliveryDate = DateTime.MinValue,
                 orderId = oguid,
-                orderItems = null,
+                orderItems = new OrderItemMessage[] { orderItem },
                 orderStatus = "Pending",
             };
-            string json = JsonConvert.SerializeObject(om);
-            return await c.PostAsync("http://localhost/orders/place", new StringContent(json, Encoding.UTF8, "application/json"));
+            return await c.PostAsJsonAsync("http://localhost/api/orders/place", om);
         }
         private async Task<HttpResponseMessage> GetOrder(Guid oguid, HttpClient c)
         {
-            return await c.GetAsync(String.Format("/orders/{0}", oguid));
+            return await c.GetAsync(String.Format("/api/orders/{0}", oguid));
         }
     }
 }
