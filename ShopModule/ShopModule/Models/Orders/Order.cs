@@ -41,7 +41,7 @@ namespace ShopModule.Orders
         {
 			Id = message.orderId;
 			ConfirmedPayment = message.confirmedPayment;
-			OrderStatus = message.orderStatus.ToString();
+			OrderStatus = message.orderStatus;
 			CreationDate = message.creationDate;
 			DeliveryDate= message.deliveryDate;
 			AdditionalInfo = message.additionalInfo;

@@ -26,7 +26,7 @@ namespace ShopModule.Controllers
         /// <param name="complaintId"></param>
         /// <returns></returns>
         [HttpGet("{complaintId}")]
-        public IActionResult GetChosenComplaint([FromBody] Guid complaintId)
+        public IActionResult GetChosenComplaint([FromRoute] Guid complaintId)
         {
             var res = _complaintService.GetComplaint(complaintId);
             if (res != null)

@@ -11,7 +11,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopModule_UnitTests
+namespace ShopModule_UnitTests.Integration
 {
     public class CustomWebApplicationFactory<TStartup, Context> : WebApplicationFactory<TStartup> where TStartup : class where Context : DbContext
     {
