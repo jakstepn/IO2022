@@ -26,7 +26,8 @@ export default function Login(props : Props) {
         dispatch({ type: 'SET_TOKEN', payload: token });
         dispatch({ type: 'SET_USER', payload: user.email });
         message.success('Logged in succesfully!');
-        navigate('/courier/home', {replace: true}); // to do zmiany definitywnie
+        navigate('/courier/home', { replace: true }); // to do zmiany definitywnie
+        navigate('/customer/home', { replace: true }); // to do zmiany definitywnie
     }
 
     const demoLogin = (user : any) => {

@@ -1,0 +1,17 @@
+[
+  {
+    "id":  "1233adasd123ad",
+    "name": "Coca Cola",
+    "category": "Drink",
+    "price": 1.3,
+    "quantity": 3
+  },
+  {
+    "id": "1233adas132123d",
+    "name": "Cake",
+    "category": "Sweetes",
+    "price": 2.00,
+    "quantity": 100
+  }
+
+]
