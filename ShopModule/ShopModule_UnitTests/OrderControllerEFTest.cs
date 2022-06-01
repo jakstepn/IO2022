@@ -27,7 +27,7 @@ namespace ShopModule_UnitTests
 
             var service = new OrderService(mockContext.Object);
 
-            var testOrder = new Order{ OrderStatus = OrderStatus.WaitingForCollection.ToString(),
+            var testOrder = new Order{ OrderStatus = OrderStatus.Pending.ToString(),
                                       CreationDate = DateTime.MinValue, DeliveryDate = DateTime.Now,
                                       ClientAddress = new Address { City="nonecity", Country="nocountry",
                                                                     Region="noregion", Street="nostreet",
@@ -107,7 +107,7 @@ namespace ShopModule_UnitTests
 
             var testOrder3 = new Order
             {
-                OrderStatus = OrderStatus.WaitingForCollection.ToString(),
+                OrderStatus = OrderStatus.Pending.ToString(),
                 CreationDate = DateTime.MinValue,
                 DeliveryDate = DateTime.Now,
                 ClientAddress = new Address
@@ -131,7 +131,7 @@ namespace ShopModule_UnitTests
             mockService.Setup(x => x.AddOrder(testOrder3.Convert(StaticData.defaultConverter)))
                .Returns(testOrder3.Convert(StaticData.defaultConverter));
 
-            mockService.Setup(x => x.FindPendingOrders())
+            mockService.Setup(x => x.FindPendingOrdersPaginated(0,2))
                .Returns(new List<ShopModule_ApiClasses.Messages.OrderMessage> 
                { 
                    testOrder1.Convert(StaticData.defaultConverter) ,
@@ -142,7 +142,7 @@ namespace ShopModule_UnitTests
             mockService.Object.AddOrder(testOrder2.Convert(StaticData.defaultConverter));
             mockService.Object.AddOrder(testOrder3.Convert(StaticData.defaultConverter));
 
-            var pendingOrders = mockService.Object.FindPendingOrders();
+            var pendingOrders = mockService.Object.FindPendingOrdersPaginated(0, 2);
 
             Assert.True(pendingOrders.Count == 2);
         }
