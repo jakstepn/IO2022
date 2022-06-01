@@ -17,8 +17,9 @@ export function CustomerNavMenu() {
 
 
 
+
     return (
-        <Menu mode={'horizontal' } > 
+        <Menu theme="dark" mode="horizontal"  > 
         <Menu.Item key="Home" icon={<HomeOutlined />}>
             <NavLink tag={Link} to={navigateTo_IfLoggedIn("/customer/home")}>CustomerHome</NavLink>
             
