@@ -20,7 +20,7 @@ namespace ShopModule.Services
         OrderItemMessage[] AddOrderAndItems(OrderItemMessage[] items, OrderMessage order);
         OrderItem AddOrderItem(OrderItem item);
         OrderMessage AddOrder(OrderMessage order);
-        List<OrderMessage> FindPendingOrders();
+        List<OrderMessage> FindPendingOrdersPaginated(int page, int pageSize);
         OrderMessage RemoveOrder(Guid orderId);
         bool NotifyDeliveryStatusOfStatus(OrderStatus status, Guid guid);
     }
@@ -166,10 +166,10 @@ namespace ShopModule.Services
         }
 
         /// <summary>
-        /// Get all of the orders that have their status set as Pending
+        /// Get orders that have their status set as Pending in paginated fashion
         /// </summary>
         /// <returns>Returns an array of Orders</returns>
-        public List<OrderMessage> FindPendingOrders()
+        public List<OrderMessage> FindPendingOrdersPaginated(int page, int pageSize)
         {
             List<OrderMessage> orders = new List<OrderMessage>();
             foreach (var ord in _context.Orders.Where(x => x.OrderStatus == OrderStatus.Pending.ToString()).ToList())
@@ -178,7 +178,7 @@ namespace ShopModule.Services
 
                 orders.Add(ord.Convert(StaticData.defaultConverter));
             }
-            return orders;
+            return orders.Skip(page * pageSize).Take(pageSize).ToList();
         }
 
         /// <summary>

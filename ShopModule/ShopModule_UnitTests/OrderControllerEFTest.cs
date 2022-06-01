@@ -131,7 +131,7 @@ namespace ShopModule_UnitTests
             mockService.Setup(x => x.AddOrder(testOrder3.Convert(StaticData.defaultConverter)))
                .Returns(testOrder3.Convert(StaticData.defaultConverter));
 
-            mockService.Setup(x => x.FindPendingOrders())
+            mockService.Setup(x => x.FindPendingOrdersPaginated(0,2))
                .Returns(new List<ShopModule_ApiClasses.Messages.OrderMessage> 
                { 
                    testOrder1.Convert(StaticData.defaultConverter) ,
@@ -142,7 +142,7 @@ namespace ShopModule_UnitTests
             mockService.Object.AddOrder(testOrder2.Convert(StaticData.defaultConverter));
             mockService.Object.AddOrder(testOrder3.Convert(StaticData.defaultConverter));
 
-            var pendingOrders = mockService.Object.FindPendingOrders();
+            var pendingOrders = mockService.Object.FindPendingOrdersPaginated(0, 2);
 
             Assert.True(pendingOrders.Count == 2);
         }

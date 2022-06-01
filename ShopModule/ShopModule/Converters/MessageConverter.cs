@@ -50,9 +50,7 @@ namespace ShopModule.Converters
             return new ComplaintMessage
             {
                 complaintId = complaint.Id,
-                // TODO
-                // ADD orderid
-                orderId = System.Guid.Empty,
+                orderId = complaint.OrderId,
                 status = complaint.CurrentStatus,
                 text = complaint.Text
             };

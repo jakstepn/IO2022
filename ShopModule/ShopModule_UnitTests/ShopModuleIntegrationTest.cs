@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ShopModule.Converters;
 using ShopModule.Data;
 using ShopModule.Orders;
@@ -6,6 +7,8 @@ using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,39 +16,43 @@ using Xunit;
 
 namespace ShopModule_UnitTests
 {
-    public class ShopModuleIntegrationTest : IntegrationTest<ShopModuleDbContext>
+    public class ShopModuleIntegrationTest : IClassFixture<CustomWebApplicationFactory<ShopModule.Startup, ShopModuleDbContext>>
     {
+        private readonly CustomWebApplicationFactory<ShopModule.Startup, ShopModuleDbContext> _factory;
+        public ShopModuleIntegrationTest(CustomWebApplicationFactory<ShopModule.Startup, ShopModuleDbContext> factory)
+        {
+            _factory = factory;
+        }
+
         [Fact]
         public async Task CreateOrderTest()
         {
-            Console.WriteLine("Start");
+            var client = _factory.CreateClient();
             Guid guid = Guid.NewGuid();
-            Console.WriteLine("Testing");
-            var createdPost = await CreateOrder(guid);
-            Console.WriteLine(createdPost.orderId);
-            var response = await GetOrder(guid);
-            Console.WriteLine(response.orderId);
-            Assert.Equal(createdPost.orderId, response.orderId);
+            var createdPost = await CreateOrder(guid, client);
+            //Assert.Equal(HttpStatusCode.OK, createdPost.StatusCode);
+            var response = await GetOrder(guid, client);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        private async Task<OrderMessage> CreateOrder(Guid oguid)
+        private async Task<HttpResponseMessage> CreateOrder(Guid oguid, HttpClient c)
         {
-            Order o = new Order
-            {
-                Id = oguid,
-                AdditionalInfo = "t",
-                ConfirmedPayment = false,
-                CreationDate = DateTime.Now,
-                DeliveryDate = DateTime.Now,
-                OrderStatus = "Pending"
+            OrderMessage om = new OrderMessage { 
+                additionalInfo = "additionalInformation",
+                clientAddress = null,
+                confirmedPayment = false,
+                creationDate = DateTime.Now,
+                deliveryDate = DateTime.MinValue,
+                orderId = oguid,
+                orderItems = null,
+                orderStatus = "Pending",
             };
-            var response = await testClient.PostAsJsonAsync("/api/v1/orders/place", o.Convert(new MessageConverter()));
-            return await response.Content.ReadFromJsonAsync<OrderMessage>();
+            string json = JsonConvert.SerializeObject(om);
+            return await c.PostAsync("http://localhost/orders/place", new StringContent(json, Encoding.UTF8, "application/json"));
         }
-        private async Task<OrderMessage> GetOrder(Guid oguid)
+        private async Task<HttpResponseMessage> GetOrder(Guid oguid, HttpClient c)
         {
-            var response = await testClient.GetAsync(String.Format("/api/v1/orders/{0}", oguid));
-            return await response.Content.ReadFromJsonAsync<OrderMessage>();
+            return await c.GetAsync(String.Format("/orders/{0}", oguid));
         }
     }
 }
