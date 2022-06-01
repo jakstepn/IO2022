@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Card, Row, Col, Image, Rate, Tag, Divider, Button } from "antd";
+import { Card, Row, Col, Image, InputNumber, Rate, Tag, Divider, Button } from "antd";
 import { Product } from '../classes/Product';
 import { FileImageOutlined } from '@ant-design/icons';
 
@@ -57,9 +57,9 @@ const ProductListItem: React.FC<Props> = (props: Props) => {
                     <Col span={4}>
                         <Divider type="horizontal" orientation="center" dashed > Price: {props.product.price}</Divider>
                     </ Col>
-                    <Col span={3 }>
+                    <Col span={5 }>
                         
-                        <Row justify="center" >Quantity: {props.product.quantity}</Row>
+                        <Row justify="center" >Quantity:   <InputNumber min={0} max={ props.product.quantity } defaultValue={0} /></Row>
                         <br/>
                         <Row justify="center">   <Button onClick={Add} type="primary">Add</Button> </Row>
                         

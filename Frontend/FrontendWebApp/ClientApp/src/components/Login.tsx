@@ -7,6 +7,7 @@ import 'antd/dist/antd.css';
 import { globalContext } from '../reducers/GlobalStore';
 import { AccountType } from '../reducers/Types';
 import { string } from 'yup/lib/locale';
+import { wait } from '@testing-library/react';
 
 interface Props {
 }
@@ -25,19 +26,21 @@ export default function Login(props : Props) {
 
     const selectDestination = () =>  {
         if (globalState.accountType == AccountType.None)
-            setDestination ('/courier/home');
+            return;
         if (globalState.accountType == AccountType.Courier)
             setDestination('/courier/home');
         if (globalState.accountType == AccountType.Client)
-            setDestination('/client/home');
+            setDestination('/customer/home');
     }
 
-    const successfullLogIn = (user : any, token : string) => {
+    const successfullLogIn = (user: any, token: string) => {
+        
         setUserNotFound(false);
         dispatch({ type: 'AUTHENTICATE_USER', payload: true });
         dispatch({ type: 'SET_TOKEN', payload: token });
         dispatch({ type: 'SET_USER', payload: user.email });
-        message.success('Logged in succesfully!');
+        if(destination != "")
+            message.success('Logged in succesfully!');
         
         navigate(destination, { replace: true }); // to do zmiany definitywnie
     }
@@ -60,7 +63,8 @@ export default function Login(props : Props) {
         return false;
     }
     const loginHandler = (user : any) => {
-        if(demoLogin(user)) {
+        if (demoLogin(user)) {
+            wait(() => selectDestination())
             successfullLogIn(user, "Bearer " + "abc");
         }
         else {

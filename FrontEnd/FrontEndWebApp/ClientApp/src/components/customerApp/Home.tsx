@@ -24,11 +24,19 @@ export default function CustomerHome() {
 
     return (
       <div>
-          <Row justify="space-around" align="middle" style={{minHeight: "81vh" }}>
-              <Col flex="auto">
-                  Customer Home
-              </Col>
-          </Row>
+            <Row justify="space-around" align="middle" style={{ minHeight: "81vh" }}>
+                <Col flex="auto" >
+                    <Row justify="end">
+                        <Button style={{ height: 200, width: 300 }} type="primary" onClick={() => navigate('/customer/browser', { replace: true })} > Browser </Button>
+                    </Row>
+                </Col>
+                <Col flex="auto" >
+
+                </Col>
+                <Col flex="auto" onClick={() => console.log("asd")}>
+                    <Button style={{ height: 200, width: 300 }} type="primary" onClick={() => navigate('/customer/delivery', { replace: true }) }> Delivery </Button>
+                </Col>
+            </Row>
       </div>
     );
 
