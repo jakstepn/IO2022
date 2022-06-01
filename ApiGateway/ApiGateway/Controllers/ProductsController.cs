@@ -64,7 +64,7 @@ namespace ApiGateway.Controllers
 
         [HttpGet]
         [Route("category/{category}")]
-        public async Task<HttpResponseMessage> GetProductsInCategory([FromRoute] string category,[FromQuery] PaginatedRequest)
+        public async Task<HttpResponseMessage> GetProductsInCategory([FromRoute] string category,[FromQuery] PaginatedRequest request)
         {
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
