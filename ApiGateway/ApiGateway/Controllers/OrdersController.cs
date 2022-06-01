@@ -3,10 +3,16 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using ShopModule_ApiClasses.Messages;
+using ShopModule_ApiClasses.Structures;
+
+using ApiGateway_ApiClasses.Requests;
+
+
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using ShopModule_ApiClasses.Structures;
+using Newtonsoft.Json;
+using System;
 
 namespace ApiGateway.Controllers
 {
@@ -14,95 +20,126 @@ namespace ApiGateway.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
+        public static string shopId = "templateID";
+        public static string clientId = "templateID";
+
         IHttpClientFactory _httpClientFactory;
         public OrdersController(IHttpClientFactory factory)
         {
             _httpClientFactory = factory;   
         }
 
-        [HttpGet]
-        [Route("")]
-        public async Task<HttpResponseMessage> GetClientDetails()
-        {
-            HttpResponseMessage response = null;
-            using (var client = _httpClientFactory.CreateClient())
-            {
-                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/");
-            }
-            return response;
-        }
-
-        [HttpGet]
-        [Route("history")]
-        public async Task<HttpResponseMessage> GetOrdersHistory()
-        {
-            HttpResponseMessage response = null;
-            using (var client = _httpClientFactory.CreateClient())
-            {
-                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/history");
-            }
-            return response;
-        }
-
         [HttpPost]
-        [Route("create")]
-        public async Task<HttpResponseMessage> CreateOrder([FromBody] OrderMessage message)
+        [Route("")]
+        public async Task<HttpResponseMessage> CreateClientDetails([FromBody] OrderMessage request)
         {
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
             {
-                string jsonString = JsonSerializer.Serialize(message);
-                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-                response = await client.PostAsync(GatewayOptions.ShopModulePath + "/orders/place", content);
+                response = await client.PostAsync(GatewayOptions.ShopModulePath + "/orders/place", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
             }
             return response;
         }
 
         [HttpGet]
-        [Route("pending/{shopId}")]
-        public async Task<HttpResponseMessage> GetPendingOrder([FromRoute] string shopId)
+        [Route("shop")]
+        public async Task<HttpResponseMessage> GetAllShopOrders([FromQuery] PaginatedRequest request)
         {
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
             {
-                response = await client.GetAsync(GatewayOptions.ShopModulePath + "/shopId");
+                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/"+shopId);
+            }
+            return response;
+        }
+
+        [HttpGet]
+        [Route("shop/pending")]
+        public async Task<HttpResponseMessage> GetAllPendingShopOrders([FromQuery] PaginatedRequest request)
+        {
+            HttpResponseMessage response = null;
+            using (var client = _httpClientFactory.CreateClient())
+            {
+                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/pending/" + shopId);
+            }
+            return response;
+        }
+
+        [HttpGet]
+        [Route("courier")]
+        public async Task<HttpResponseMessage> GetAllCourierOrders([FromQuery] PaginatedRequest request)
+        {
+            throw new NotImplementedException("This method does not have its destination in documentation");
+
+            HttpResponseMessage response = null;
+            using (var client = _httpClientFactory.CreateClient())
+            {
+                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/pending/" + shopId);
+            }
+            return response;
+        }
+
+        [HttpGet]
+        [Route("courier/current")]
+        public async Task<HttpResponseMessage> GetCurrentCourierOrder([FromQuery] PaginatedRequest request)
+        {
+            HttpResponseMessage response = null;
+            using (var client = _httpClientFactory.CreateClient())
+            {
+                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/pending/" + shopId);
+            }
+            return response;
+        }
+
+        [HttpGet]
+        [Route("customer")]
+        public async Task<HttpResponseMessage> GetAllCustomerOrders([FromQuery] PaginatedRequest request)
+        {
+
+            HttpResponseMessage response = null;
+            using (var client = _httpClientFactory.CreateClient())
+            {
+                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/pending/" + shopId);
+            }
+            return response;
+        }
+
+        [HttpGet]
+        [Route("customer/pending")]
+        public async Task<HttpResponseMessage> GetAllPendingCustomerOrders([FromQuery] PaginatedRequest request)
+        {
+            throw new NotImplementedException("This method does not have its destination in documentation");
+
+            HttpResponseMessage response = null;
+            using (var client = _httpClientFactory.CreateClient())
+            {
+                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/pending/" + shopId);
             }
             return response;
         }
 
         [HttpGet]
         [Route("{orderId}")]
-        public async Task<HttpResponseMessage> GetChosenOrder([FromRoute] string orderId)
+        public async Task<HttpResponseMessage> GetSelectedOrder([FromRoute] string orderId)
         {
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
             {
-                response = await client.GetAsync(GatewayOptions.ShopModulePath + "/orders/"+orderId);
-            }
-            return response;
-        }
-        [HttpPut]
-        [Route("{orderId}")]
-        public async Task<HttpResponseMessage> PutChosenOrder([FromRoute] string orderId, [FromBody] OrderStatus status)
-        {
-            HttpResponseMessage response = null;
-            using (var client = _httpClientFactory.CreateClient())
-            {
-                string jsonString = JsonSerializer.Serialize(status);
-                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-                response = await client.PutAsync(GatewayOptions.ShopModulePath + "/orders/"+orderId, content);
+                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/" + orderId);
             }
             return response;
         }
 
-        [HttpPut]
-        [Route("{orderId}/payment")]
-        public async Task<HttpResponseMessage> UpdatePaymentStatus([FromRoute] string orderId)
+        [HttpPatch]
+        [Route("{orderId}")]
+        public async Task<HttpResponseMessage> UpdateOrderStatus([FromRoute] string orderId, [FromBody] string orderStatus)
         {
+            throw new NotImplementedException("This method does not have its destination in documentation");
+
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
             {
-                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/");
+                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/pending/" + shopId);
             }
             return response;
         }

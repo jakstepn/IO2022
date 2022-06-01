@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApiGateway_ApiClasses.Requests;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using ShopModule_ApiClasses.Messages;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ApiGateway.Controllers
@@ -17,67 +21,55 @@ namespace ApiGateway.Controllers
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
             {
-                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/");
+                response = await client.GetAsync(GatewayOptions.ShopModulePath + "/products");
             }
             return response;
         }
 
         [HttpPost]
         [Route("")]
-        public async Task<HttpResponseMessage> PostProduct()
+        public async Task<HttpResponseMessage> PostProduct([FromBody]ProductMessage request)
         {
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
             {
-                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/");
+                response = await client.PostAsync(GatewayOptions.ShopModulePath + "/products", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
             }
             return response;
         }
 
         [HttpGet]
         [Route("{productId}")]
-        public async Task<HttpResponseMessage> GetProductById()
+        public async Task<HttpResponseMessage> GetProductById([FromRoute] string productId)
         {
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
             {
-                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/");
+                response = await client.GetAsync(GatewayOptions.ShopModulePath + "/products/" + productId);
             }
             return response;
         }
 
         [HttpDelete]
         [Route("{productId}")]
-        public async Task<HttpResponseMessage> DeleteProductById()
+        public async Task<HttpResponseMessage> DeleteProductById([FromRoute] string productId)
         {
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
             {
-                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/");
-            }
-            return response;
-        }
-
-        [HttpPut]
-        [Route("{productId}")]
-        public async Task<HttpResponseMessage> PutProductById()
-        {
-            HttpResponseMessage response = null;
-            using (var client = _httpClientFactory.CreateClient())
-            {
-                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/");
+                response = await client.GetAsync(GatewayOptions.ShopModulePath + "/products/" + productId);
             }
             return response;
         }
 
         [HttpGet]
         [Route("category/{category}")]
-        public async Task<HttpResponseMessage> GetProductsInCategory()
+        public async Task<HttpResponseMessage> GetProductsInCategory([FromRoute] string category,[FromQuery] PaginatedRequest)
         {
             HttpResponseMessage response = null;
             using (var client = _httpClientFactory.CreateClient())
             {
-                response = await client.GetAsync(GatewayOptions.ClientModulePath + "/orders/");
+                response = await client.GetAsync(GatewayOptions.ShopModulePath + "/products/category/" + category);
             }
             return response;
         }
