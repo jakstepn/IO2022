@@ -107,7 +107,7 @@ const DeliverysInfoListItem: React.FC<Props> = (props: Props) => {
             </Card>
             <br />
 
-            <Modal width={800 } title="Products List" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            <Modal width={800 } title="Products" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                 <Col flex="auto">
                     <div className="site-layout-content">
                         {props.DeliveryInfo.products.map((item: Product) => (
