@@ -5,7 +5,9 @@ import { globalContext } from '../reducers/GlobalStore';
 import Login from '../components/Login';
 import CourierHome from './courierApp/Home';
 import CustomerHome from './customerApp/Home';
-
+import CustomerBrowser from './customerApp/Browser/Main';
+import CustomerShopingCart from './customerApp/ShopingCart/Main';
+import CustomerDelivery from './customerApp/Delivery/Main';
 
 export const AppRouter: React.FC = () => {
   const { globalState } = useContext(globalContext);
@@ -15,7 +17,10 @@ export const AppRouter: React.FC = () => {
             { !globalState.isUserAuthenticated && <Route path='*' element={<Login />}/> }
             <Route path='/login' element={<Login />} />
             <Route path='/courier/home' element={<CourierHome />} />
-             <Route path='/customer/home' element={<CustomerHome />} />
+          <Route path='/customer/home' element={<CustomerHome />} />
+          <Route path='/customer/browser' element={<CustomerBrowser />} />
+          <Route path='customer/delivery' element={<CustomerDelivery />} />
+          <Route path='customer/shopingcard' element={<CustomerShopingCart />} />
             <Route path='*' element={<NotFound />}/>
       </Routes>
   );

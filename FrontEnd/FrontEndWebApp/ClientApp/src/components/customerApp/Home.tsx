@@ -4,6 +4,7 @@ import {useLocation, useNavigate } from 'react-router-dom';
 import { TeamOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { GlobalStore, globalContext } from '../../reducers/GlobalStore';
 
+
 import {Typography} from "antd"
 
 const { Title } = Typography;
