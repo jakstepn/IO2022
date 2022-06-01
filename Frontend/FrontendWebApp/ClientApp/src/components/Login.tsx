@@ -6,6 +6,7 @@ import { useState } from 'react';
 import 'antd/dist/antd.css';
 import { globalContext } from '../reducers/GlobalStore';
 import { AccountType } from '../reducers/Types';
+import { string } from 'yup/lib/locale';
 
 interface Props {
 }
@@ -15,10 +16,21 @@ export default function Login(props : Props) {
     const { globalState, dispatch } = useContext(globalContext);
     const navigate = useNavigate();
     const [userNotFound, setUserNotFound] = useState(false);
+    const [destination, setDestination] = useState("");
 
     const passwordValidate = (password : String) => {
         return password.length > 0;
     }  
+
+
+    const selectDestination = () =>  {
+        if (globalState.accountType == AccountType.None)
+            setDestination ('/courier/home');
+        if (globalState.accountType == AccountType.Courier)
+            setDestination('/courier/home');
+        if (globalState.accountType == AccountType.Client)
+            setDestination('/client/home');
+    }
 
     const successfullLogIn = (user : any, token : string) => {
         setUserNotFound(false);
@@ -26,8 +38,8 @@ export default function Login(props : Props) {
         dispatch({ type: 'SET_TOKEN', payload: token });
         dispatch({ type: 'SET_USER', payload: user.email });
         message.success('Logged in succesfully!');
-        navigate('/courier/home', { replace: true }); // to do zmiany definitywnie
-        navigate('/customer/home', { replace: true }); // to do zmiany definitywnie
+        
+        navigate(destination, { replace: true }); // to do zmiany definitywnie
     }
 
     const demoLogin = (user : any) => {
@@ -108,7 +120,7 @@ export default function Login(props : Props) {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" className="login-form-button" style={{width: "60vh" }}>Log in</Button>
+                        <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: "60vh" }} onClick={selectDestination }>Log in</Button>
                         </Form.Item>
 
                         {
