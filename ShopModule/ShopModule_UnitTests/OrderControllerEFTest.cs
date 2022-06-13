@@ -27,7 +27,7 @@ namespace ShopModule_UnitTests
 
             var service = new OrderService(mockContext.Object);
 
-            var testOrder = new Order{ OrderStatus = OrderStatus.Delivered.ToString(),
+            var testOrder = new Order{ OrderStatus = OrderStatus.WaitingForCollection.ToString(),
                                       CreationDate = DateTime.MinValue, DeliveryDate = DateTime.Now,
                                       ClientAddress = new Address { City="nonecity", Country="nocountry",
                                                                     Region="noregion", Street="nostreet",
@@ -107,7 +107,7 @@ namespace ShopModule_UnitTests
 
             var testOrder3 = new Order
             {
-                OrderStatus = OrderStatus.Delivered.ToString(),
+                OrderStatus = OrderStatus.WaitingForCollection.ToString(),
                 CreationDate = DateTime.MinValue,
                 DeliveryDate = DateTime.Now,
                 ClientAddress = new Address
