@@ -16,6 +16,6 @@ export function CourierNavMenu() {
     }
 
     return (
-        <Menu.Item key="Home" icon={<HomeOutlined />}><NavLink tag={Link} to={navigateTo_IfLoggedIn("/courier/home")}>CourierHome</NavLink></Menu.Item>
+        <Menu.Item key="Home" icon={<HomeOutlined />}><NavLink tag={Link} to={navigateTo_IfLoggedIn("/courier/home")}>Home</NavLink></Menu.Item>
     )
 }

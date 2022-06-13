@@ -6,9 +6,6 @@ import { useState } from 'react';
 import 'antd/dist/antd.css';
 import { globalContext } from '../reducers/GlobalStore';
 import { AccountType } from '../reducers/Types';
-import { string } from 'yup/lib/locale';
-import { wait } from '@testing-library/react';
-
 interface Props {
 }
 
@@ -23,8 +20,6 @@ export default function Login(props : Props) {
     const passwordValidate = (password : String) => {
         return password.length > 0;
     }  
-
-
     const selectDestination = (accType : AccountType) =>  {
         if (accType == AccountType.None)
             return;
@@ -32,8 +27,9 @@ export default function Login(props : Props) {
             destination = "/courier/home";
         if (accType == AccountType.Client)
             destination = "/customer/home";
+            if (accType == AccountType.Employee)
+            destination = "/shop/home";
     }
-
     const successfullLogIn = (user: any, token: string) => {
         setUserNotFound(false);
         dispatch({ type: 'AUTHENTICATE_USER', payload: true });
@@ -44,16 +40,15 @@ export default function Login(props : Props) {
         
         navigate(destination, { replace: true });
     }
-
     const demoLogin = (user : any) => {
         let mail : string = user.email;
 
-        if(mail.includes("client")) {
+        if(mail.includes("client") || mail.includes("customer")) {
             accountType = AccountType.Client;
             dispatch({ type: 'SET_ACCOUNT_TYPE', payload: AccountType.Client });
             return true;
         }  
-        else if(mail.includes("employee")) {
+        else if(mail.includes("employee") || mail.includes("shop")) {
             accountType = AccountType.Employee;
             dispatch({ type: 'SET_ACCOUNT_TYPE', payload: AccountType.Employee });
             return true;

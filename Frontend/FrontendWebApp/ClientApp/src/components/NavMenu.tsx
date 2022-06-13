@@ -10,6 +10,7 @@ import { GlobalStore, globalContext } from '../reducers/GlobalStore';
 import { AccountType } from '../reducers/Types';
 import { CourierNavMenu } from './courierApp/CourierNavMenu';
 import { CustomerNavMenu } from './customerApp/CustomerNavMenu';
+import { ShopNavMenu } from './shopApp/ShopNavMenu';
 const { Header } = Layout;
 const { SubMenu } = Menu;
 
@@ -34,14 +35,15 @@ export function NavMenu() {
     setAvatarClicked(false);
     message.success('Logged out succesfully!');
   }
-
   function generateMenu() {
     if(globalState.accountType == AccountType.None)
       return defaultMenu();
     if(globalState.accountType == AccountType.Courier)
-          return CourierNavMenu();
-   if (globalState.accountType == AccountType.Client)
-         return CustomerNavMenu();
+      return CourierNavMenu();
+    if (globalState.accountType == AccountType.Client)
+      return CustomerNavMenu();
+    if (globalState.accountType == AccountType.Employee)
+      return ShopNavMenu();
   }
   function defaultMenu() {
     return <Menu.Item key="Home" icon={<HomeOutlined />}><NavLink tag={Link} to={navigateTo_IfLoggedIn("/login")}>Home</NavLink></Menu.Item>
