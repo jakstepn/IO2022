@@ -4,14 +4,12 @@ namespace ShopModule_ApiClasses.Structures
 {
 	public enum OrderStatus
 	{
-		WaitingForCollection,
-		Collecting,
-		WaitingForCourier,
-		ParcelCollected,
-		OnTheWay,
-		Delivered,
-		RejectedByShop,
-		RejectedByCustomer,
-		Pending
-	}
+        Pending,
+        InPreparation,
+        ReadyForDelivery,
+        PickedUpByCourier,
+        RejectedByShop,
+        RejectedByCustomer,
+        Delivered
+    }
 }

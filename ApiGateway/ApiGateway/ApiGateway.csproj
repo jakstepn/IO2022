@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\ClientModule\ClientModule_ApiClasses\ClientModule_ApiClasses.csproj" />
     <ProjectReference Include="..\..\DeliveryModule\DeliveryModule_ApiClasses\DeliveryModule_ApiClasses.csproj" />
     <ProjectReference Include="..\..\ShopModule\ShopModule_ApiClasses\ShopModule_ApiClasses.csproj" />
+    <ProjectReference Include="..\ApiGateway_ApiClasses\ApiGateway_ApiClasses.csproj" />
   </ItemGroup>
 
 </Project>

@@ -33,7 +33,7 @@ namespace ShopModule.Controllers
             try
             {
                 var messages = _orderService.AddOrderAndItems(message.orderItems, message);
-                if(messages != null)
+                if (messages != null)
                 {
                     success = true;
                 }
@@ -46,7 +46,7 @@ namespace ShopModule.Controllers
                         return ResponseMessage.Success(message, 201);
                     }
                 }
-                    return ResponseMessage.Error("Failed to create order", 404);
+                return ResponseMessage.Error("Failed to create order", 404);
             }
             catch (Exception)
             {
@@ -55,14 +55,14 @@ namespace ShopModule.Controllers
         }
 
         /// <summary>
-        /// Get all pending shop orders
+        /// Get all pending shop orders paginated
         /// </summary>
         /// <param name="shopId"></param>
         /// <returns></returns>
         [HttpGet("pending/{shopId}")]
-        public IActionResult GetPendingOrdersAssignedToShop([FromRoute] string shopId)
+        public IActionResult GetPendingOrdersAssignedToShop([FromQuery] int page, [FromQuery] int pageSize, [FromRoute] string shopId)
         {
-            var pending = _orderService.FindPendingOrders();
+            var pending = _orderService.FindPendingOrdersPaginated(page, pageSize);
             if (pending.Count > 0)
             {
                 return ResponseMessage.Success(pending, 200);

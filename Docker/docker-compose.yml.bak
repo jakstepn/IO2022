@@ -1,0 +1,113 @@
+version: '3.4'
+
+services:
+  database:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+        SA_PASSWORD: "DevPassword1!"
+        ACCEPT_EULA: "Y"
+    ports: 
+     - "44381:1433"
+    networks:
+      - grocerionetwork
+    volumes:
+      - dbvolume:/var/opt/mssql
+  clientmodule:
+    image: ${DOCKER_REGISTRY-}clientmodule
+    ports: 
+    - "44382:443"
+    - "44383:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: ..
+      dockerfile: ./ClientModule/ClientModule/Dockerfile
+    depends_on:
+        - identityserver
+        - database
+    networks:
+      - grocerionetwork
+
+  deliverymodule:
+    image: ${DOCKER_REGISTRY-}deliverymodule
+    ports: 
+    - "44384:443"
+    - "44385:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: ..
+      dockerfile: ./DeliveryModule/DeliveryModule/Dockerfile
+    depends_on:
+        - identityserver
+        - database
+    networks:
+      - grocerionetwork
+
+  shopmodule:
+    image: ${DOCKER_REGISTRY-}shopmodule
+    ports: 
+    - "44386:443"
+    - "44387:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: ..
+      dockerfile: ./ShopModule/ShopModule/Dockerfile
+    depends_on:
+        - identityserver
+        - database
+    networks:
+      - grocerionetwork    
+
+  identityserver:
+    image: ${DOCKER_REGISTRY-}identityserver
+    ports:
+    - "44388:443"
+    - "44389:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: ..
+      dockerfile: ./IdentityServer/IdentityServer/Dockerfile
+    depends_on:
+        - database
+    networks:
+        - grocerionetwork
+
+  apigateway:
+    image: ${DOCKER_REGISTRY-}apigateway
+    ports:
+    - "44390:443"
+    - "44391:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: ..
+      dockerfile: ./ApiGateway/ApiGateway/Dockerfile
+    depends_on:
+        - clientmodule
+        - deliverymodule
+        - shopmodule
+        - identityserver
+    networks:
+        - grocerionetwork
+  frontend:
+    image: ${DOCKER_REGISTRY-}frontend
+    ports:
+    - "44392:443"
+    - "44393:80"
+    build:
+      context: ..
+      dockerfile: ./FrontEnd/FrontendWebApp/Dockerfile
+    depends_on:
+        - apigateway
+    networks:
+        - grocerionetwork
+
+networks:
+  grocerionetwork:
+    driver: bridge
+
+volumes:
+  dbvolume:

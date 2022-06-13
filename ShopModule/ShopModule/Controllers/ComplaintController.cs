@@ -26,7 +26,7 @@ namespace ShopModule.Controllers
         /// <param name="complaintId"></param>
         /// <returns></returns>
         [HttpGet("{complaintId}")]
-        public IActionResult GetChosenComplaint([FromBody] Guid complaintId)
+        public IActionResult GetChosenComplaint([FromRoute] Guid complaintId)
         {
             var res = _complaintService.GetComplaint(complaintId);
             if (res != null)
@@ -63,9 +63,9 @@ namespace ShopModule.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("pending/{shopId}")]
-        public IActionResult GetPendingComplaintsEndpoint()
+        public IActionResult GetPendingComplaintsEndpoint([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var pending = _complaintService.PendingComplaints();
+            var pending = _complaintService.PendingComplaintsPaginated(page, pageSize);
             if (pending.Count > 0)
             {
                 return ResponseMessage.Success(pending, 200);
