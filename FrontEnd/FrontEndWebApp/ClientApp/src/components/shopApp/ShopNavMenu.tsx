@@ -20,6 +20,7 @@ export function ShopNavMenu() {
         if(path.includes('home'))       return ['Home'];
         if(path.includes('pending'))    return ['PendingOrders'];
         if(path.includes('orders'))     return ['Orders'];
+        if(path.includes('products'))     return ['Products'];
         return ['Home'];
       }
 
