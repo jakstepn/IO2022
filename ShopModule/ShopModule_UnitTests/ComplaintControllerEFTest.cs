@@ -73,13 +73,13 @@ namespace ShopModule_UnitTests
             service.AddComplaint(testComplaint2);
             service.AddComplaint(testComplaint3);
 
-            mockService.Setup(x => x.PendingComplaints())
+            mockService.Setup(x => x.PendingComplaintsPaginated(0, 1))
                 .Returns(new List<ShopModule_ApiClasses.Messages.ComplaintMessage>
                 {
                     testComplaint2
                 });
 
-            var complaints = mockService.Object.PendingComplaints();
+            var complaints = mockService.Object.PendingComplaintsPaginated(0,1);
 
             Assert.Equal(testComplaint2.complaintId, complaints.ElementAt(0).complaintId);
         }
