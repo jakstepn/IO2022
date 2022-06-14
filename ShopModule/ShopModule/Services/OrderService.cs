@@ -1,8 +1,11 @@
-﻿using ShopModule.Data;
+﻿using ShopModule.Converters;
+using ShopModule.Data;
+using ShopModule.Location;
 using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Products;
 using ShopModule_ApiClasses.Messages;
+using ShopModule_ApiClasses.Messages.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +20,10 @@ namespace ShopModule.Services
         OrderMessage ChangeStatus(Guid orderId, OrderStatus staus);
         OrderMessage FindOrder(Guid orderId);
         OrderItem[] AddOrderItems(OrderItem[] items);
-        OrderItemMessage[] AddOrderAndItems(OrderItemMessage[] items, OrderMessage order);
-        OrderItem AddOrderItem(OrderItem item);
-        OrderMessage AddOrder(OrderMessage order);
+        OrderMessage AddOrderAndItems(RequestOrderMessage order);
         List<OrderMessage> FindPendingOrdersPaginated(int page, int pageSize);
         OrderMessage RemoveOrder(Guid orderId);
+        bool UpdateDeliveryTime(Guid orderId, DateTime deliveryDate);
         bool NotifyDeliveryStatusOfStatus(OrderStatus status, Guid guid);
     }
     public class OrderService : IOrderService
@@ -85,16 +87,18 @@ namespace ShopModule.Services
         /// <param name="items"></param>
         /// <param name="order"></param>
         /// <returns></returns>
-        public OrderItemMessage[] AddOrderAndItems(OrderItemMessage[] items, OrderMessage message)
+        public OrderMessage AddOrderAndItems(RequestOrderMessage message)
         {
             List<Product> products = new List<Product>();
-            Order order = new Order(message);
+            Address a = new Address(message.clientAddress);
+            Order order = new Order(message, a);
+            RequestOrderItemMessage[] items = message.orderItems;
             foreach (var item in items)
             {
-                var product = _context.Products.Find(item.productName);
+                var product = _context.Products.Find(item.productId);
                 if (product != null && product.Available)
                 {
-                    _context.OrderItems.Add(new OrderItem(item, order, product));
+                    _context.OrderItems.Add(new OrderItem(order, product, item.quantity));
                     products.Add(product);
                 }
                 else
@@ -119,50 +123,10 @@ namespace ShopModule.Services
                 }
                 i++;
             }
-
-            if (Enum.IsDefined(typeof(OrderStatus), message.orderStatus))
-            {
-                _context.Orders.Add(order);
-            }
-            else
-            {
-                return null;
-            }
+            _context.Addresses.Add(a);
+            _context.Orders.Add(order);
             _context.SaveChanges();
-            return items;
-        }
-
-        /// <summary>
-        /// Add order item to the database
-        /// </summary>
-        /// <param name="item">OrderItem to be added</param>
-        /// <returns>Returns an order item if success, else null</returns>
-        public OrderItem AddOrderItem(OrderItem item)
-        {
-            _context.OrderItems.Add(item);
-            bool saved = _context.SaveChanges() == 1;
-            return saved ? item : null;
-        }
-
-        /// <summary>
-        /// Add order to the database
-        /// </summary>
-        /// <param name="order">Order to be added</param>
-        /// <returns>Returns an order if success, else null</returns>
-        public OrderMessage AddOrder(OrderMessage message)
-        {
-            Order order = new Order(message);
-            bool saved;
-            if (Enum.IsDefined(typeof(OrderStatus), message.orderStatus))
-            {
-                _context.Orders.Add(order);
-            }
-            else
-            {
-                return null;
-            }
-            saved = _context.SaveChanges() == 1;
-            return saved ? message : null;
+            return order.Convert(new MessageConverter());
         }
 
         /// <summary>
@@ -172,7 +136,8 @@ namespace ShopModule.Services
         public List<OrderMessage> FindPendingOrdersPaginated(int page, int pageSize)
         {
             List<OrderMessage> orders = new List<OrderMessage>();
-            foreach (var ord in _context.Orders.Where(x => x.OrderStatus == OrderStatus.Pending.ToString()).ToList())
+            foreach (var ord in _context.Orders.Where(x => x.OrderStatus == OrderStatus.Pending.ToString())
+                .ToList().OrderByDescending(x => x.CreationDate))
             {
                 LoadOrder(ord);
 
@@ -220,12 +185,27 @@ namespace ShopModule.Services
             {
                 LoadOrder(o);
                 o.ChangeStatus(status);
-                if (_context.SaveChanges() == 1)
-                {
-                    return o.Convert(StaticData.defaultConverter);
-                }
+                _context.SaveChanges();
+                return o.Convert(StaticData.defaultConverter);
             }
             return null;
+        }
+
+        /// <summary>
+        /// Update delivery time
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="deliveryDate"></param>
+        /// <returns>True if delivery time has been changed</returns>
+        public bool UpdateDeliveryTime(Guid orderId, DateTime deliveryDate)
+        {
+            var order = _context.Orders.Find(orderId);
+            if (order != null)
+            {
+                order.DeliveryDate = deliveryDate;
+                return _context.SaveChanges() == 1;
+            }
+            return false;
         }
 
         /// <summary>
@@ -255,11 +235,10 @@ namespace ShopModule.Services
                     return true;
                 case OrderStatus.RejectedByShop:
                     // Nofity: Reject order
-                    return true;
                 case OrderStatus.RejectedByCustomer:
-                    return true;
                 case OrderStatus.Pending:
                     // Notify: In preparation
+                case OrderStatus.InPreparation:
                     return true;
                 default:
                     return false;
@@ -269,6 +248,10 @@ namespace ShopModule.Services
         private void LoadOrder(Order o)
         {
             _context.Entry(o).Collection(p => p.Items).Load();
+            foreach (var item in o.Items)
+            {
+                _context.Entry(item).Reference(p => p.Product).Load();
+            }
             _context.Entry(o).Reference(p => p.ClientAddress).Load();
         }
     }

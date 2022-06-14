@@ -1,5 +1,7 @@
-﻿using ShopModule.Products;
+﻿using ShopModule.Generators;
+using ShopModule.Products;
 using ShopModule_ApiClasses.Messages;
+using ShopModule_ApiClasses.Messages.Request;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,10 +14,6 @@ namespace ShopModule.Orders
         [Key]
         public virtual Guid Id { get; set; }
         [Column(TypeName = "decimal(18,4)")]
-        public virtual decimal GrossPrice { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
-        public virtual decimal Tax { get; set; }
-        public virtual string ProductName { get; set; }
         public virtual int Quantity { get; set; }
         public virtual string Currency { get; set; }
 
@@ -26,20 +24,18 @@ namespace ShopModule.Orders
         {
         }
 
-        public OrderItem(OrderItemMessage message, Order order, Product product)
+        public OrderItem(Order order, Product product, int quantity)
         {
-            Id = message.orderItemId;
-            GrossPrice = message.grossPrice;
-            ProductName = message.productName;
-            Quantity = message.quantity;
-            Currency = message.currency;
+            Id = Guid.NewGuid();
+            Quantity = quantity;
+            Currency = CurrencyGenerator.GetGenerator().GenerateCurrency();
             Order = order;
             Product = product;
         }
 
         // DataBase Relations
         [ForeignKey("Product")]
-        public virtual string ProductFK { get; set; }
+        public virtual Guid ProductFK { get; set; }
         [ForeignKey("Order")]
         public virtual Guid OrderFK { get; set; }
 

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using ShopModule.Employees;
 using ShopModule.Location;
 using ShopModule_ApiClasses.Messages;
+using ShopModule_ApiClasses.Messages.Request;
 
 namespace ShopModule.Orders
 {
@@ -18,34 +19,19 @@ namespace ShopModule.Orders
 		public virtual DateTime DeliveryDate { get; set; }
 		public virtual Address ClientAddress { get; set; }
 		public virtual string AdditionalInfo { get; set; }
-		public virtual bool ConfirmedPayment { get; set; }
-		//public Courier Courier { get; set; }
 		public virtual ICollection<OrderItem> Items { get; set; }
 
 		public Order()
 		{
 		}
 
-		public Order(Guid id, Address client_address, DateTime delivery_date, DateTime creation_date,
-			string additional_info = "", OrderStatus order_status = ShopModule.Orders.OrderStatus.Pending)
+		public Order(RequestOrderMessage message, Address a)
         {
-			Id = id;
-			ClientAddress = client_address;
-			DeliveryDate = delivery_date;
-			CreationDate = creation_date;
-			AdditionalInfo = additional_info;
-			OrderStatus = order_status.ToString();
-        }
-
-		public Order(OrderMessage message)
-        {
-			Id = message.orderId;
-			ConfirmedPayment = message.confirmedPayment;
-			OrderStatus = message.orderStatus;
-			CreationDate = message.creationDate;
-			DeliveryDate= message.deliveryDate;
+			CreationDate = DateTime.Now;
+			Id = Guid.NewGuid();
+			OrderStatus = Orders.OrderStatus.Pending.ToString();
 			AdditionalInfo = message.additionalInfo;
-			ClientAddress = new Address(message.clientAddress);
+			AddressFK = a.Id;
 		}
 
 		public void ChangeStatus(OrderStatus status) => OrderStatus = status.ToString();
@@ -55,7 +41,7 @@ namespace ShopModule.Orders
 			return visitor.Visit(this);
         }
 
-		[ForeignKey("Address")]
+		[ForeignKey("ClientAddress")]
 		public virtual Guid AddressFK { get; set; }
 	}
 }

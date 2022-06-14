@@ -4,19 +4,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopModule.Location
 {
+	[Table("Addresses")]
 	public class Address
 	{
 		[Key]
 		public virtual Guid Id { get; set; }
-		public virtual string Country { get; set; }
 		public virtual string City { get; set; }
-		public virtual string Region { get; set; }
 		public virtual string Street { get; set; }
-		// House numbers can contain letters
-		public virtual string StreetNumber { get; set; }
 		public virtual string ZipCode { get; set; }
 		public virtual ICollection<Order> Orders { get; set; }
 
@@ -24,19 +22,9 @@ namespace ShopModule.Location
         {
         }
 
-		public Address(string country, string region, string city,
-			string street, string street_number, string zip_code)
-        {
-			City = city;
-			Region = region;
-			Street = street;
-			StreetNumber = street_number;
-			ZipCode = zip_code;
-			Country	= country;
-        }
-
 		public Address(AddressMessage message)
         {
+			Id = Guid.NewGuid();
 			City = message.city;
 			Street = message.street;
 			ZipCode = message.zipCode;
