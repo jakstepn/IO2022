@@ -33,14 +33,5 @@ namespace ShopModule.Employees
         public OrderStatus GetOrderStatus(Order order) => (OrderStatus)Enum.Parse(typeof(OrderStatus), order.OrderStatus);
         public void RejectOrder(Order order) => order.OrderStatus = OrderStatus.RejectedByShop.ToString();
         public void SetProductAsUnavailable(Product product) => product.Available = false;
-        public async void NotifyDeliveryThatPackageIsReady(Order order)
-        {
-            using (var client = new HttpClient())
-            {
-                var response = await client.PostAsync(StaticData.urlRequestPickup,
-                    new StringContent(
-                        JsonSerializer.Serialize(order.Id)));
-            }
-        }
     }
 }

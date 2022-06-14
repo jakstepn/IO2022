@@ -27,7 +27,7 @@ namespace ShopModule.Orders
 		}
 
 		public Order(Guid id, Address client_address, DateTime delivery_date, DateTime creation_date,
-			string additional_info = "", OrderStatus order_status = ShopModule.Orders.OrderStatus.WaitingForCollection)
+			string additional_info = "", OrderStatus order_status = ShopModule.Orders.OrderStatus.Pending)
         {
 			Id = id;
 			ClientAddress = client_address;
@@ -41,7 +41,7 @@ namespace ShopModule.Orders
         {
 			Id = message.orderId;
 			ConfirmedPayment = message.confirmedPayment;
-			OrderStatus = message.orderStatus.ToString();
+			OrderStatus = message.orderStatus;
 			CreationDate = message.creationDate;
 			DeliveryDate= message.deliveryDate;
 			AdditionalInfo = message.additionalInfo;

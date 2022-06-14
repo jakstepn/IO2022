@@ -14,41 +14,22 @@ namespace ShopModule_UnitTests
         public void TestDefaultOrderStatus()
         {
             Order o = new Order();
-            Assert.Equal(OrderStatus.WaitingForCollection.ToString(), o.OrderStatus);
+            Assert.Equal(OrderStatus.Pending.ToString(), o.OrderStatus);
         }
 
         [Theory]
-        [InlineData(OrderStatus.Collecting)]
-        [InlineData(OrderStatus.WaitingForCollection)]
         [InlineData(OrderStatus.Delivered)]
-        [InlineData(OrderStatus.WaitingForCourier)]
-        [InlineData(OrderStatus.RejectedByCustomer)]
-        [InlineData(OrderStatus.OnTheWay)]
+        [InlineData(OrderStatus.InPreparation)]
+        [InlineData(OrderStatus.PickedUpByCourier)]
+        [InlineData(OrderStatus.ReadyForDelivery)]
         [InlineData(OrderStatus.RejectedByShop)]
+        [InlineData(OrderStatus.RejectedByCustomer)]
         public void TestOrderStatus(OrderStatus status)
         {
-            OrderStatus defStatus = OrderStatus.Collecting;
+            OrderStatus defStatus = OrderStatus.InPreparation;
             Order o = new Order(Guid.NewGuid(), null, DateTime.Now, DateTime.Now, "", defStatus);
             o.ChangeStatus(status);
             Assert.Equal(status.ToString(), o.OrderStatus);
         }
-
-        //[Fact]
-        //public void TestDefaultCourierStatus()
-        //{
-        //    Courier courier = new Courier();
-        //    Assert.Equal(CourierCurrentState.Away_from_work,
-        //        courier.CheckCourierAvailability());
-        //}
-
-        //    [Fact]
-        //    public void TestShopProductAvability()
-        //    {
-        //        Product p = new Product { Available = true };
-        //        Shop shop = new Shop();
-        //        shop.Products = new List<Product>();
-        //        shop.Products.Add(p);
-        //        Assert.True(shop.IsProductAvailable(p));
-        //    }
     }
 }

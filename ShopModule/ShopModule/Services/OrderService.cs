@@ -6,6 +6,8 @@ using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 
 namespace ShopModule.Services
@@ -18,9 +20,9 @@ namespace ShopModule.Services
         OrderItemMessage[] AddOrderAndItems(OrderItemMessage[] items, OrderMessage order);
         OrderItem AddOrderItem(OrderItem item);
         OrderMessage AddOrder(OrderMessage order);
-        List<OrderMessage> FindPendingOrders();
+        List<OrderMessage> FindPendingOrdersPaginated(int page, int pageSize);
         OrderMessage RemoveOrder(Guid orderId);
-        void NotifyDeliveryStatusOfStatus(OrderStatus status);
+        bool NotifyDeliveryStatusOfStatus(OrderStatus status, Guid guid);
     }
     public class OrderService : IOrderService
     {
@@ -164,10 +166,10 @@ namespace ShopModule.Services
         }
 
         /// <summary>
-        /// Get all of the orders that have their status set as Pending
+        /// Get orders that have their status set as Pending in paginated fashion
         /// </summary>
         /// <returns>Returns an array of Orders</returns>
-        public List<OrderMessage> FindPendingOrders()
+        public List<OrderMessage> FindPendingOrdersPaginated(int page, int pageSize)
         {
             List<OrderMessage> orders = new List<OrderMessage>();
             foreach (var ord in _context.Orders.Where(x => x.OrderStatus == OrderStatus.Pending.ToString()).ToList())
@@ -176,7 +178,7 @@ namespace ShopModule.Services
 
                 orders.Add(ord.Convert(StaticData.defaultConverter));
             }
-            return orders;
+            return orders.Skip(page * pageSize).Take(pageSize).ToList();
         }
 
         /// <summary>
@@ -214,58 +216,54 @@ namespace ShopModule.Services
         public OrderMessage ChangeStatus(Guid orderId, OrderStatus status)
         {
             Order o = _context.Orders.Find(orderId);
-            o.ChangeStatus(status);
-            if (_context.SaveChanges() == 1)
+            if (o != null)
             {
-                return o.Convert(StaticData.defaultConverter);
+                LoadOrder(o);
+                o.ChangeStatus(status);
+                if (_context.SaveChanges() == 1)
+                {
+                    return o.Convert(StaticData.defaultConverter);
+                }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         /// <summary>
         /// Notify Delivery Module of an order status change
         /// </summary>
         /// <param name="status">New order status</param>
-        public void NotifyDeliveryStatusOfStatus(OrderStatus status)
+        /// <returns>True if delivery notfied</returns>
+        public bool NotifyDeliveryStatusOfStatus(OrderStatus status, Guid guid)
         {
             //TODO
             // Add module message
 
             switch (status)
             {
-                case OrderStatus.WaitingForCollection:
+                case OrderStatus.ReadyForDelivery:
                     // Notify: Ready to pickup
-                    break;
-                case OrderStatus.Collecting:
-                    break;
-                case OrderStatus.WaitingForCourier:
-                    break;
-                case OrderStatus.OnTheWay:
-                    break;
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(StaticData.urlDeliveryModule);
+
+                        var getTask = client.PostAsJsonAsync<Guid>($"requestPickup", guid).Result;
+                        if (!getTask.IsSuccessStatusCode)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
                 case OrderStatus.RejectedByShop:
                     // Nofity: Reject order
-                    break;
+                    return true;
                 case OrderStatus.RejectedByCustomer:
-                    break;
+                    return true;
                 case OrderStatus.Pending:
                     // Notify: In preparation
-                    break;
+                    return true;
                 default:
-                    break;
+                    return false;
             }
-        }
-
-        private void NotifyClientPackageCollected()
-        {
-
-        }
-
-        private void NotifyClientPackageDelivered()
-        {
-
         }
 
         private void LoadOrder(Order o)

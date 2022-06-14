@@ -75,6 +75,36 @@ services:
     networks:
         - grocerionetwork
 
+  apigateway:
+    image: ${DOCKER_REGISTRY-}apigateway
+    ports:
+    - "44390:443"
+    - "44391:80"
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: ..
+      dockerfile: ./ApiGateway/ApiGateway/Dockerfile
+    depends_on:
+        - clientmodule
+        - deliverymodule
+        - shopmodule
+        - identityserver
+    networks:
+        - grocerionetwork
+  frontend:
+    image: ${DOCKER_REGISTRY-}frontend
+    ports:
+    - "44392:443"
+    - "44393:80"
+    build:
+      context: ..
+      dockerfile: ./Frontend/FrontendWebApp/Dockerfile
+    depends_on:
+        - apigateway
+    networks:
+        - grocerionetwork
+
 networks:
   grocerionetwork:
     driver: bridge

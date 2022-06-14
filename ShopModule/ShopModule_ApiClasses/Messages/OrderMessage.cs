@@ -4,15 +4,13 @@ using System.Collections.Generic;
 namespace ShopModule_ApiClasses.Messages
 {
     public enum OrderStatusMessage {
-        WaitingForCollection,
-        Collecting,
-        WaitingForCourier,
-        ParcelCollected,
-        OnTheWay,
-        Delivered,
+        Pending,
+        InPreparation,
+        ReadyForDelivery,
+        PickedUpByCourier,
         RejectedByShop,
         RejectedByCustomer,
-        Pending
+        Delivered
     }
     public class OrderMessage
     {

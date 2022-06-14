@@ -20,8 +20,13 @@ namespace ShopModule.Controllers
             _complaintService = complaintService;
         }
 
+        /// <summary>
+        /// Get a complaint
+        /// </summary>
+        /// <param name="complaintId"></param>
+        /// <returns></returns>
         [HttpGet("{complaintId}")]
-        public IActionResult GetChosenComplaint([FromBody] Guid complaintId)
+        public IActionResult GetChosenComplaint([FromRoute] Guid complaintId)
         {
             var res = _complaintService.GetComplaint(complaintId);
             if (res != null)
@@ -34,6 +39,11 @@ namespace ShopModule.Controllers
             }
         }
 
+        /// <summary>
+        /// Create a complaint
+        /// </summary>
+        /// <param name="complaint"></param>
+        /// <returns></returns>
         [HttpPost("create")]
         public IActionResult CreateComplaintEndpoint([FromBody] ComplaintMessage complaint)
         {
@@ -48,10 +58,14 @@ namespace ShopModule.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all pending complaints
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("pending/{shopId}")]
-        public IActionResult GetPendingComplaintsEndpoint()
+        public IActionResult GetPendingComplaintsEndpoint([FromQuery] int page, [FromQuery] int pageSize)
         {
-            var pending = _complaintService.PendingComplaints();
+            var pending = _complaintService.PendingComplaintsPaginated(page, pageSize);
             if (pending.Count > 0)
             {
                 return ResponseMessage.Success(pending, 200);
@@ -61,6 +75,12 @@ namespace ShopModule.Controllers
                 return ResponseMessage.Error("Failed to get pending complaints", 404);
             }
         }
+
+        /// <summary>
+        /// Accept complaint
+        /// </summary>
+        /// <param name="complaintId"></param>
+        /// <returns></returns>
         [HttpPut("{complaintId}/accept")]
         public IActionResult AcceptComplaintEndpoint([FromRoute] Guid complaintId)
         {
@@ -74,6 +94,12 @@ namespace ShopModule.Controllers
                 return ResponseMessage.Error("Complaint not found.", 404);
             }
         }
+
+        /// <summary>
+        /// Reject complaint
+        /// </summary>
+        /// <param name="complaintId"></param>
+        /// <returns></returns>
         [HttpPut("{complaintId}/reject")]
         public IActionResult RejectComplaintEndpoint([FromRoute] Guid complaintId)
         {

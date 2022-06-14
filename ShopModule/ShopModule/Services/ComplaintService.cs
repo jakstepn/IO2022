@@ -4,6 +4,7 @@ using ShopModule.Models;
 using ShopModule_ApiClasses.Messages;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ShopModule.Services
 {
@@ -12,7 +13,7 @@ namespace ShopModule.Services
         ComplaintMessage AddComplaint(ComplaintMessage complaint);
         Complaint AcceptComplaint(Guid complaintId);
         Complaint RejectComplaint(Guid complaintId);
-        List<ComplaintMessage> PendingComplaints();
+        List<ComplaintMessage> PendingComplaintsPaginated(int page, int pageSize);
         Complaint GetComplaint(Guid complaintId);
 
     }
@@ -53,20 +54,20 @@ namespace ShopModule.Services
         }
 
         /// <summary>
-        /// Gets all of existing Complaints that has status set as pending
+        /// Gets existing Complaints that has status set as pending in paginated fashion
         /// </summary>
         /// <returns>List of Complaint objects</returns>
-        public List<ComplaintMessage> PendingComplaints()
+        public List<ComplaintMessage> PendingComplaintsPaginated(int page, int pageSize)
         {
-            List<ComplaintMessage> res = new List<ComplaintMessage>();
+            List<ComplaintMessage> complaints = new List<ComplaintMessage>();
             foreach (var complaint in _context.Complaints)
             {
                 if (complaint.CurrentStatus == Complaints.CurrentComplaintState.Pending.ToString())
                 {
-                    res.Add(complaint.Convert(StaticData.defaultConverter));
+                    complaints.Add(complaint.Convert(StaticData.defaultConverter));
                 }
             }
-            return res;
+            return complaints.Skip(page * pageSize).Take(pageSize).ToList();
         }
 
         /// <summary>

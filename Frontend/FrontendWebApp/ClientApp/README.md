@@ -1,0 +1,1 @@
+This is Frontend for the grocery delivery aplication.

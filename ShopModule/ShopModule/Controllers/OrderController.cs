@@ -21,6 +21,11 @@ namespace ShopModule.Controllers
             _orderService = orderService;
         }
 
+        /// <summary>
+        /// Create a new order
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         [HttpPost("place")]
         public IActionResult PlaceOrder([FromBody] OrderMessage message)
         {
@@ -28,20 +33,20 @@ namespace ShopModule.Controllers
             try
             {
                 var messages = _orderService.AddOrderAndItems(message.orderItems, message);
-                if(messages != null)
+                if (messages != null)
                 {
                     success = true;
                 }
 
                 if (success)
                 {
-                    _orderService.NotifyDeliveryStatusOfStatus((OrderStatus)Enum.Parse(typeof(OrderStatus), message.orderStatus));
-                    return ResponseMessage.Success(message, 201);
+                    bool notified = _orderService.NotifyDeliveryStatusOfStatus((OrderStatus)Enum.Parse(typeof(OrderStatus), message.orderStatus), message.orderId);
+                    if (notified)
+                    {
+                        return ResponseMessage.Success(message, 201);
+                    }
                 }
-                else
-                {
-                    return ResponseMessage.Error("Failed to create order", 404);
-                }
+                return ResponseMessage.Error("Failed to create order", 404);
             }
             catch (Exception)
             {
@@ -49,10 +54,15 @@ namespace ShopModule.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all pending shop orders paginated
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <returns></returns>
         [HttpGet("pending/{shopId}")]
-        public IActionResult GetPendingOrdersAssignedToShop([FromRoute] string shopId)
+        public IActionResult GetPendingOrdersAssignedToShop([FromQuery] int page, [FromQuery] int pageSize, [FromRoute] string shopId)
         {
-            var pending = _orderService.FindPendingOrders();
+            var pending = _orderService.FindPendingOrdersPaginated(page, pageSize);
             if (pending.Count > 0)
             {
                 return ResponseMessage.Success(pending, 200);
@@ -62,6 +72,12 @@ namespace ShopModule.Controllers
                 return ResponseMessage.Error("Failed to get pending orders", 404);
             }
         }
+
+        /// <summary>
+        /// Get chosen order
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
         [HttpGet("{orderId}")]
         public IActionResult GetChosenOrder([FromRoute] Guid orderId)
         {
@@ -82,31 +98,36 @@ namespace ShopModule.Controllers
         /// <param name="status"></param>
         /// <returns></returns>
         [HttpPut("{orderId}")]
-        public IActionResult SetChosenOrder([FromRoute] Guid orderId, [FromBody] OrderStatus status)
+        public IActionResult SetChosenOrder([FromRoute] Guid orderId, [FromBody] string string_status)
         {
-            OrderMessage order = _orderService.FindOrder(orderId);
-            if (order != null)
+            OrderStatus status;
+            bool accepted_enum = Enum.TryParse<OrderStatus>(string_status, out status);
+            OrderMessage order;
+            bool notified;
+            if (accepted_enum && (order = _orderService.ChangeStatus(orderId, status)) != null)
             {
-                if (status == OrderStatus.ParcelCollected)
+                if (status == OrderStatus.PickedUpByCourier)
                 {
                     // TODO
                     // Notify Client package collected
+                    notified = true;
                 }
                 else if (status == OrderStatus.Delivered)
                 {
                     // TODO
                     // Notify client package delivered
+                    notified = true;
                 }
                 else
                 {
-                    _orderService.NotifyDeliveryStatusOfStatus(status);
+                    notified = _orderService.NotifyDeliveryStatusOfStatus(status, orderId);
                 }
-                return ResponseMessage.Success(order, 200);
+                if (notified)
+                {
+                    return ResponseMessage.Success(order, 200);
+                }
             }
-            else
-            {
-                return ResponseMessage.Error("Order doesn't exist!", 404);
-            }
+            return ResponseMessage.Error("Order doesn't exist!", 404);
         }
     }
 }
