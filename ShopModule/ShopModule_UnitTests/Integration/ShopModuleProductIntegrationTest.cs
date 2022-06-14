@@ -75,6 +75,5 @@ namespace ShopModule_UnitTests.Integration
 
             return await c.PostAsJsonAsync("http://localhost/products", p);
         }
-
     }
 }

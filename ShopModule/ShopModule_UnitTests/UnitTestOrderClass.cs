@@ -26,8 +26,16 @@ namespace ShopModule_UnitTests
         [InlineData(OrderStatus.RejectedByCustomer)]
         public void TestOrderStatus(OrderStatus status)
         {
-            OrderStatus defStatus = OrderStatus.InPreparation;
-            Order o = new Order(Guid.NewGuid(), null, DateTime.Now, DateTime.Now, "", defStatus);
+            Order o = new Order
+            {
+                AdditionalInfo = "test",
+                AddressFK = Guid.NewGuid(),
+                ClientAddress = null,
+                CreationDate = DateTime.UtcNow,
+                DeliveryDate = DateTime.UtcNow,
+                Id = Guid.NewGuid(),
+                OrderStatus = OrderStatus.InPreparation.ToString(),
+            };
             o.ChangeStatus(status);
             Assert.Equal(status.ToString(), o.OrderStatus);
         }

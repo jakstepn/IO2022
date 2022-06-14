@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopModule.Data;
 
 namespace ShopModule.Migrations
 {
     [DbContext(typeof(ShopModuleDbContext))]
-    partial class ShopModuleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220614175727_UpdateProduct")]
+    partial class UpdateProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,7 +200,7 @@ namespace ShopModule.Migrations
                             Id = new Guid("ffffffff-aaaa-cccc-a000-000000000000"),
                             Currency = "USD",
                             OrderFK = new Guid("eeeeeeee-cccc-aaaa-0000-000000000000"),
-                            ProductFK = new Guid("9cb92278-d017-40d1-970a-48bbb5df60a5"),
+                            ProductFK = new Guid("d2e2c69e-2fae-4ecf-bef9-944e4334d9d4"),
                             Quantity = 1m
                         });
                 });
@@ -233,7 +235,7 @@ namespace ShopModule.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9cb92278-d017-40d1-970a-48bbb5df60a5"),
+                            Id = new Guid("d2e2c69e-2fae-4ecf-bef9-944e4334d9d4"),
                             Available = true,
                             Price = 1m,
                             ProductName = "testName",
@@ -242,7 +244,7 @@ namespace ShopModule.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f8eca3cd-9f2a-491c-9067-a03cc10be615"),
+                            Id = new Guid("bc1131d5-d2a5-43a7-9e62-c17a3683f936"),
                             Available = true,
                             Price = 3m,
                             ProductName = "testName2",
@@ -251,7 +253,7 @@ namespace ShopModule.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7f270309-477d-4ef5-8bea-f50663551c72"),
+                            Id = new Guid("eb364b98-4099-4227-a07a-273b5fba9383"),
                             Available = false,
                             Price = 5m,
                             ProductName = "testName3",
@@ -260,7 +262,7 @@ namespace ShopModule.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8802e949-5e40-4052-aaf3-92ebb560888e"),
+                            Id = new Guid("01f2bd0b-eb14-4f3d-93e8-204217ba2a95"),
                             Available = true,
                             Price = 6m,
                             ProductName = "testName4",
