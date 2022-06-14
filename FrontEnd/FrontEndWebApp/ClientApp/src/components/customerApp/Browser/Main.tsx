@@ -40,7 +40,7 @@ export default function CustomerBrowser() {
                 <Col flex="auto">
                     <div className="site-layout-content">
                         {products.map((item: Product) => (
-                            <ProductListItem product={item} showSimilar={false} />)
+                            <ProductListItem product={item}  />)
                         )}
                     </div>
                     <br />

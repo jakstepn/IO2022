@@ -39,8 +39,7 @@ export default function Login(props : Props) {
         dispatch({ type: 'AUTHENTICATE_USER', payload: true });
         dispatch({ type: 'SET_TOKEN', payload: token });
         dispatch({ type: 'SET_USER', payload: user.email });
-        if(destination != "")
-            message.success('Logged in succesfully!');
+        message.success('Logged in succesfully!');
         
         navigate(destination, { replace: true });
     }

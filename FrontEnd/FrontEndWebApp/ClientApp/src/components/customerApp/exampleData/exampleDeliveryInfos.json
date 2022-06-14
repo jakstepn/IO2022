@@ -4,13 +4,6 @@
     "status": "OnTheWay",
     "orderTime": "21/06/2022 12:32",
     "delivertTime": "23/06/2022 12:42",
-    "shop": {
-      "id": "we3343e;",
-      "name":  "Tesko",
-      "adres": "Warszawa ",
-      "phoneNumber": "313 23 123 2",
-      "email": "Sklepik@sklepik.com"
-    },
     "products": [
       {
         "id": "1233adasd123ad",

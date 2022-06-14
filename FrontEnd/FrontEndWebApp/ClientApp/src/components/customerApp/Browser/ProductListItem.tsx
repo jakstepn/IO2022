@@ -2,38 +2,24 @@ import React, { useContext, useState } from 'react';
 import { Card, Row, Col, Image, InputNumber, Rate, Tag, Divider, Button } from "antd";
 import { Product } from '../classes/Product';
 import { FileImageOutlined } from '@ant-design/icons';
+import { globalContext as gcCustomer } from '../clientReducers/GlobalStore';
 
-import { Typography } from 'antd';
+
 /*import { globalContext } from '../reducers/GlobalStore';*/
-const { Text } = Typography;
-
-interface State {
-    ratingBook: boolean
-}
 
 interface Props {
     product: Product
-    showSimilar: boolean
 }
 
 const ProductListItem: React.FC<Props> = (props: Props) => {
-    const [ratingBook, setRatingBook] = useState(false);
-  /*  const { globalState } = useContext(globalContext);*/
 
-    //const markAsReadClickHandle = () => {
-    //    setRatingBook(true);
-    //}
-    //const markAsReadCancelHandle = () => {
-    //    setRatingBook(false);
-    //    console.log("Rating has been canceled");
-    //  }
-    //const markAsReadConfirmHandle = (rating : number) => {
-    //    console.log("Book " + props.book.id + " has been read by " + globalState.loggedUser + " and rated as " + rating);
-    //    props.book.readByUser = true;
-    //    setRatingBook(false);
-    //}
+    const { globalState, dispatch } = useContext(gcCustomer);
+
     const Add = () => {
-        console.log("Show similar books to " + props.product.name);
+       // dispatch({ type: 'Set', payload: [props.product] });
+        //dispatch({ type: 'Set', payload: [props.product] });
+        //console.log(dispatch);
+        //console.log(globalState);
     }
 
     return (
@@ -55,7 +41,7 @@ const ProductListItem: React.FC<Props> = (props: Props) => {
                          </div>
                     </ Col>
                     <Col span={4}>
-                        <Divider type="horizontal" orientation="center" dashed > Price: {props.product.price}</Divider>
+                        <Divider type="horizontal" orientation="center" dashed > Price: {props.product.price.toFixed(2)}</Divider>
                     </ Col>
                     <Col span={5 }>
                         
@@ -69,7 +55,6 @@ const ProductListItem: React.FC<Props> = (props: Props) => {
             </Card>
             <br />
 
-           {/* <RateTheBookModal visible={ratingBook} onCancel={markAsReadCancelHandle} onConfirm={markAsReadConfirmHandle}/>*/}
         </div>
     );
 }

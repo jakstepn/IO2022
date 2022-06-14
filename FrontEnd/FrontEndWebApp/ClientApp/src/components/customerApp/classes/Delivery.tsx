@@ -7,7 +7,6 @@ export interface Delivery {
     status: string;
     orderTime: string;
     delivertTime: string;
-    shop: Shop;
     products: Product[];
     price: number;
 }

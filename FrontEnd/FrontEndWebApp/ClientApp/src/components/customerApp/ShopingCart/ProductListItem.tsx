@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Card, Row, Col, Image, Rate, Tag, Divider, Button } from "antd";
+import { Card, Row, Col, Image, InputNumber, Rate, Tag, Divider, Button } from "antd";
 import { Product } from '../classes/Product';
 import { FileImageOutlined } from '@ant-design/icons';
 
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const ProductListItem: React.FC<Props> = (props: Props) => {
-    const [ratingBook, setRatingBook] = useState(false);
+
   /*  const { globalState } = useContext(globalContext);*/
 
     //const markAsReadClickHandle = () => {
@@ -53,16 +53,19 @@ const ProductListItem: React.FC<Props> = (props: Props) => {
                             <p>Category: {props.product.category}</p>
                          </div>
                     </ Col>
+                    <Col span={3}>
+                        Quantity:   <InputNumber min={1} max={props.product.quantity} defaultValue={props.product.quantity}  />
+                    </Col>
                     <Col span={5 }>
                         <Divider type="horizontal" orientation="center" dashed > Price</Divider>
                         <Row justify='center'>
                             <Col> 
                                 <p> <b> PerItem: </b></p>
-                                {props.product.price.toFixed(2)}
+                                {props.product.price.toFixed(2) }
                             </Col>
                             <Col offset={2 }>
                                 <p> <b> Sum: </b> </p>
-                                {(props.product.price * props.product.quantity).toFixed(2)}
+                                {(props.product.price * props.product.quantity).toFixed(2) }
                             </Col>
                         </Row>
                     </ Col>
@@ -72,7 +75,6 @@ const ProductListItem: React.FC<Props> = (props: Props) => {
             </Card>
             <br />
 
-           {/* <RateTheBookModal visible={ratingBook} onCancel={markAsReadCancelHandle} onConfirm={markAsReadConfirmHandle}/>*/}
         </div>
     );
 }
