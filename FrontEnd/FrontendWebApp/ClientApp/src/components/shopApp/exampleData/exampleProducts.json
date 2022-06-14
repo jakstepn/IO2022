@@ -1,0 +1,51 @@
+[
+    {
+        "productId": "C9Bd2FDD-513b-eAe0-BEbb-b10A791cE7ee",
+        "name": "Milk",
+        "category": "Food",
+        "price": 12,
+        "quantity": 100
+    },
+    {
+        "productId": "5F0BAcCe-9a0B-7677-e1a1-A5E4cAeaFbc6",
+        "name": "Bread",
+        "category": "Food",
+        "price": 3.5,
+        "quantity": 250
+    },
+    {
+        "productId": "D9D5b2Da-a9ed-ccd9-5bAE-b4a66868BAe0",
+        "name": "Wine",
+        "category": "Alcohol",
+        "price": 23.45,
+        "quantity": 156
+    },
+    {
+        "productId": "CADAc1fa-c28d-c8Af-Bf7C-0d6d576C1A610",
+        "name": "Beer",
+        "category": "Alcohol",
+        "price": 3.27,
+        "quantity": 53
+    },
+    {
+        "productId": "eD0e0eB1-Bc21-29e3-FEfB-bb6b9b22ae11",
+        "name": "Rum",
+        "category": "Alcohol",
+        "price": 39.15,
+        "quantity": 584
+    },
+    {
+        "productId": "5F0BAcCe-9a0B-7677-e1a1-A5E4cAeaFbc6",
+        "name": "Package of 12 eggs",
+        "category": "Food",
+        "price": 11.93,
+        "quantity": 231
+    },
+    {
+        "productId": "e7Fd3eD9-Fb7f-CDcF-6eE8-E6Aa87cabdcb",
+        "name": "Pork ham",
+        "category": "Food",
+        "price": 2.46,
+        "quantity": 282
+    }
+]

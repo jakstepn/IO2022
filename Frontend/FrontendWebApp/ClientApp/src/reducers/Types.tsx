@@ -5,6 +5,13 @@ export interface GlobalStateInterface {
   loggedUser: string;
   token: string;
   accountType: AccountType;
+  courierStatus: CourierStatus;
+}
+
+export enum CourierStatus {
+  NotAvaible,
+  AvaibleForDelivery,
+  DuringDelivery
 }
 
 export enum AccountType {

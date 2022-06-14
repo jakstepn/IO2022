@@ -6,7 +6,6 @@ import { useState } from 'react';
 import 'antd/dist/antd.css';
 import { globalContext } from '../reducers/GlobalStore';
 import { AccountType } from '../reducers/Types';
-
 interface Props {
 }
 
@@ -15,39 +14,55 @@ export default function Login(props : Props) {
     const { globalState, dispatch } = useContext(globalContext);
     const navigate = useNavigate();
     const [userNotFound, setUserNotFound] = useState(false);
+    let destination = "";
+    let accountType = AccountType.None;
 
     const passwordValidate = (password : String) => {
         return password.length > 0;
     }  
-
-    const successfullLogIn = (user : any, token : string) => {
+    const selectDestination = (accType : AccountType) =>  {
+        if (accType == AccountType.None)
+            return;
+        if (accType == AccountType.Courier)
+            destination = "/courier/home";
+        if (accType == AccountType.Client)
+            destination = "/customer/home";
+            if (accType == AccountType.Employee)
+            destination = "/shop/home";
+    }
+    const successfullLogIn = (user: any, token: string) => {
         setUserNotFound(false);
         dispatch({ type: 'AUTHENTICATE_USER', payload: true });
         dispatch({ type: 'SET_TOKEN', payload: token });
         dispatch({ type: 'SET_USER', payload: user.email });
-        message.success('Logged in succesfully!');
-        navigate('/courier/home', {replace: true}); // to do zmiany definitywnie
+        if(destination != "")
+            message.success('Logged in succesfully!');
+        
+        navigate(destination, { replace: true });
     }
-
     const demoLogin = (user : any) => {
         let mail : string = user.email;
 
-        if(mail.includes("client")) {
+        if(mail.includes("client") || mail.includes("customer")) {
+            accountType = AccountType.Client;
             dispatch({ type: 'SET_ACCOUNT_TYPE', payload: AccountType.Client });
             return true;
         }  
-        else if(mail.includes("employee")) {
+        else if(mail.includes("employee") || mail.includes("shop")) {
+            accountType = AccountType.Employee;
             dispatch({ type: 'SET_ACCOUNT_TYPE', payload: AccountType.Employee });
             return true;
         }
         else if(mail.includes("courier")) {
+            accountType = AccountType.Courier;
             dispatch({ type: 'SET_ACCOUNT_TYPE', payload: AccountType.Courier });
             return true;
         }
         return false;
     }
     const loginHandler = (user : any) => {
-        if(demoLogin(user)) {
+        if (demoLogin(user)) {
+            selectDestination(accountType);
             successfullLogIn(user, "Bearer " + "abc");
         }
         else {
@@ -107,7 +122,7 @@ export default function Login(props : Props) {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" className="login-form-button" style={{width: "60vh" }}>Log in</Button>
+                        <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: "60vh" }}>Log in</Button>
                         </Form.Item>
 
                         {
