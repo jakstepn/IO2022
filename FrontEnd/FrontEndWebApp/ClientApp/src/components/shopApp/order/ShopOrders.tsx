@@ -13,7 +13,7 @@ import { exampleOrders } from '../exampleData/ExampleShopItem';
 const { Title } = Typography;
 
 
-export default function Orders() {
+export default function ShopOrders() {
   const { globalState } = useContext(globalContext);
   const navigate = useNavigate();
   const location = useLocation(); 

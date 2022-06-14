@@ -39,6 +39,7 @@ export default function CourierHome() {
     if(!globalState.isUserAuthenticated) {
       navigate('/login', {replace: true});
     }
+    navigate('/courier/orders', {replace: true});
   }, []);
 
     return (

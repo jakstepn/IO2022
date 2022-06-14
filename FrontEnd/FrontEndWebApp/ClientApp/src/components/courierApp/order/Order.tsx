@@ -7,8 +7,8 @@ import { green } from '@ant-design/colors';
 
 import {Typography} from "antd"
 import { OrderJson } from '../classes/OrderJson';
-import { exampleOrders } from '../exampleData/ExampleShopItem';
 import { OrderDetails } from './OrderDetails';
+import { exampleOrders } from '../exampleData/ExampleCourierItem';
 
 const { Title } = Typography;
 

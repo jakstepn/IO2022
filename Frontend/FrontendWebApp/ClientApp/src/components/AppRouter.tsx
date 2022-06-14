@@ -10,8 +10,9 @@ import CustomerShopingCart from './customerApp/ShopingCart/Main';
 import CustomerDelivery from './customerApp/Delivery/Main';
 import ShopHome from './shopApp/Home';
 import PendingOrders from './shopApp/order/PendingOrders';
-import Orders from './shopApp/order/Orders';
+import Orders from './shopApp/order/ShopOrders';
 import Products from './shopApp/product/Products';
+import CourierOrders from './courierApp/order/CourierOrders';
 
 export const AppRouter: React.FC = () => {
   const { globalState } = useContext(globalContext);
@@ -23,6 +24,7 @@ export const AppRouter: React.FC = () => {
 
             <Route path='courier'>
               <Route path='home' element={<CourierHome />} />
+              <Route path='orders' element={<CourierOrders />} />
             </Route>
 
             <Route path='shop'>

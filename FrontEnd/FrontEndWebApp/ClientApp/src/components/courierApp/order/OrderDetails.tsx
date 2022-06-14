@@ -7,7 +7,6 @@ import { green } from '@ant-design/colors';
 
 import {Typography} from "antd"
 import { OrderJson } from '../classes/OrderJson';
-import { exampleOrders } from '../exampleData/ExampleShopItem';
 import { useWindowDimensions } from 'react-native';
 import { ColumnsType } from 'antd/lib/table';
 import { OrderItem } from '../classes/OrderItem';
@@ -125,11 +124,6 @@ export const OrderDetails: React.FC<Props> = (props: Props) => {
                             onChange={updateStatusHandle}
                             style={{ width: 200 }}
                         >
-                            <Option value="Pending">Pending</Option>
-                            <Option value="RejectedByShop">Rejected by shop</Option>
-                            <Option value="InProgress">In progress</Option>
-                            <Option value="ReadyForDelivery">Ready for delivery</Option>
-                            <Option value="WaitingForPickUp">Waiting for pick-up</Option>
                             <Option value="PickedUpByCourier">Picked up by courier</Option>
                             <Option value="Delivered">Delivered</Option>
                         </Select>
@@ -158,11 +152,6 @@ export const OrderDetails: React.FC<Props> = (props: Props) => {
             <Row style={{ marginTop: 5 }} justify='center'>
                 <Table columns={columns} dataSource={props.order.orderItems}/>
             </Row>
-                
-            
-            
-            
-            
         </Modal>
     );
 }

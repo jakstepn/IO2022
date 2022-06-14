@@ -1,0 +1,32 @@
+{
+    "orderId": "Af7bd30d-16fe-B3eF-bdFe-B306A6758657",
+    "orderItems": [
+        {
+            "grossPrice": 12,
+            "currency": "PLN",
+            "productName": "Milk",
+            "quantity": 2
+        },
+        {
+            "grossPrice": 1.2,
+            "currency": "PLN",
+            "productName": "Eggs",
+            "quantity": 12
+        },
+        {
+            "grossPrice": 6,
+            "currency": "PLN",
+            "productName": "Ice cream",
+            "quantity": 1
+        }
+    ],
+    "creationDate": "2022-06-14T12:30:22.52Z",
+    "deliveryDate": "2022-06-12T13:30:22.52Z",
+    "clientAddress": {
+        "street": "Krzywa 13",
+        "city": "Warszawa",
+        "zipCode": "00-631"
+    },
+    "additionalInfo": "Leave package at the door please",
+    "orderStatus": "PickedUpByCourier"
+}
