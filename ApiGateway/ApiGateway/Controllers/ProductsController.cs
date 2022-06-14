@@ -1,4 +1,5 @@
 ﻿using ApiGateway_ApiClasses.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ShopModule_ApiClasses.Messages;
@@ -72,6 +73,13 @@ namespace ApiGateway.Controllers
                 response = await client.GetAsync(GatewayOptions.ShopModulePath + "/products/category/" + category);
             }
             return response;
+        }
+        [HttpGet]
+        [Route("authorization/test")]
+        [Authorize]
+        public async Task<IActionResult> TestApiAuthorization(string category)
+        {
+            return new OkResult();
         }
     }
 }

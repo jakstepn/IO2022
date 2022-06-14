@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using ApiGateway.Controllers;
+using Microsoft.IdentityModel.Tokens;
+
 namespace ApiGateway
 {
     public class Startup
@@ -41,6 +43,17 @@ namespace ApiGateway
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiGateway", Version = "v1" });
             });
             services.AddHttpClient();
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = Configuration["IdentityServer"];
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
