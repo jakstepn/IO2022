@@ -7,7 +7,7 @@ export default function NotFound() {
     const navigate = useNavigate();
 
     const NavToHomeHandle = () => {
-        navigate('/books/all', {replace: true});
+        navigate('/', {replace: true});
     }
 
     return (

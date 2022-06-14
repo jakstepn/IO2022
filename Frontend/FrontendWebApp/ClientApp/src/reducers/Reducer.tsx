@@ -23,6 +23,11 @@ const Reducer = (state = initialState, action: ActionType): any => {
         ...state,
         accountType: action.payload,
       };
+    case 'SET_COURIER_STATUS':
+      return {
+        ...state,
+        courierStatus: action.payload,
+      };
     case 'PURGE_STATE':
       return initialState;
     default:

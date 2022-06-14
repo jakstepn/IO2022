@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "antd": "^4.20.7",
+    "react": "^18.1.0",
+    "react-router-dom": "^6.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.10",
+    "@types/reactstrap": "^8.7.2"
+  }
+}

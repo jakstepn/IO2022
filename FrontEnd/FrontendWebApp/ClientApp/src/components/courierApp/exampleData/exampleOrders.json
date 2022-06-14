@@ -1,0 +1,54 @@
+[
+    {
+        "orderId": "c2cf4e9e-0393-4189-af47-0aab382ce330",
+        "orderItems": [
+            {
+                "grossPrice": 12,
+                "currency": "PLN",
+                "productName": "Milk",
+                "quantity": 2
+            },
+            {
+                "grossPrice": 1.2,
+                "currency": "PLN",
+                "productName": "Eggs",
+                "quantity": 12
+            },
+            {
+                "grossPrice": 6,
+                "currency": "PLN",
+                "productName": "Ice cream",
+                "quantity": 1
+            }
+        ],
+        "creationDate": "2021-12-01T12:30:22.52Z",
+        "deliveryDate": "2021-12-01T13:30:22.52Z",
+        "clientAddress": {
+            "street": "Prosta 12",
+            "city": "Warszawa",
+            "zipCode": "00-631"
+        },
+        "additionalInfo": "Info from the client",
+        "orderStatus": "Delivered"
+    },
+    {
+        "orderId": "a1eEabD6-dA92-eC7f-b5b1-FBAb21440d5f",
+        "orderItems": [
+          {
+            "grossPrice": 12,
+            "currency": "PLN",
+            "productName": "Bread",
+            "quantity": 3
+          }
+        ],
+        "creationDate": "2021-12-01T12:30:22.52Z",
+        "deliveryDate": "2021-12-01T13:30:22.52Z",
+        "clientAddress": {
+          "street": "Prosta 12",
+          "city": "Warszawa",
+          "zipCode": "00-631"
+        },
+        "additionalInfo": "Info from the client",
+        "orderStatus": "Delivered"
+      }
+]
