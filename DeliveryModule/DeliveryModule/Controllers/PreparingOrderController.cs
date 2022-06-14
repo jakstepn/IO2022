@@ -100,6 +100,7 @@ namespace DeliveryModule.Controllers
                 return new Order(ShopOrder);
             }
         }
+        
         private Courier GetAvailableCourier()
         {
             return _context.Couriers.Where(x => x.CurrentState == Courier.CourierStatusEnum.Available).First();

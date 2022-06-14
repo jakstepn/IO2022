@@ -15,6 +15,9 @@ namespace DeliveryModule.Models
         {
 
         }
-        
+        public Client()
+        {
+
+        }
     }
 }

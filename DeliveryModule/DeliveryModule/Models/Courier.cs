@@ -26,6 +26,10 @@ namespace DeliveryModule.Models
         {
 
         }
+        public Courier()
+        {
+
+        }
     }
     
 }

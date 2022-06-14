@@ -55,6 +55,23 @@ namespace DeliveryModule.Migrations
                     b.ToTable("Couriers");
                 });
 
+            modelBuilder.Entity("DeliveryModule.Models.History", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("History");
+                });
+
             modelBuilder.Entity("DeliveryModule.Models.Message", b =>
                 {
                     b.Property<Guid>("Id")
