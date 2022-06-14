@@ -22,6 +22,7 @@ namespace ShopModule.Services
         OrderItem[] AddOrderItems(OrderItem[] items);
         OrderMessage AddOrderAndItems(RequestOrderMessage order);
         List<OrderMessage> FindPendingOrdersPaginated(int page, int pageSize);
+        List<OrderMessage> FindOrdersPaginated(int page, int pageSize);
         OrderMessage RemoveOrder(Guid orderId);
         bool UpdateDeliveryTime(Guid orderId, DateTime deliveryDate);
         bool NotifyDeliveryStatusOfStatus(OrderStatus status, Guid guid);
@@ -138,6 +139,22 @@ namespace ShopModule.Services
             List<OrderMessage> orders = new List<OrderMessage>();
             foreach (var ord in _context.Orders.Where(x => x.OrderStatus == OrderStatus.Pending.ToString())
                 .ToList().OrderByDescending(x => x.CreationDate))
+            {
+                LoadOrder(ord);
+
+                orders.Add(ord.Convert(StaticData.defaultConverter));
+            }
+            return orders.Skip(page * pageSize).Take(pageSize).ToList();
+        }
+
+        /// <summary>
+        /// Get orders
+        /// </summary>
+        /// <returns>Returns an array of Orders</returns>
+        public List<OrderMessage> FindOrdersPaginated(int page, int pageSize)
+        {
+            List<OrderMessage> orders = new List<OrderMessage>();
+            foreach (var ord in _context.Orders.ToList().OrderByDescending(x => x.CreationDate))
             {
                 LoadOrder(ord);
 

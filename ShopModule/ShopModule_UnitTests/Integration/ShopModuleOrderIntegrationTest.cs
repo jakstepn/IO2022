@@ -89,7 +89,7 @@ namespace ShopModule_UnitTests.Integration
                 clientAddress = address,
                 orderItems = new RequestOrderItemMessage[] { orderItem },
             };
-            return await c.PostAsJsonAsync("http://localhost/orders/place", om);
+            return await c.PostAsJsonAsync("http://localhost/orders", om);
         }
     }
 }

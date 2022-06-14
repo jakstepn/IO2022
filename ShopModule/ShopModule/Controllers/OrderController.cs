@@ -52,11 +52,30 @@ namespace ShopModule.Controllers
         }
 
         /// <summary>
-        /// Get all pending shop orders paginated
+        /// Get all shop orders paginated
         /// </summary>
         /// <param name="shopId"></param>
         /// <returns></returns>
         [HttpGet("shop")]
+        public IActionResult GetOrdersAssignedToShop([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var pending = _orderService.FindOrdersPaginated(page, pageSize);
+            if (pending.Count > 0)
+            {
+                return ResponseMessage.Success(pending, 200);
+            }
+            else
+            {
+                return ResponseMessage.Error("Failed to get pending orders", 404);
+            }
+        }
+
+        /// <summary>
+        /// Get all pending shop orders paginated
+        /// </summary>
+        /// <param name="shopId"></param>
+        /// <returns></returns>
+        [HttpGet("shop/pending")]
         public IActionResult GetPendingOrdersAssignedToShop([FromQuery] int page, [FromQuery] int pageSize)
         {
             var pending = _orderService.FindPendingOrdersPaginated(page, pageSize);
