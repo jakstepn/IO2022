@@ -2,6 +2,7 @@
 using ShopModule.Models;
 using ShopModule.Products;
 using ShopModule_ApiClasses.Messages;
+using ShopModule_ApiClasses.Messages.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace ShopModule.Services
         Product RemoveProduct(Guid productId);
         Product FindProduct(Guid productId);
         Product AddProduct(Product product);
-        Product UpdateProduct(Guid productId, ProductMessage product, ProductType category);
+        Product UpdateProduct(Guid productId, RequestProductMessage product, ProductType category);
         List<ProductMessage> GetPaginatedProductList(int page, int pageSize);
         List<ProductMessage> GetPaginatedProductListFromCategory(int page, int pageSize, string category);
         ProductType GetOrCreateCategory(string name);
@@ -74,7 +75,7 @@ namespace ShopModule.Services
         /// <param name="product">Item to be updated</param>
         /// <param name="category">Item category</param>
         /// <returns>Returns given product on success and null on fail</returns>
-        public Product UpdateProduct(Guid productId, ProductMessage product, ProductType category)
+        public Product UpdateProduct(Guid productId, RequestProductMessage product, ProductType category)
         {
             var p = _context.Products.Find(productId);
             p.Update(product, category);

@@ -1,5 +1,6 @@
 ﻿using ShopModule.Converters;
 using ShopModule.Data;
+using ShopModule.Location;
 using ShopModule.Models;
 using ShopModule.Orders;
 using ShopModule.Products;
@@ -89,7 +90,8 @@ namespace ShopModule.Services
         public OrderMessage AddOrderAndItems(RequestOrderMessage message)
         {
             List<Product> products = new List<Product>();
-            Order order = new Order(message);
+            Address a = new Address(message.clientAddress);
+            Order order = new Order(message, a);
             RequestOrderItemMessage[] items = message.orderItems;
             foreach (var item in items)
             {
@@ -121,7 +123,7 @@ namespace ShopModule.Services
                 }
                 i++;
             }
-
+            _context.Addresses.Add(a);
             _context.Orders.Add(order);
             _context.SaveChanges();
             return order.Convert(new MessageConverter());
@@ -183,10 +185,8 @@ namespace ShopModule.Services
             {
                 LoadOrder(o);
                 o.ChangeStatus(status);
-                if (_context.SaveChanges() == 1)
-                {
-                    return o.Convert(StaticData.defaultConverter);
-                }
+                _context.SaveChanges();
+                return o.Convert(StaticData.defaultConverter);
             }
             return null;
         }
@@ -235,11 +235,10 @@ namespace ShopModule.Services
                     return true;
                 case OrderStatus.RejectedByShop:
                     // Nofity: Reject order
-                    return true;
                 case OrderStatus.RejectedByCustomer:
-                    return true;
                 case OrderStatus.Pending:
                     // Notify: In preparation
+                case OrderStatus.InPreparation:
                     return true;
                 default:
                     return false;
@@ -249,6 +248,10 @@ namespace ShopModule.Services
         private void LoadOrder(Order o)
         {
             _context.Entry(o).Collection(p => p.Items).Load();
+            foreach (var item in o.Items)
+            {
+                _context.Entry(item).Reference(p => p.Product).Load();
+            }
             _context.Entry(o).Reference(p => p.ClientAddress).Load();
         }
     }

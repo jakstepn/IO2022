@@ -25,14 +25,13 @@ namespace ShopModule.Orders
 		{
 		}
 
-		public Order(RequestOrderMessage message)
+		public Order(RequestOrderMessage message, Address a)
         {
 			CreationDate = DateTime.Now;
 			Id = Guid.NewGuid();
 			OrderStatus = Orders.OrderStatus.Pending.ToString();
 			AdditionalInfo = message.additionalInfo;
-			ClientAddress = new Address(message.clientAddress);
-			AddressFK = ClientAddress.Id;
+			AddressFK = a.Id;
 		}
 
 		public void ChangeStatus(OrderStatus status) => OrderStatus = status.ToString();
@@ -42,7 +41,7 @@ namespace ShopModule.Orders
 			return visitor.Visit(this);
         }
 
-		[ForeignKey("Address")]
+		[ForeignKey("ClientAddress")]
 		public virtual Guid AddressFK { get; set; }
 	}
 }

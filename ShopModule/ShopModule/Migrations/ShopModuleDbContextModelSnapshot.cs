@@ -137,9 +137,6 @@ namespace ShopModule.Migrations
                     b.Property<Guid>("AddressFK")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ClientAddressId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
@@ -151,7 +148,7 @@ namespace ShopModule.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientAddressId");
+                    b.HasIndex("AddressFK");
 
                     b.ToTable("Orders");
 
@@ -198,7 +195,7 @@ namespace ShopModule.Migrations
                             Id = new Guid("ffffffff-aaaa-cccc-a000-000000000000"),
                             Currency = "USD",
                             OrderFK = new Guid("eeeeeeee-cccc-aaaa-0000-000000000000"),
-                            ProductFK = new Guid("9cb92278-d017-40d1-970a-48bbb5df60a5"),
+                            ProductFK = new Guid("eab84af7-bce2-428e-a3c3-8f375c09912f"),
                             Quantity = 1m
                         });
                 });
@@ -233,7 +230,7 @@ namespace ShopModule.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9cb92278-d017-40d1-970a-48bbb5df60a5"),
+                            Id = new Guid("eab84af7-bce2-428e-a3c3-8f375c09912f"),
                             Available = true,
                             Price = 1m,
                             ProductName = "testName",
@@ -242,7 +239,7 @@ namespace ShopModule.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f8eca3cd-9f2a-491c-9067-a03cc10be615"),
+                            Id = new Guid("e0e971d0-410f-4da2-aebe-c7d3b83b92e9"),
                             Available = true,
                             Price = 3m,
                             ProductName = "testName2",
@@ -251,7 +248,7 @@ namespace ShopModule.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7f270309-477d-4ef5-8bea-f50663551c72"),
+                            Id = new Guid("f95bfbf3-e52d-4fbb-93e8-c06ad8d937bf"),
                             Available = false,
                             Price = 5m,
                             ProductName = "testName3",
@@ -260,7 +257,7 @@ namespace ShopModule.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8802e949-5e40-4052-aaf3-92ebb560888e"),
+                            Id = new Guid("a3d268e2-065e-411a-b55c-c1eb5d34c869"),
                             Available = true,
                             Price = 6m,
                             ProductName = "testName4",
@@ -308,7 +305,9 @@ namespace ShopModule.Migrations
                 {
                     b.HasOne("ShopModule.Location.Address", "ClientAddress")
                         .WithMany("Orders")
-                        .HasForeignKey("ClientAddressId");
+                        .HasForeignKey("AddressFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ClientAddress");
                 });

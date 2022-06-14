@@ -97,7 +97,7 @@ namespace ShopModule.Controllers
         /// <param name="productId"></param>
         /// <returns></returns>
         [HttpPut("{productId}")]
-        public IActionResult UpdateProductInfoEndpoint([FromRoute] Guid productId, [FromBody] ProductMessage product)
+        public IActionResult UpdateProductInfoEndpoint([FromRoute] Guid productId, [FromBody] RequestProductMessage product)
         {
             ProductType category = _service.GetOrCreateCategory(product.category);
             var prod = _service.UpdateProduct(productId, product, category);
