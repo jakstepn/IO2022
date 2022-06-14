@@ -27,7 +27,7 @@ export default function Products() {
   const [products, setProducts] = useState<Product[]>();
   const { height, width } = useWindowDimensions();
   const [addingProduct, setAddingProduct] = useState(false);
-  const [deletingProduct, setDeletingProduct] = useState<Product>();
+  let deletingProduct : Product;
 
   function fetchData(_pageNumber : number) {
     setLoading(true);
@@ -73,7 +73,7 @@ export default function Products() {
     });
   };
   const deleteProductClickHandler = (product: Product) => {
-    setDeletingProduct(product);
+    deletingProduct = product;
     showConfirm();
     console.log("Delete product " + product.productId);
   }
