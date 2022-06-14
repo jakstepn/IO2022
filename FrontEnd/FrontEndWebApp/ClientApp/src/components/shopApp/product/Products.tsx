@@ -1,7 +1,7 @@
 import { Col, Row, Button, Modal, Table, Space } from 'antd';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import {useLocation, useNavigate } from 'react-router-dom';
-import { LoadingOutlined, SmileOutlined } from '@ant-design/icons';
+import { LoadingOutlined, SmileOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { GlobalStore, globalContext } from '../../../reducers/GlobalStore';
 import { green } from '@ant-design/colors';
 
@@ -14,7 +14,7 @@ import { Product } from '../classes/Product';
 import { AddProduct } from './AddProduct';
 
 const { Title, Text } = Typography;
-
+const { confirm } = Modal;
 
 export default function Products() {
   const { globalState } = useContext(globalContext);
@@ -27,6 +27,7 @@ export default function Products() {
   const [products, setProducts] = useState<Product[]>();
   const { height, width } = useWindowDimensions();
   const [addingProduct, setAddingProduct] = useState(false);
+  const [deletingProduct, setDeletingProduct] = useState<Product>();
 
   function fetchData(_pageNumber : number) {
     setLoading(true);
@@ -43,7 +44,37 @@ export default function Products() {
     fetchData(1);
   }, []);
 
-  const deleteProductHandler = (product: Product) => {
+  const showConfirm = () => {
+    confirm({
+      title: 'Are you sure you want to delete this product?',
+      icon: <ExclamationCircleOutlined />,
+      width: width/2,
+      content: deletingProduct !== undefined ? 
+                  <Text>
+                    Order ID: { deletingProduct.productId } 
+                    <br />    
+                    Name:     { deletingProduct.name }     
+                    <br />
+                    Price:    { deletingProduct.price}     
+                    <br />
+                    Quantity: { deletingProduct.quantity } 
+                    <br />
+                    Category: { deletingProduct.category }
+                  </Text>
+                : "Unknown product",
+      onOk() {
+        return new Promise((resolve, reject) => {
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log('Oops errors!'));
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+  const deleteProductClickHandler = (product: Product) => {
+    setDeletingProduct(product);
+    showConfirm();
     console.log("Delete product " + product.productId);
   }
   const addProductHandler = () => {
@@ -90,7 +121,7 @@ export default function Products() {
     {
         key: 'action',
         render: (_, record) => (
-            <Button onClick={() => deleteProductHandler(record)}>Delete</Button>
+            <Button onClick={() => deleteProductClickHandler(record)}>Delete</Button>
           ),
         width: '100px'
     }
