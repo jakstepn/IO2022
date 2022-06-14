@@ -14,5 +14,10 @@ namespace DeliveryModule.Models
         {
                 
         }
+        public History(Guid CourierId, Guid OrderId)
+        {
+            this.CourierId=CourierId;
+            this.OrderId=OrderId;
+        }
     }
 }

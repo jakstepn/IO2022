@@ -18,9 +18,9 @@ namespace DeliveryModule.Models
         public CourierStatusEnum CurrentState { get; set; }
         public enum CourierStatusEnum
         {
-            Available = 0,
-            Busy = 1,
-            Away = 2
+            AvaibleForDelivery = 0,
+            DuringDelivery = 1,
+            NotAvaible = 2
         }
         public void SendMessage(string Message)
         {

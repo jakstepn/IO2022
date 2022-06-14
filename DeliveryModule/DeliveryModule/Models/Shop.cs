@@ -11,14 +11,14 @@ namespace DeliveryModule.Models
         }
         public static void DeclareAvailability(Courier courier) 
         {
-            courier.CurrentState = Courier.CourierStatusEnum.Available;
+            courier.CurrentState = Courier.CourierStatusEnum.AvaibleForDelivery;
         }
         public static void TransferOrderToAnotherCourier(Courier owner, Courier destination) 
         {
             destination.CurrentOrder = owner.CurrentOrder;
             owner.CurrentOrder = null;
             DeclareAvailability(owner);
-            destination.CurrentState = Courier.CourierStatusEnum.Busy;
+            destination.CurrentState = Courier.CourierStatusEnum.DuringDelivery;
         } 
 
     }
