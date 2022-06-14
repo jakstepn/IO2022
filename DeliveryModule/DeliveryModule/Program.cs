@@ -12,26 +12,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryModule
 {
-    public class Program
-    {
-        public static void Main(string[] args)
+   
+        public class Program
         {
-            var host = CreateHostBuilder(args).Build();
-
-            using (var scope = host.Services.CreateScope())
+            public static void Main(string[] args)
             {
-                var db = scope.ServiceProvider.GetRequiredService<DeliveryModuleDbContext>();
-                db.Database.Migrate();
+                var host = CreateHostBuilder(args).Build();
+
+                using (var scope = host.Services.CreateScope())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<DeliveryModuleDbContext>();
+                    db.Database.Migrate();
+                }
+
+                host.Run();
             }
 
-            host.Run();
+            public static IHostBuilder CreateHostBuilder(string[] args) =>
+                Host.CreateDefaultBuilder(args)
+                    .ConfigureWebHostDefaults(webBuilder =>
+                    {
+                        webBuilder.UseStartup<Startup>();
+                    });
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+    
 }

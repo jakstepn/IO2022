@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeliveryModule.Migrations
 {
     [DbContext(typeof(DeliveryModuleDbContext))]
-    [Migration("20220405175811_deliveryv7")]
-    partial class deliveryv7
+    [Migration("20220613203719_dm")]
+    partial class dm
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,43 @@ namespace DeliveryModule.Migrations
                     b.HasIndex("CurrentOrderId");
 
                     b.ToTable("Couriers");
+                });
+
+            modelBuilder.Entity("DeliveryModule.Models.History", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("History");
+                });
+
+            modelBuilder.Entity("DeliveryModule.Models.Message", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("DeliveryModule.Models.Order", b =>

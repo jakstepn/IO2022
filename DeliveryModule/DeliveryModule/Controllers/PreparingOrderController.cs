@@ -45,25 +45,8 @@ namespace DeliveryModule.Controllers
             _context.SaveChanges();
             return Ok();
         }
-        [HttpPost("/OrderDelivered")]
-        public IActionResult OrderDelivered([FromBody] Guid courierId)
-        {
 
-            var owner = _context.Couriers.Find(courierId);
-
-            if (owner == null)
-            {
-                return NotFound();
-            }
-
-            _context.Entry(owner).Reference(c => c.CurrentOrder).Load();
-            _context.Entry(owner).Reference(c => c.CurrentOrder).CurrentValue = null;
-            
-
-            Shop.DeclareAvailability(owner);
-            _context.SaveChanges();
-            return Ok();
-        }
+        
 
         [HttpPost("/requestPickup")]
         public ActionResult RequestPickup([FromBody] Guid orderId )
@@ -80,10 +63,10 @@ namespace DeliveryModule.Controllers
 
             if (courier == null) return NotFound();
             courier.CurrentOrder = order;
-            courier.CurrentState = Courier.CourierStatusEnum.Busy;
+            courier.CurrentState = Courier.CourierStatusEnum.DuringDelivery;
+            _context.History.Add(new History(courier.Id,orderId));
             _context.SaveChanges();
             return Ok();
-
         }
         private Order GetOrder(Guid Id)
         {
@@ -100,9 +83,10 @@ namespace DeliveryModule.Controllers
                 return new Order(ShopOrder);
             }
         }
+        
         private Courier GetAvailableCourier()
         {
-            return _context.Couriers.Where(x => x.CurrentState == Courier.CourierStatusEnum.Available).First();
+            return _context.Couriers.Where(x => x.CurrentState == Courier.CourierStatusEnum.AvaibleForDelivery).First();
         }
 
 
