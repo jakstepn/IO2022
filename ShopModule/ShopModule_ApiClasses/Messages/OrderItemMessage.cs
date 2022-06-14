@@ -8,14 +8,9 @@ namespace ShopModule_ApiClasses.Messages
 {
     public class OrderItemMessage
     {
-        public Guid orderItemId { get; set; }
-        public decimal grossPrice { get; set; }
         public string currency { get; set; }
         public string productName { get; set; }
+        public decimal grossPrice { get; set; }
         public int quantity { get; set; }
-
-        public OrderItemMessage()
-        {
-        }
     }
 }

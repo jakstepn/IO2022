@@ -19,9 +19,8 @@ namespace ShopModule.Converters
                     items[i] = new OrderItemMessage
                     {
                         currency = item.Currency,
-                        grossPrice = item.GrossPrice,
-                        orderItemId = item.Id,
-                        productName = item.ProductName,
+                        grossPrice = item.Product.Price,
+                        productName = item.Product.ProductName,
                         quantity = item.Quantity,
                     };
                     i++;
@@ -36,7 +35,6 @@ namespace ShopModule.Converters
                     street = order.ClientAddress.Street,
                     zipCode = order.ClientAddress.ZipCode
                 } : null,
-                confirmedPayment = order.ConfirmedPayment,
                 creationDate = order.CreationDate,
                 deliveryDate = order.DeliveryDate,
                 orderItems = items,
@@ -60,6 +58,7 @@ namespace ShopModule.Converters
         {
             return new ProductMessage
             {
+                productId = product.Id,
                 category = product.ProductTypeFK,
                 name = product.ProductName,
                 price = product.Price,

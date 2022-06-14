@@ -1,5 +1,6 @@
 ﻿using ShopModule.Data;
 using ShopModule_ApiClasses.Messages;
+using ShopModule_ApiClasses.Messages.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,12 +72,9 @@ namespace ShopModule_UnitTests.Integration
         {
             await ShopModuleProductIntegrationTest.createProduct(prodName, catName, c);
             var itId = Guid.NewGuid();
-            OrderItemMessage orderItem = new OrderItemMessage
+            RequestOrderItemMessage orderItem = new RequestOrderItemMessage
             {
-                currency = "USD",
-                grossPrice = 10,
-                orderItemId = itId,
-                productName = prodName,
+                productId = itId,
                 quantity = 1,
             };
             AddressMessage address = new AddressMessage
@@ -85,18 +83,13 @@ namespace ShopModule_UnitTests.Integration
                 street = "nostreet",
                 zipCode = "nozip",
             };
-            OrderMessage om = new OrderMessage
+            RequestOrderMessage om = new RequestOrderMessage
             {
                 additionalInfo = "additionalInformation",
                 clientAddress = address,
-                confirmedPayment = false,
-                creationDate = DateTime.Now,
-                deliveryDate = DateTime.MinValue,
-                orderId = oguid,
-                orderItems = new OrderItemMessage[] { orderItem },
-                orderStatus = "Pending",
+                orderItems = new RequestOrderItemMessage[] { orderItem },
             };
-            return await c.PostAsJsonAsync("http://localhost/orders/place", om);
+            return await c.PostAsJsonAsync("http://localhost/orders", om);
         }
     }
 }

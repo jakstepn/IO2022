@@ -21,7 +21,6 @@ namespace ShopModule_ApiClasses.Messages
         public OrderItemMessage[] orderItems { get; set; }
         public string additionalInfo { get; set; }
         public string orderStatus { get; set; }
-        public bool confirmedPayment { get; set; }
 
         public OrderMessage()
         {
