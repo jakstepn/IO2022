@@ -13,7 +13,6 @@ interface State {
 
 interface Props {
     product: Product
-    showSimilar: boolean
 }
 
 const ProductListItem: React.FC<Props> = (props: Props) => {
@@ -56,14 +55,14 @@ const ProductListItem: React.FC<Props> = (props: Props) => {
                     </ Col>
                     <Col span={5 }>
                         <Divider type="horizontal" orientation="center" dashed > Price</Divider>
-                        <Row>
+                        <Row justify='center'>
                             <Col> 
                                 <p> <b> PerItem: </b></p>
-                                {props.product.price}
+                                {props.product.price.toFixed(2)}
                             </Col>
                             <Col offset={2 }>
                                 <p> <b> Sum: </b> </p>
-                                {props.product.price * props.product.quantity}
+                                {(props.product.price * props.product.quantity).toFixed(2)}
                             </Col>
                         </Row>
                     </ Col>

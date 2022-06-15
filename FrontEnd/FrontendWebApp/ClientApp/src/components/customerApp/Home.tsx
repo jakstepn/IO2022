@@ -11,7 +11,8 @@ const { Title } = Typography;
 
 
 export default function CustomerHome() {
-  const { globalState } = useContext(globalContext);
+    const { globalState } = useContext(globalContext);
+   
   const navigate = useNavigate();
   const location = useLocation(); 
 
@@ -27,14 +28,14 @@ export default function CustomerHome() {
             <Row justify="space-around" align="middle" style={{ minHeight: "81vh" }}>
                 <Col flex="auto" >
                     <Row justify="end">
-                        <Button style={{ height: 200, width: 300 }} type="primary" onClick={() => navigate('/customer/browser', { replace: true })} > Browser </Button>
+                        <Button style={{ height: 200, width: 300, fontSize : 25}} type="primary" onClick={() => navigate('/customer/browser', { replace: true })} > Browser </Button>
                     </Row>
                 </Col>
                 <Col flex="auto" >
 
                 </Col>
                 <Col flex="auto" onClick={() => console.log("asd")}>
-                    <Button style={{ height: 200, width: 300 }} type="primary" onClick={() => navigate('/customer/delivery', { replace: true }) }> Delivery </Button>
+                    <Button style={{ height: 200, width: 300, fontSize: 25 }} type="primary" onClick={() => navigate('/customer/delivery', { replace: true }) }> Delivery </Button>
                 </Col>
             </Row>
       </div>
