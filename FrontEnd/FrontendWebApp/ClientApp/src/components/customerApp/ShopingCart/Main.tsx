@@ -1,4 +1,4 @@
-import { Col, Row, Button, Card, Modal, Input, Radio, Space, InputNumber, Form, Divider } from 'antd';
+import { Col, Row, Button, Card, Modal, Input, Radio, Space, InputNumber, Form, Divider, message } from 'antd';
 import type { RadioChangeEvent } from 'antd';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import {useLocation, useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { parse } from 'path';
 import { valueType } from 'antd/lib/statistic/utils';
 import "../Global/ShoppingCartContend";
 import { stat } from 'fs';
+import { useWindowDimensions } from 'react-native';
 
 const { Title } = Typography;
 const layout = {
@@ -31,8 +32,16 @@ export default function CustomerShopingCart() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const { TextArea } = Input;
     const [form] = Form.useForm();
+    const [refresh, setRefresh] = useState(false)
 
-    
+
+    let callback = () => {
+        setRefresh(true);
+        setRefresh(false);
+        setState(globalThis.Cart);
+        console.log(state);
+        // do something with value in parent component, like save to state
+    }
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -41,6 +50,7 @@ export default function CustomerShopingCart() {
 
     const handleOk = () => {
         setIsModalVisible(false);
+        globalThis.RemoveAll(); callback(); message.success('Order has been made');
     };
 
     const handleCancel = () => {
@@ -59,7 +69,7 @@ export default function CustomerShopingCart() {
 
     const parser = (value: any, cut: number) => {
         console.log(value.length + " parse");
-        if (value == undefined)
+        if (value == undefined || value.length<=0)
             return "";
         return value.substring(value.length - cut);
     }
@@ -82,35 +92,10 @@ export default function CustomerShopingCart() {
   }, []);
 
 
-    const showContend = () => {
-        if (globalThis.Cart.Products.length > 0)
-            return (<>
-                <Row justify="space-around" align="middle" >
-
-                    <Col flex="auto">
-                        <div className="site-layout-content">
-                            {state.Products.map((item: Product) => (
-                                <ProductListItem product={item} />)
-                            )}
-                        </div>
-                    </Col>
-
-
-                </Row>
-                <Row justify='end'>
-                    <div >
-                        <br />
-                        <Row> <p style={{ fontSize: 20 }}> <b> Sum: {state.Sum}</b> </p></Row>
-                        <Row> <Button type="primary" style={{ width: 100, fontSize: 20, height: 40 }} onClick={showModal}> Buy</Button> </Row>
-                    </div>
-                </Row>
-            </>)
-        else
-            <p style={{fontSize:30} }> <b>Your ShoppingCart is Empty </b></p>
-    }
+    
 
     return (
-        <div>
+        <div >
 
             {globalThis.Cart.Products.length > 0 &&
             <>
@@ -119,7 +104,7 @@ export default function CustomerShopingCart() {
                     <Col flex="auto">
                         <div className="site-layout-content">
                             {state.Products.map((item: Product) => (
-                                <ProductListItem product={item} />)
+                                <ProductListItem product={item} refresh={callback }/>)
                             )}
                         </div>
                     </Col>
@@ -129,7 +114,7 @@ export default function CustomerShopingCart() {
                 <Row justify='end'>
                     <div >
                         <br />
-                        <Row> <p style={{ fontSize: 20 }}> <b> Sum: {state.Sum}</b> </p></Row>
+                        <Row> <p style={{ fontSize: 20 }}> <b> Sum: {state.Sum.toFixed(2)}</b> </p></Row>
                         <Row> <Button type="primary" style={{ width: 100, fontSize: 20, height: 40 }} onClick={showModal}> Buy</Button> </Row>
                     </div>
                 </Row>
@@ -141,10 +126,10 @@ export default function CustomerShopingCart() {
                 </Row>
             }
             
-            <Modal width={800} title="Products" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} okText="Buy"
+            <Modal  width={700} title="Products" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} okText="Buy"
                 footer={ []}
             >
-                <Form {...layout} form={form} name="control-hooks" onFinish={handleOk}>
+                <Form {...layout} form={form} name="control-hooks" onFinish={handleOk} >
 
                 <Card title="Addres">
                     <Row justify='space-between'>
@@ -186,9 +171,11 @@ export default function CustomerShopingCart() {
                         </Col>
                     </Row>
                 </Card>
-                <Card title="Delivery Time">
+                    <Card title="Delivery Time">
+                        <Space>
                         <Input type="date" required /> 
-                        <Input type="time" required />
+                            <Input type="time" required />
+                        </Space>
                 </Card>
                     <Card title="Payment Option">
                         <Form.Item
@@ -210,9 +197,9 @@ export default function CustomerShopingCart() {
                     <Form.Item {...tailLayout} >
                         <Row  justify="end">
                         <Button 
-                            key="Buy"
-                            type="primary"
-                            htmlType="submit"
+                                key="Buy"
+                                type="primary"
+                                htmlType="submit"
                         >
                             Buy
                             </Button>

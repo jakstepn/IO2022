@@ -1,4 +1,4 @@
-import { Card, Row, Col, Image, InputNumber, Rate, Tag, Divider, Button } from "antd";
+import { Card, Row, Col, Image, InputNumber, Rate, Tag, Divider, Button, message } from "antd";
 import { Product } from '../classes/Product';
 import { FileImageOutlined } from '@ant-design/icons';
 import  "../Global/ShoppingCartContend";
@@ -12,6 +12,7 @@ interface Props {
 
 const ProductListItem: React.FC<Props> = (props: Props) => {
     const [state, setState] = useState(props.product);
+    const [max] = useState(props.product.quantity);
     var quantity = 0;
 
     const Add = () => {
@@ -24,6 +25,7 @@ const ProductListItem: React.FC<Props> = (props: Props) => {
         console.log(item);
         if(quantity > 0)
             globalThis.AddItem(item);
+        message.success(`${quantity} ${state.name}s have been add`);
     }
 
     return (
@@ -49,7 +51,7 @@ const ProductListItem: React.FC<Props> = (props: Props) => {
                     </ Col>
                     <Col flex={5 }>
                         
-                        <Row justify="center" >Quantity:   <InputNumber min={0} max={props.product.quantity} defaultValue={0} onChange={value => { quantity = value }} /></Row>
+                        <Row justify="center" >Quantity:   <InputNumber min={0} max={max} defaultValue={0} onChange={value => { quantity = value }} /></Row>
                         <br/>
                         <Row justify="center">   <Button onClick={Add} type="primary">Add</Button> </Row>
                         

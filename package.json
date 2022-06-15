@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@ant-design/colors": "^6.0.0"
+    "@ant-design/colors": "^6.0.0",
+    "react-native-web": "^0.18.1"
   }
 }

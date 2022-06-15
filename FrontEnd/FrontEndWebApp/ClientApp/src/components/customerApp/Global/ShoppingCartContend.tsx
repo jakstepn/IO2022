@@ -18,6 +18,7 @@ const defaultState: ShoppingCart = {
 declare global {
     function RemoveItem(id: string): void;
     function AddItem(Item: Product): void;
+    function RemoveAll(): void;
     var Cart: ShoppingCart;
 }
 
@@ -41,6 +42,10 @@ const RemoveItemLocal = (id: string) => {
 
 globalThis.RemoveItem = (id: string) => {
     globalThis.Cart = RemoveItemLocal(id) ;
+}
+
+globalThis.RemoveAll = () => {
+    globalThis.Cart = { loaded: true, Products: [], Sum: 0 };
 }
 
 globalThis.AddItem = (Item: Product) => {
