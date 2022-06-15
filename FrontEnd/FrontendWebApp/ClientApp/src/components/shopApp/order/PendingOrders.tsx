@@ -29,6 +29,16 @@ export default function PendingOrders() {
     setLoading(false);
     setDataLoaded(true);
   }
+  function updateStatus(order : OrderJson, _status : string) {
+    console.log("Updated s: " + _status);
+    let updatedOrders = orders?.filter(o => o.orderId !== order.orderId);
+    let updatedOrder = {
+        ...order,
+        orderStatus: _status
+    }
+    updatedOrders?.push(updatedOrder);
+    setOrders(updatedOrders);
+  }
 
   useEffect(() => {
     if(!globalState.isUserAuthenticated) {
@@ -46,8 +56,8 @@ export default function PendingOrders() {
                     <Title>Pending orders</Title>
                     { !loading ? 
                         (dataLoaded ? 
-                            orders?.map((item: OrderJson) => (
-                                <Order order={item}/>
+                          orders?.sort((a, b) => a.orderId.localeCompare(b.orderId)).filter(order => order.orderStatus === "Pending").map((item: OrderJson) => (
+                              <Order order={item} statusUpdateHandler={updateStatus}/>
                             ))
                             :
                             <Row align="middle" justify="center" style={{ marginTop: 50 }}>
@@ -64,8 +74,8 @@ export default function PendingOrders() {
                 <br />        
             </Col>
         </Row>
-  </div>
-);
+    </div>
+  );
 
 }
 

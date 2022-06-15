@@ -13,7 +13,8 @@ import { exampleOrders } from '../exampleData/ExampleCourierItem';
 const { Title } = Typography;
 
 interface Props {
-    order: OrderJson
+    order: OrderJson,
+    statusUpdateHandler: Function
 }
 
 export const Order: React.FC<Props> = (props: Props) => {
@@ -39,7 +40,8 @@ export const Order: React.FC<Props> = (props: Props) => {
   function orderDetailsModalCancelHandle() {
     setShowOderDetails(false);
   }
-  function orderDetailsModalConfirmHandle() {
+  function orderDetailsModalConfirmHandle(newStatus : string) {
+    props.statusUpdateHandler(props.order, newStatus)
     setShowOderDetails(false);
   }
   function orderStatusToString(status : string) {

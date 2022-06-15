@@ -26,8 +26,6 @@ export const OrderDetails: React.FC<Props> = (props: Props) => {
     const { height, width } = useWindowDimensions();
     const [ orderStatus, setOrderStatus ] = useState(props.order.orderStatus);
     
-    const saveChanges = () => {
-    }
     const updateStatusHandle = (status: string) => {
         setOrderStatus(status);
     }
@@ -72,7 +70,7 @@ export const OrderDetails: React.FC<Props> = (props: Props) => {
         <Modal title="Order details"
             centered
             visible={props.visible}
-            onOk={() => {props.onConfirm(saveChanges);}}
+            onOk={() => {props.onConfirm(orderStatus);}}
             okText="Save changes"
             onCancel={(e) => props.onCancel()}
             width={width/2}

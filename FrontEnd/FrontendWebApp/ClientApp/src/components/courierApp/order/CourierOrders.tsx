@@ -10,12 +10,13 @@ import {Typography} from "antd"
 import { OrderJson } from '../classes/OrderJson';
 import { exampleOrders } from '../exampleData/ExampleCourierItem';
 import { exampleCurrentOrder } from '../exampleData/ExampleCourierItem';
+import { CourierStatus } from '../../../reducers/Types';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 
 export default function CourierOrders() {
-  const { globalState } = useContext(globalContext);
+  const { globalState, dispatch } = useContext(globalContext);
   const navigate = useNavigate();
   const location = useLocation(); 
   const [loading, setLoading] = useState(false);
@@ -31,6 +32,31 @@ export default function CourierOrders() {
     setCurrentOrder(exampleCurrentOrder);
     setLoading(false);
     setDataLoaded(true);
+  }
+  function updateCurrentStatus(order : OrderJson, _status : string) {
+    if(currentOrder !== undefined) {
+        let updatedOrder = {
+            ...order,
+            orderStatus: _status
+        }
+        if(updatedOrder.orderStatus === "Delivered") {
+            setOrders(orders !== undefined ? [...orders, updatedOrder] : [updatedOrder]);
+            setCurrentOrder(undefined);
+            dispatch({ type: 'SET_COURIER_STATUS', payload: CourierStatus.AvaibleForDelivery });
+        }
+        else  
+            setCurrentOrder(updatedOrder);
+    }
+  }
+  function updateStatus(order : OrderJson, _status : string) {
+    console.log("Updated s: " + _status);
+    let updatedOrders = orders?.filter(o => o.orderId !== order.orderId);
+    let updatedOrder = {
+        ...order,
+        orderStatus: _status
+    }
+    updatedOrders?.push(updatedOrder);
+    setOrders(updatedOrders);
   }
 
   useEffect(() => {
@@ -52,8 +78,10 @@ export default function CourierOrders() {
                         <Title level={4}>Current order</Title>
                         { !loading && 
                             dataLoaded &&
-                                currentOrder !== undefined &&
-                                    <Order order={currentOrder}/>
+                                currentOrder !== undefined ?
+                                    <Order order={currentOrder} statusUpdateHandler={updateCurrentStatus}/>
+                                    :
+                                    <Text>No orders for now <SmileOutlined /></Text>
                         }
                         
                         <Divider />
@@ -62,7 +90,7 @@ export default function CourierOrders() {
                         { !loading ? 
                             (dataLoaded ? 
                                 orders?.map((item: OrderJson) => (
-                                    <Order order={item}/>
+                                    <Order order={item} statusUpdateHandler={updateStatus}/>
                                 ))
                                 :
                                 <Row align="middle" justify="center" style={{ marginTop: 50 }}>

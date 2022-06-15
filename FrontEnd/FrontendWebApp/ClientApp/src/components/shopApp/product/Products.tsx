@@ -1,5 +1,5 @@
-import { Col, Row, Button, Modal, Table, Space } from 'antd';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { Col, Row, Button, Modal, Table, Space, message, Form, InputNumber, Input, Popconfirm } from 'antd';
+import { ReactChild, ReactFragment, ReactPortal, useCallback, useContext, useEffect, useState } from 'react';
 import {useLocation, useNavigate } from 'react-router-dom';
 import { LoadingOutlined, SmileOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { GlobalStore, globalContext } from '../../../reducers/GlobalStore';
@@ -16,6 +16,48 @@ import { AddProduct } from './AddProduct';
 const { Title, Text } = Typography;
 const { confirm } = Modal;
 
+interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
+  editing: boolean;
+  dataIndex: string;
+  title: any;
+  inputType: 'number' | 'text';
+  record: Product;
+  index: number;
+  children: React.ReactNode;
+}
+const EditableCell: React.FC<EditableCellProps> = ({
+  editing,
+  dataIndex,
+  title,
+  inputType,
+  record,
+  index,
+  children,
+  ...restProps
+}) => {
+  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+  return (
+    <td {...restProps}>
+      {editing ? (
+        <Form.Item
+          name={dataIndex}
+          style={{ margin: 0 }}
+          rules={[
+            {
+              required: true,
+              message: `Please Input ${title}!`,
+            },
+          ]}
+        >
+          {inputNode}
+        </Form.Item>
+      ) : (
+        children
+      )}
+    </td>
+  );
+};
+
 export default function Products() {
   const { globalState } = useContext(globalContext);
   const navigate = useNavigate();
@@ -27,6 +69,8 @@ export default function Products() {
   const [products, setProducts] = useState<Product[]>();
   const { height, width } = useWindowDimensions();
   const [addingProduct, setAddingProduct] = useState(false);
+  const [form] = Form.useForm();
+  const [editingID, setEditingID] = useState("");
   let deletingProduct : Product;
 
   function fetchData(_pageNumber : number) {
@@ -64,7 +108,9 @@ export default function Products() {
                 : "Unknown product",
       onOk() {
         return new Promise((resolve, reject) => {
+          let newProducts = products?.filter(p => p.productId !== deletingProduct.productId);
           setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          setProducts(newProducts);
         }).catch(() => console.log('Oops errors!'));
       },
       onCancel() {
@@ -73,59 +119,130 @@ export default function Products() {
     });
   };
   const deleteProductClickHandler = (product: Product) => {
+    setEditingID('');
     deletingProduct = product;
     showConfirm();
-    console.log("Delete product " + product.productId);
   }
   const addProductHandler = () => {
     setAddingProduct(true);
   }
-  const addProductConfirmHandler = () => {
+  const addProductConfirmHandler = (newProduct: Product) => {
+    console.log("Adding product [id:" + newProduct.productId + ", name:" + newProduct.name);
+    message.success('Succesfully added new product!');
+    products !== undefined ? setProducts([...products, newProduct]) : setProducts([newProduct]);
     setAddingProduct(false);
   }
   const addProductCancelHandler = () => {
     setAddingProduct(false);
   }
-  const columns: ColumnsType<Product> = [
+
+  const isEditing = (record: Product) => record.productId === editingID;
+  const edit = (record: Product) => {
+    form.setFieldsValue({ ...record });
+    let id = record !== undefined ? record.productId !== undefined ? record.productId : '' : '';
+    setEditingID(id);
+  };
+  const cancel = () => {
+    setEditingID('');
+  };
+  const save = async (id: string) => {
+    try {
+      const row = (await form.validateFields()) as Product;
+
+      const newData = products === undefined ? [] : [...products];
+      const index = newData.findIndex(item => id === item.productId);
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, {
+          ...item,
+          ...row,
+        });
+        setProducts(newData);
+        setEditingID('');
+      } else {
+        newData.push(row);
+        setProducts(newData);
+        setEditingID('');
+      }
+    } catch (errInfo) {
+      console.log('Validate Failed:', errInfo);
+    }
+  };
+  const columns = [
     {
       title: 'Product ID',
       dataIndex: 'productId',
       key: 'productId',
-      render: text => <Text>{text}</Text>,
-      width: (width)/3
+      width: (width)/3,
+      editable: false
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      width: (width)/6
+      width: (width)/6,
+      editable: true
     },
     {
       title: 'Category',
       dataIndex: 'category',
       key: 'category',
-      width: (width)/7
+      width: (width)/7,
+      editable: true
     },
     {
         title: 'Price',
         dataIndex: 'price',
         key: 'price',
-        width: (width)/8
+        width: (width)/8,
+        editable: true
     },
     {
         title: 'Quantity',
         dataIndex: 'quantity',
         key: 'quantity',
-        width: (width)/8
+        width: (width)/8,
+        editable: true
     },
     {
-        key: 'action',
-        render: (_, record) => (
-            <Button onClick={() => deleteProductClickHandler(record)}>Delete</Button>
-          ),
-        width: '100px'
+        title: 'operation',
+        dataIndex: 'operation',
+        render: (_: any, record: Product) => {
+          const editable = isEditing(record);
+          return editable ? (
+            <span>
+              <Button onClick={() => save(record.productId)} style={{ marginRight: 8 }}>
+                Save
+              </Button>
+              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+                <Button>Cancel</Button>
+              </Popconfirm>
+            </span>
+          ) : (
+            <Row justify='center'>
+              <Button disabled={editingID !== ''} onClick={() => edit(record)} style={{ marginRight: 10 }}>Edit</Button>
+              <Button onClick={() => deleteProductClickHandler(record)}>Delete</Button>
+            </Row>
+          );
+        },
+        width: '210px'
     }
   ];
+  const mergedColumns = columns.map(col => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record: Product) => ({
+        record,
+        inputType: col.dataIndex === 'price' || col.dataIndex === 'quantity' ? 'number' : 'text',
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
     return (
         <div  >
            <Row style={{ marginTop: 50 }}>
@@ -143,7 +260,22 @@ export default function Products() {
                         { !loading ? 
                             (dataLoaded ? 
                                 <Row style={{ marginTop: 5 }} justify='center'>
-                                    <Table columns={columns} dataSource={products}/>
+                                    <Form form={form} component={false}>
+                                        <Table
+                                        components={{
+                                          body: {
+                                            cell: EditableCell,
+                                          },
+                                        }}
+                                        bordered
+                                        dataSource={products}
+                                        columns={mergedColumns}
+                                        rowClassName="editable-row"
+                                        pagination={{
+                                          onChange: cancel,
+                                        }}
+                                      />
+                                    </Form>
                                 </Row>
                                 :
                                 <Row align="middle" justify="center" style={{ marginTop: 50 }}>
