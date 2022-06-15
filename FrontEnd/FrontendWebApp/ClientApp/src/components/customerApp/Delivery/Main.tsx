@@ -28,21 +28,15 @@ export default function CustomerDelivery() {
 
     return (
         <div>
-            
-            <Row color="#8c8c8c">
-                   
-                </Row>
 
             <Row color="#8c8c8c" >
 
                 <Col flex="auto">
                     <div className="site-layout-content">
                         {deliverysInfo.map((item: Delivery) => (
-                            <DeliverysInfoItem DeliveryInfo={item} showSimilar={false } />)
+                            <DeliverysInfoItem DeliveryInfo={item}  />)
                         )}
                     </div>
-                    <br />
-                   
                 </Col>
             </Row>
         </div>

@@ -12,7 +12,6 @@ const { Text } = Typography;
 
 interface Props {
     DeliveryInfo: Delivery
-    showSimilar: boolean
 }
 
 const DeliverysInfoListItem: React.FC<Props> = (props: Props) => {
@@ -71,20 +70,7 @@ const DeliverysInfoListItem: React.FC<Props> = (props: Props) => {
                         <DemoBox name="Delivery Time" children={props.DeliveryInfo.delivertTime} />
                         
                     </Col>
-                    <Col span={3}>
-                        <Row justify="center">
-                        <b> Shop:</b>
-                        </Row>
-                        <br/>
-                        <Row>
-                            <Col >
-                                <DemoBox name="Name" children={`${props.DeliveryInfo.shop.name}`} />
-                            </Col>
-                            <Col offset={5}>
-                                    <DemoBox name="Location" children={`${props.DeliveryInfo.shop.adres}`} />
-                           </Col>
-                         </Row>
-                    </Col>
+                   
                     <Col span={3}  >
                         <br /> 
                              <p > <b> Price: {props.DeliveryInfo.price }</b> </p>
@@ -111,7 +97,7 @@ const DeliverysInfoListItem: React.FC<Props> = (props: Props) => {
                 <Col flex="auto">
                     <div className="site-layout-content">
                         {props.DeliveryInfo.products.map((item: Product) => (
-                            <ProductListItem product={item} showSimilar={false} />)
+                            <ProductListItem product={item}  />)
                         )}
                     </div>
                 </Col>
