@@ -1,78 +1,98 @@
-using IdentityServerGrocierio.Data;
-using IdentityServerGrocierio.Models;
-using Microsoft.AspNetCore.Authentication;
+// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+
+using IdentityServer;
+using IdentityServer4;
+using IdentityServer4.Services;
+using IdentityServerAspNetIdentity.Data;
+using IdentityServerAspNetIdentity.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace IdentityServerGrocierio
+namespace IdentityServerAspNetIdentity
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IWebHostEnvironment Environment { get; }
+        public IConfiguration Configuration { get; }
+
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
+            Environment = environment;
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllersWithViews();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            SeedData.EnsureSeedData(services);
 
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            var builder = services.AddIdentityServer(options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+                // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
+                options.EmitStaticAudienceClaim = true;
+               
+            })
+                .AddInMemoryIdentityResources(Config.IdentityResources)
+                .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryClients(Config.Clients)
+                .AddAspNetIdentity<ApplicationUser>();
+            services.AddTransient<IProfileService, ProfileService>();
+            // not recommended for production - you need to store your key material somewhere secure
+            builder.AddDeveloperSigningCredential();
 
+           
 
             services.AddAuthentication()
-                .AddIdentityServerJwt();
-            services.AddRazorPages();
+                .AddGoogle(options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                    
+                    // register your IdentityServer with Google at https://console.developers.google.com
+                    // enable the Google+ API
+                    // set the redirect URI to https://localhost:5001/signin-google
+                    options.ClientId = "copy client ID from Google here";
+                    options.ClientSecret = "copy client secret from Google here";
+                });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
 
-            //app.UseHttpsRedirection();
+            app.UseDeveloperExceptionPage();
+            app.UseDatabaseErrorPage();
+            
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
